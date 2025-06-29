@@ -49,6 +49,8 @@ export default function DesktopAdminDashboard() {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'name' | 'score' | 'lastActive'>('score');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [showTimeframeDropdown, setShowTimeframeDropdown] = useState(false);
+  const [showGradeDropdown, setShowGradeDropdown] = useState(false);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(30)).current;
@@ -221,6 +223,30 @@ export default function DesktopAdminDashboard() {
       case 'negative': return '#EF4444';
       default: return '#6B7280';
     }
+  };
+
+  const timeframeOptions = [
+    { value: 'today', label: 'Today' },
+    { value: 'week', label: 'This Week' },
+    { value: 'month', label: 'This Month' },
+    { value: 'year', label: 'This Year' },
+  ];
+
+  const gradeOptions = [
+    { value: 'all', label: 'All Grades' },
+    { value: 'grade6', label: 'Grade 6' },
+    { value: 'grade7', label: 'Grade 7' },
+    { value: 'grade8', label: 'Grade 8' },
+  ];
+
+  const handleTimeframeChange = (value: 'today' | 'week' | 'month' | 'year') => {
+    setSelectedTimeframe(value);
+    setShowTimeframeDropdown(false);
+  };
+
+  const handleGradeChange = (value: 'all' | 'grade6' | 'grade7' | 'grade8') => {
+    setSelectedGrade(value);
+    setShowGradeDropdown(false);
   };
 
   const renderSidebar = () => (
@@ -475,14 +501,71 @@ export default function DesktopAdminDashboard() {
           
           <View style={styles.headerRight}>
             <View style={styles.headerControls}>
-              <TouchableOpacity style={styles.dropdown}>
-                <Text style={styles.dropdownLabel}>Sort by Time Frame</Text>
-                <ChevronDown size={16} color="#6B7280" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.dropdown}>
-                <Text style={styles.dropdownLabel}>Sort by Grade</Text>
-                <ChevronDown size={16} color="#6B7280" />
-              </TouchableOpacity>
+              <View style={styles.dropdownContainer}>
+                <TouchableOpacity 
+                  style={styles.dropdown}
+                  onPress={() => setShowTimeframeDropdown(!showTimeframeDropdown)}
+                >
+                  <Text style={styles.dropdownLabel}>
+                    {timeframeOptions.find(opt => opt.value === selectedTimeframe)?.label || 'Select Timeframe'}
+                  </Text>
+                  <ChevronDown size={16} color="#6B7280" />
+                </TouchableOpacity>
+                {showTimeframeDropdown && (
+                  <View style={styles.dropdownMenu}>
+                    {timeframeOptions.map((option) => (
+                      <TouchableOpacity
+                        key={option.value}
+                        style={[
+                          styles.dropdownOption,
+                          selectedTimeframe === option.value && styles.dropdownOptionSelected
+                        ]}
+                        onPress={() => handleTimeframeChange(option.value as any)}
+                      >
+                        <Text style={[
+                          styles.dropdownOptionText,
+                          selectedTimeframe === option.value && styles.dropdownOptionTextSelected
+                        ]}>
+                          {option.label}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+              </View>
+              
+              <View style={styles.dropdownContainer}>
+                <TouchableOpacity 
+                  style={styles.dropdown}
+                  onPress={() => setShowGradeDropdown(!showGradeDropdown)}
+                >
+                  <Text style={styles.dropdownLabel}>
+                    {gradeOptions.find(opt => opt.value === selectedGrade)?.label || 'Select Grade'}
+                  </Text>
+                  <ChevronDown size={16} color="#6B7280" />
+                </TouchableOpacity>
+                {showGradeDropdown && (
+                  <View style={styles.dropdownMenu}>
+                    {gradeOptions.map((option) => (
+                      <TouchableOpacity
+                        key={option.value}
+                        style={[
+                          styles.dropdownOption,
+                          selectedGrade === option.value && styles.dropdownOptionSelected
+                        ]}
+                        onPress={() => handleGradeChange(option.value as any)}
+                      >
+                        <Text style={[
+                          styles.dropdownOptionText,
+                          selectedGrade === option.value && styles.dropdownOptionTextSelected
+                        ]}>
+                          {option.label}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+              </View>
             </View>
             
             <View style={styles.headerActions}>
@@ -668,6 +751,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 12,
   },
+  dropdownContainer: {
+    position: 'relative',
+    zIndex: 1000,
+  },
   dropdown: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -678,11 +765,50 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E2E8F0',
     gap: 8,
+    minWidth: 150,
   },
   dropdownLabel: {
     fontSize: 14,
     fontFamily: 'Inter-Medium',
     color: '#64748B',
+    flex: 1,
+  },
+  dropdownMenu: {
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    right: 0,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 8,
+    zIndex: 1001,
+  },
+  dropdownOption: {
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F1F5F9',
+  },
+  dropdownOptionSelected: {
+    backgroundColor: '#F8FAFC',
+  },
+  dropdownOptionText: {
+    fontSize: 14,
+    fontFamily: 'Inter-Regular',
+    color: '#1E293B',
+  },
+  dropdownOptionTextSelected: {
+    fontFamily: 'Inter-SemiBold',
+    color: '#3B82F6',
   },
   headerActions: {
     flexDirection: 'row',
