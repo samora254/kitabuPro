@@ -71,6 +71,8 @@ export default function SalesAgentsManagement() {
   const [selectedAgent, setSelectedAgent] = useState<SalesAgent | null>(null);
   const [showAgentModal, setShowAgentModal] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
+  const [showTimeFrameDropdown, setShowTimeFrameDropdown] = useState(false);
+  const [showRegionDropdown, setShowRegionDropdown] = useState(false);
   const [sortBy, setSortBy] = useState<'name' | 'sales' | 'performance'>('sales');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [refreshing, setRefreshing] = useState(false);
@@ -672,14 +674,66 @@ export default function SalesAgentsManagement() {
           
           <View style={styles.headerRight}>
             <View style={styles.headerControls}>
-              <TouchableOpacity style={styles.dropdown}>
-                <Text style={styles.dropdownLabel}>{selectedTimeFrame}</Text>
-                <ChevronDown size={16} color="#6B7280" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.dropdown}>
-                <Text style={styles.dropdownLabel}>{selectedRegion}</Text>
-                <ChevronDown size={16} color="#6B7280" />
-              </TouchableOpacity>
+              <View style={styles.dropdownContainer}>
+                <TouchableOpacity 
+                  style={styles.dropdown}
+                  onPress={() => setShowTimeFrameDropdown(!showTimeFrameDropdown)}
+                >
+                  <Text style={styles.dropdownLabel}>{selectedTimeFrame}</Text>
+                  <ChevronDown size={16} color="#6B7280" />
+                </TouchableOpacity>
+                {showTimeFrameDropdown && (
+                  <View style={styles.dropdownMenu}>
+                    {timeFrames.map((timeFrame) => (
+                      <TouchableOpacity
+                        key={timeFrame}
+                        style={styles.dropdownOption}
+                        onPress={() => {
+                          setSelectedTimeFrame(timeFrame);
+                          setShowTimeFrameDropdown(false);
+                        }}
+                      >
+                        <Text style={[
+                          styles.dropdownOptionText,
+                          selectedTimeFrame === timeFrame && styles.selectedOptionText
+                        ]}>
+                          {timeFrame}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+              </View>
+              <View style={styles.dropdownContainer}>
+                <TouchableOpacity 
+                  style={styles.dropdown}
+                  onPress={() => setShowRegionDropdown(!showRegionDropdown)}
+                >
+                  <Text style={styles.dropdownLabel}>{selectedRegion}</Text>
+                  <ChevronDown size={16} color="#6B7280" />
+                </TouchableOpacity>
+                {showRegionDropdown && (
+                  <View style={styles.dropdownMenu}>
+                    {regions.map((region) => (
+                      <TouchableOpacity
+                        key={region}
+                        style={styles.dropdownOption}
+                        onPress={() => {
+                          setSelectedRegion(region);
+                          setShowRegionDropdown(false);
+                        }}
+                      >
+                        <Text style={[
+                          styles.dropdownOptionText,
+                          selectedRegion === region && styles.selectedOptionText
+                        ]}>
+                          {region}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+              </View>
             </View>
             
             <View style={styles.headerActions}>
@@ -960,6 +1014,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: width >= 768 ? 12 : 8,
   },
+  dropdownContainer: {
+    position: 'relative',
+    zIndex: 1000,
+  },
   dropdown: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -975,6 +1033,38 @@ const styles = StyleSheet.create({
     fontSize: width >= 768 ? 14 : 12,
     fontFamily: 'Inter-Medium',
     color: '#64748B',
+  },
+  dropdownMenu: {
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    right: 0,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+    marginTop: 4,
+    maxHeight: 200,
+  },
+  dropdownOption: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F1F5F9',
+  },
+  dropdownOptionText: {
+    fontSize: 14,
+    fontFamily: 'Inter-Regular',
+    color: '#374151',
+  },
+  selectedOptionText: {
+    color: '#4299E1',
+    fontFamily: 'Inter-SemiBold',
   },
   headerActions: {
     flexDirection: 'row',

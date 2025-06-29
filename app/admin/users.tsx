@@ -38,6 +38,11 @@ export default function UsersManagement() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
   const [showUserModal, setShowUserModal] = useState(false);
+  const [showGradeDropdown, setShowGradeDropdown] = useState(false);
+  const [showTimeFrameDropdown, setShowTimeFrameDropdown] = useState(false);
+
+  const gradeOptions = ['All Grades', 'Grade 6', 'Grade 7', 'Grade 8', 'Grade 9'];
+  const timeFrameOptions = ['This Week', 'This Month', 'This Quarter', 'This Year'];
   
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(30)).current;
@@ -374,14 +379,66 @@ export default function UsersManagement() {
           </View>
           
           <View style={styles.headerRight}>
-            <TouchableOpacity style={styles.dropdown}>
-              <Text style={styles.dropdownLabel}>Select Grade</Text>
-              <ChevronDown size={16} color="#6B7280" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.dropdown}>
-              <Text style={styles.dropdownLabel}>Select Time Frame</Text>
-              <ChevronDown size={16} color="#6B7280" />
-            </TouchableOpacity>
+            <View style={styles.dropdownContainer}>
+              <TouchableOpacity 
+                style={styles.dropdown}
+                onPress={() => setShowGradeDropdown(!showGradeDropdown)}
+              >
+                <Text style={styles.dropdownLabel}>{selectedGrade}</Text>
+                <ChevronDown size={16} color="#6B7280" />
+              </TouchableOpacity>
+              {showGradeDropdown && (
+                <View style={styles.dropdownMenu}>
+                  {gradeOptions.map((grade) => (
+                    <TouchableOpacity
+                      key={grade}
+                      style={styles.dropdownOption}
+                      onPress={() => {
+                        setSelectedGrade(grade);
+                        setShowGradeDropdown(false);
+                      }}
+                    >
+                      <Text style={[
+                        styles.dropdownOptionText,
+                        selectedGrade === grade && styles.selectedOptionText
+                      ]}>
+                        {grade}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
+            </View>
+            <View style={styles.dropdownContainer}>
+              <TouchableOpacity 
+                style={styles.dropdown}
+                onPress={() => setShowTimeFrameDropdown(!showTimeFrameDropdown)}
+              >
+                <Text style={styles.dropdownLabel}>{selectedTimeFrame}</Text>
+                <ChevronDown size={16} color="#6B7280" />
+              </TouchableOpacity>
+              {showTimeFrameDropdown && (
+                <View style={styles.dropdownMenu}>
+                  {timeFrameOptions.map((timeFrame) => (
+                    <TouchableOpacity
+                      key={timeFrame}
+                      style={styles.dropdownOption}
+                      onPress={() => {
+                        setSelectedTimeFrame(timeFrame);
+                        setShowTimeFrameDropdown(false);
+                      }}
+                    >
+                      <Text style={[
+                        styles.dropdownOptionText,
+                        selectedTimeFrame === timeFrame && styles.selectedOptionText
+                      ]}>
+                        {timeFrame}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
+            </View>
           </View>
         </Animated.View>
 
@@ -615,6 +672,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: width >= 768 ? 12 : 8,
   },
+  dropdownContainer: {
+    position: 'relative',
+    zIndex: 1000,
+  },
   dropdown: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -630,6 +691,38 @@ const styles = StyleSheet.create({
     fontSize: width >= 768 ? 14 : 12,
     fontFamily: 'Inter-Medium',
     color: '#64748B',
+  },
+  dropdownMenu: {
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    right: 0,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+    marginTop: 4,
+    maxHeight: 200,
+  },
+  dropdownOption: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F1F5F9',
+  },
+  dropdownOptionText: {
+    fontSize: 14,
+    fontFamily: 'Inter-Regular',
+    color: '#374151',
+  },
+  selectedOptionText: {
+    color: '#4299E1',
+    fontFamily: 'Inter-SemiBold',
   },
   metricsSection: {
     flexDirection: width >= 768 ? 'row' : 'column',

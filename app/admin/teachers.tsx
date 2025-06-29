@@ -456,17 +456,77 @@ export default function TeachersPortal() {
     </Modal>
   );
 
+  const [selectedGradeFilter, setSelectedGradeFilter] = useState('All Grades');
+  const [selectedSubjectFilter, setSelectedSubjectFilter] = useState('All Subjects');
+  const [showGradeDropdown, setShowGradeDropdown] = useState(false);
+  const [showSubjectDropdown, setShowSubjectDropdown] = useState(false);
+
+  const gradeOptions = ['All Grades', 'Grade 6', 'Grade 7', 'Grade 8', 'Grade 9', 'Grade 10'];
+  const subjectOptions = ['All Subjects', 'Mathematics', 'Science', 'English', 'Social Studies', 'Kiswahili', 'Computer Science'];
+
   const renderGradeDropdown = () => (
-    <View style={styles.dropdown}>
-      <Text style={styles.dropdownText}>All Grades</Text>
-      <ChevronDown size={20} color="#A0AEC0" />
+    <View style={styles.dropdownContainer}>
+      <TouchableOpacity 
+        style={styles.dropdown}
+        onPress={() => setShowGradeDropdown(!showGradeDropdown)}
+      >
+        <Text style={styles.dropdownText}>{selectedGradeFilter}</Text>
+        <ChevronDown size={20} color="#A0AEC0" />
+      </TouchableOpacity>
+      {showGradeDropdown && (
+        <View style={styles.dropdownMenu}>
+          {gradeOptions.map((grade) => (
+            <TouchableOpacity
+              key={grade}
+              style={styles.dropdownOption}
+              onPress={() => {
+                setSelectedGradeFilter(grade);
+                setShowGradeDropdown(false);
+              }}
+            >
+              <Text style={[
+                styles.dropdownOptionText,
+                selectedGradeFilter === grade && styles.selectedOptionText
+              ]}>
+                {grade}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
     </View>
   );
 
   const renderSubjectDropdown = () => (
-    <View style={styles.dropdown}>
-      <Text style={styles.dropdownText}>All Subjects</Text>
-      <ChevronDown size={20} color="#A0AEC0" />
+    <View style={styles.dropdownContainer}>
+      <TouchableOpacity 
+        style={styles.dropdown}
+        onPress={() => setShowSubjectDropdown(!showSubjectDropdown)}
+      >
+        <Text style={styles.dropdownText}>{selectedSubjectFilter}</Text>
+        <ChevronDown size={20} color="#A0AEC0" />
+      </TouchableOpacity>
+      {showSubjectDropdown && (
+        <View style={styles.dropdownMenu}>
+          {subjectOptions.map((subject) => (
+            <TouchableOpacity
+              key={subject}
+              style={styles.dropdownOption}
+              onPress={() => {
+                setSelectedSubjectFilter(subject);
+                setShowSubjectDropdown(false);
+              }}
+            >
+              <Text style={[
+                styles.dropdownOptionText,
+                selectedSubjectFilter === subject && styles.selectedOptionText
+              ]}>
+                {subject}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
     </View>
   );
 
@@ -834,6 +894,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: width >= 768 ? 12 : 8,
   },
+  dropdownContainer: {
+    position: 'relative',
+    zIndex: 1000,
+  },
   dropdown: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -849,6 +913,38 @@ const styles = StyleSheet.create({
     fontSize: width >= 768 ? 14 : 12,
     fontFamily: 'Inter-Medium',
     color: '#64748B',
+  },
+  dropdownMenu: {
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    right: 0,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+    marginTop: 4,
+    maxHeight: 200,
+  },
+  dropdownOption: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F1F5F9',
+  },
+  dropdownOptionText: {
+    fontSize: 14,
+    fontFamily: 'Inter-Regular',
+    color: '#374151',
+  },
+  selectedOptionText: {
+    color: '#4299E1',
+    fontFamily: 'Inter-SemiBold',
   },
   headerActions: {
     flexDirection: 'row',
