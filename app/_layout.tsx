@@ -17,6 +17,7 @@ import {
 } from '@expo-google-fonts/poppins';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
+import { View, Text } from 'react-native'; // Import View and Text
 
 SplashScreen.preventAutoHideAsync();
 
@@ -38,10 +39,21 @@ export default function RootLayout() {
     if (fontsLoaded || fontError) {
       SplashScreen.hideAsync();
     }
+    if (fontError) {
+      console.error('Font loading error:', fontError);
+    }
   }, [fontsLoaded, fontError]);
 
   if (!fontsLoaded && !fontError) {
     return null;
+  }
+
+  if (fontError) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Error loading fonts. Please refresh the app.</Text>
+      </View>
+    );
   }
 
   return (
