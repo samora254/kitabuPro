@@ -98,6 +98,12 @@ export default function SubjectsManagement() {
       router.push('/admin/schools');
     } else if (itemId === 'subjects') {
       router.push('/admin/subjects');
+    } else if (itemId === 'users') {
+      router.push('/admin/users');
+    } else if (itemId === 'agents') {
+      router.push('/admin/agents');
+    } else if (itemId === 'teachers') {
+      router.push('/admin/teachers');
     }
   };
 

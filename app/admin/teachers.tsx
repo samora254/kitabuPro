@@ -199,6 +199,8 @@ export default function TeachersPortal() {
       router.push('/admin/users');
     } else if (itemId === 'agents') {
       router.push('/admin/agents');
+    } else if (itemId === 'teachers') {
+      router.push('/admin/teachers');
     }
   };
 

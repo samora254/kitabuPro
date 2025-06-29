@@ -209,16 +209,16 @@ export default function DesktopAdminDashboard() {
   const handleSidebarNavigation = (itemId: string) => {
     if (itemId === 'dashboard') {
       router.push('/admin');
-    } else if (itemId === 'subjects') {
-      router.push('/admin/subjects');
     } else if (itemId === 'schools') {
       router.push('/admin/schools');
-   } else if (itemId === 'users') {
-     router.push('/admin/users');
+    } else if (itemId === 'subjects') {
+      router.push('/admin/subjects');
+    } else if (itemId === 'users') {
+      router.push('/admin/users');
     } else if (itemId === 'agents') {
       router.push('/admin/agents');
-   } else if (itemId === 'teachers') {
-     router.push('/admin/teachers');
+    } else if (itemId === 'teachers') {
+      router.push('/admin/teachers');
     }
   };
 
@@ -250,7 +250,7 @@ export default function DesktopAdminDashboard() {
           {sidebarCollapsed ? <Menu size={20} color="#94A3B8" /> : <X size={20} color="#94A3B8" />}
         </TouchableOpacity>
       </View>
-      
+
       <ScrollView style={styles.sidebarContent} showsVerticalScrollIndicator={false}>
         {sidebarItems.map((item) => (
           <TouchableOpacity
@@ -401,7 +401,7 @@ export default function DesktopAdminDashboard() {
           </TouchableOpacity>
         </View>
       </View>
-      
+
       <View style={styles.table}>
         <View style={styles.tableHeaderRow}>
           <TouchableOpacity style={[styles.tableHeaderCell, styles.nameColumn]}>
@@ -426,7 +426,7 @@ export default function DesktopAdminDashboard() {
             <ChevronDown size={12} color="#6B7280" />
           </TouchableOpacity>
         </View>
-        
+
         <ScrollView style={styles.tableBody} showsVerticalScrollIndicator={false}>
           {recentStudents.map((student) => (
             <TouchableOpacity key={student.id} style={styles.tableRow}>
@@ -456,9 +456,9 @@ export default function DesktopAdminDashboard() {
   return (
     <View style={styles.container}>
       <DevModeIndicator />
-      
+
       {renderSidebar()}
-      
+
       <View style={[styles.mainContent, sidebarCollapsed && styles.mainContentExpanded]}>
         {/* Top Header */}
         <Animated.View
@@ -473,7 +473,7 @@ export default function DesktopAdminDashboard() {
           <View style={styles.headerLeft}>
             <Text style={styles.pageTitle}>Dashboard</Text>
           </View>
-          
+
           <View style={styles.headerRight}>
             <View style={styles.headerControls}>
               <TouchableOpacity style={styles.dropdown}>
@@ -485,7 +485,7 @@ export default function DesktopAdminDashboard() {
                 <ChevronDown size={16} color="#6B7280" />
               </TouchableOpacity>
             </View>
-            
+
             <View style={styles.headerActions}>
               <TouchableOpacity style={styles.headerButton}>
                 <Bell size={20} color="#6B7280" />
@@ -524,7 +524,7 @@ export default function DesktopAdminDashboard() {
             {renderLineChart(userGrowthData, 'User Growth', '#3B82F6')}
             {renderBarChart(revenueData, 'Revenue')}
           </View>
-          
+
           <View style={styles.chartsRow}>
             {renderPieChart()}
             {renderDataTable()}

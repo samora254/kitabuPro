@@ -351,6 +351,10 @@ export default function SalesAgentsManagement() {
       router.push('/admin/subjects');
     } else if (itemId === 'users') {
       router.push('/admin/users');
+    } else if (itemId === 'agents') {
+      router.push('/admin/agents');
+    } else if (itemId === 'teachers') {
+      router.push('/admin/teachers');
     }
   };
 
