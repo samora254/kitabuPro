@@ -10,7 +10,6 @@ import {
 import { router, useLocalSearchParams } from 'expo-router';
 import { ChevronLeft, ChevronRight, Brain, BookOpen, FileCheck, ArrowLeft } from 'lucide-react-native';
 import { DevModeIndicator } from '@/components/DevModeIndicator';
-import { useCurriculumAI } from '@/hooks/useCurriculumAI';
 
 const { width, height } = Dimensions.get('window');
 
@@ -19,7 +18,6 @@ export default function SubjectDetail() {
   const [currentTopic, setCurrentTopic] = useState(1);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(30)).current;
-  const { curriculumService } = useCurriculumAI();
 
   useEffect(() => {
     Animated.parallel([
@@ -37,20 +35,6 @@ export default function SubjectDetail() {
   }, []);
 
   const getSubjectInfo = (subjectId: string) => {
-    // Try to get from curriculum service first
-    const curriculumData = curriculumService.getCurriculumBySubjectAndGrade(subjectId, 'grade8');
-    
-    if (curriculumData) {
-      return {
-        name: curriculumData.subject.name,
-        color: curriculumData.subject.color || '#008000',
-        topics: curriculumData.topics.map((topic: any) => topic.name),
-        progress: Math.floor(Math.random() * 50) + 10, // Simulate progress
-        curriculumData: curriculumData
-      };
-    }
-    
-    // Fallback to static data
     const subjects: Record<string, any> = {
       'mathematics': {
         name: 'Mathematics',
