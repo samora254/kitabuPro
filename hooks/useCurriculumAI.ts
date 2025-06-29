@@ -1,7 +1,6 @@
 
 import { useState, useEffect } from 'react';
 import CurriculumService from '../services/curriculumService';
-import VectorService from '../services/vectorService';
 
 interface AIResponse {
   content: string;
@@ -16,7 +15,6 @@ interface AIResponse {
 
 export const useCurriculumAI = () => {
   const [curriculumService] = useState(() => CurriculumService.getInstance());
-  const [vectorService] = useState(() => VectorService.getInstance());
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -47,23 +45,15 @@ export const useCurriculumAI = () => {
           learningStyle
         ) : [];
 
-      // Enhance context with vector search
-      const enhancedContext = await vectorService.enhanceAIContext(
-        userQuery,
-        subjectId,
-        gradeId
-      );
-
       // Simulate AI processing (replace with actual AI API call)
       const aiContext = `
         Curriculum Context:
         ${curriculumContext}
         
-        Enhanced Vector Context:
-        ${enhancedContext}
-        
         Learning Style Adaptations:
         ${adaptations.join('\n')}
+        
+        User Query: ${userQuery}
         
         Please provide personalized educational content based on the curriculum guidelines.
       `;
@@ -126,49 +116,13 @@ export const useCurriculumAI = () => {
     };
   };
 
-  const getVectorBasedRecommendations = async (
-    studentProgress: {
-      completedTopics: string[];
-      currentTopic?: string;
-      learningStyle?: 'visual' | 'auditory' | 'kinesthetic';
-      difficulty?: string;
-    },
-    subjectId: string,
-    gradeId: string
-  ) => {
-    try {
-      const recommendations = await vectorService.getRecommendations(
-        studentProgress,
-        subjectId,
-        gradeId
-      );
-      return recommendations;
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to get recommendations');
-      return [];
-    }
-  };
-
-  const initializeVectorDatabase = async () => {
-    try {
-      await vectorService.initializeIndex();
-      // Index mathematics Grade 8 curriculum as example
-      await vectorService.indexCurriculumContent('mathematics', 'grade8');
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to initialize vector database');
-    }
-  };
-
   return {
     generatePersonalizedContent,
     getTopicSuggestions,
     validateStudentResponse,
-    getVectorBasedRecommendations,
-    initializeVectorDatabase,
     isLoading,
     error,
-    curriculumService,
-    vectorService
+    curriculumService
   };
 };
 
