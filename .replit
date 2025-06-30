@@ -1,0 +1,28 @@
+modules = ["nodejs-20"]
+run = "npm run dev"
+
+[nix]
+channel = "stable-24_05"
+
+[deployment]
+run = ["sh", "-c", "npx expo export --platform web && npx serve dist"]
+
+[[ports]]
+localPort = 8081
+externalPort = 80
+
+[[ports]]
+localPort = 8082
+externalPort = 3000
+
+[workflows]
+runButton = "Start Development"
+
+[[workflows.workflow]]
+name = "Start Development"
+author = 41116249
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npx expo start --clear"

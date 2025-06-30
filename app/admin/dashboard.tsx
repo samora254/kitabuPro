@@ -1,0 +1,1147 @@
+import React, { useState, useRef, useEffect } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Animated,
+  Dimensions,
+  Platform,
+  TextInput,
+} from 'react-native';
+import { router } from 'expo-router';
+import { ArrowLeft, Users, BookOpen, ChartBar as BarChart3, Settings, Shield, Database, MessageSquare, TrendingUp, TriangleAlert as AlertTriangle, CircleCheck as CheckCircle, Clock, Eye, UserCheck, FileText, Activity, ChevronDown, Bell, Search, Filter, Download, RefreshCw, MoveHorizontal as MoreHorizontal, Calendar, DollarSign, Target, Zap, Award, GraduationCap, School, Bot, CircleHelp as HelpCircle, ChartBar as BarChart, ChartPie as PieChart, ChartLine as LineChart, Menu, X } from 'lucide-react-native';
+import { DevModeIndicator } from '@/components/DevModeIndicator';
+
+const { width, height } = Dimensions.get('window');
+
+interface MetricCard {
+  id: string;
+  title: string;
+  value: string;
+  change: string;
+  changeType: 'positive' | 'negative' | 'neutral';
+  icon: any;
+  color: string;
+}
+
+interface ChartData {
+  label: string;
+  value: number;
+  color: string;
+}
+
+interface TableRow {
+  id: string;
+  name: string;
+  grade: string;
+  subject: string;
+  score: number;
+  status: 'active' | 'inactive' | 'pending';
+  lastActive: string;
+}
+
+export default function DesktopAdminDashboard() {
+  const [selectedTimeframe, setSelectedTimeframe] = useState<'today' | 'week' | 'month' | 'year'>('month');
+  const [selectedGrade, setSelectedGrade] = useState<'all' | 'grade6' | 'grade7' | 'grade8'>('all');
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState<'name' | 'score' | 'lastActive'>('score');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [showTimeframeDropdown, setShowTimeframeDropdown] = useState(false);
+  const [showGradeDropdown, setShowGradeDropdown] = useState(false);
+
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(30)).current;
+
+  const sidebarItems = [
+    { id: 'dashboard', label: 'Dashboard', icon: BarChart3, active: true },
+    { id: 'schools', label: 'Schools', icon: School },
+    { id: 'subjects', label: 'Subjects', icon: BookOpen },
+    { id: 'users', label: 'Users', icon: Users },
+    { id: 'agents', label: 'Sales Agents', icon: UserCheck },
+    { id: 'teachers', label: "Teacher's Portal", icon: GraduationCap },
+    { id: 'parents', label: "Parents' Portal", icon: Users },
+    { id: 'chatbot', label: 'Chatbot Agent', icon: Bot },
+    { id: 'tutor', label: 'Tutor Agent', icon: MessageSquare },
+    { id: 'quickfacts', label: 'QuickFacts Agent', icon: Zap },
+    { id: 'homework', label: 'Homework Agent', icon: FileText },
+    { id: 'assessment', label: 'Assessment Agent', icon: Award },
+    { id: 'career', label: 'Career Coach Agent', icon: Target },
+    { id: 'quiz', label: 'Quiz Arena', icon: HelpCircle },
+    { id: 'settings', label: 'Settings', icon: Settings },
+  ];
+
+  const metricCards: MetricCard[] = [
+    {
+      id: 'total-users',
+      title: 'Total Users',
+      value: '5000',
+      change: '+12.5%',
+      changeType: 'positive',
+      icon: Users,
+      color: '#4299E1',
+    },
+    {
+      id: 'active-users',
+      title: 'Active Users',
+      value: '3200',
+      change: '+8.2%',
+      changeType: 'positive',
+      icon: UserCheck,
+      color: '#10B981',
+    },
+    {
+      id: 'new-users',
+      title: 'New Users',
+      value: '450',
+      change: '+15.3%',
+      changeType: 'positive',
+      icon: TrendingUp,
+      color: '#F59E0B',
+    },
+    {
+      id: 'revenue',
+      title: 'Revenue',
+      value: '$12,000',
+      change: '+22.1%',
+      changeType: 'positive',
+      icon: DollarSign,
+      color: '#EF4444',
+    },
+  ];
+
+  const userGrowthData = [
+    { month: 'Jan', users: 500 },
+    { month: 'Feb', users: 680 },
+    { month: 'Mar', users: 950 },
+    { month: 'Apr', users: 1200 },
+  ];
+
+  const revenueData = [
+    { month: 'Jan', revenue: 1800 },
+    { month: 'Feb', revenue: 2400 },
+    { month: 'Mar', revenue: 2900 },
+    { month: 'Apr', revenue: 3600 },
+  ];
+
+  const subjectUsageData: ChartData[] = [
+    { label: 'Math', value: 25, color: '#8B5CF6' },
+    { label: 'Science', value: 20, color: '#10B981' },
+    { label: 'English', value: 15, color: '#F59E0B' },
+    { label: 'History', value: 10, color: '#EF4444' },
+    { label: 'Geography', value: 8, color: '#06B6D4' },
+    { label: 'Business', value: 12, color: '#10B981' },
+    { label: 'Computer Science', value: 10, color: '#F59E0B' },
+  ];
+
+  const recentStudents: TableRow[] = [
+    {
+      id: '1',
+      name: 'Sarah Johnson',
+      grade: 'Grade 8',
+      subject: 'Mathematics',
+      score: 95,
+      status: 'active',
+      lastActive: '2 hours ago',
+    },
+    {
+      id: '2',
+      name: 'Michael Chen',
+      grade: 'Grade 7',
+      subject: 'Science',
+      score: 88,
+      status: 'active',
+      lastActive: '1 hour ago',
+    },
+    {
+      id: '3',
+      name: 'Emma Williams',
+      grade: 'Grade 8',
+      subject: 'English',
+      score: 92,
+      status: 'inactive',
+      lastActive: '1 day ago',
+    },
+    {
+      id: '4',
+      name: 'David Brown',
+      grade: 'Grade 6',
+      subject: 'History',
+      score: 78,
+      status: 'pending',
+      lastActive: '3 hours ago',
+    },
+    {
+      id: '5',
+      name: 'Lisa Garcia',
+      grade: 'Grade 8',
+      subject: 'Mathematics',
+      score: 96,
+      status: 'active',
+      lastActive: '30 minutes ago',
+    },
+    {
+      id: '6',
+      name: 'James Wilson',
+      grade: 'Grade 7',
+      subject: 'Science',
+      score: 84,
+      status: 'active',
+      lastActive: '45 minutes ago',
+    },
+  ];
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 600,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'active': return '#10B981';
+      case 'inactive': return '#EF4444';
+      case 'pending': return '#F59E0B';
+      default: return '#6B7280';
+    }
+  };
+
+  const getChangeColor = (changeType: string) => {
+    switch (changeType) {
+      case 'positive': return '#10B981';
+      case 'negative': return '#EF4444';
+      default: return '#6B7280';
+    }
+  };
+
+  const timeframeOptions = [
+    { value: 'today', label: 'Today' },
+    { value: 'week', label: 'This Week' },
+    { value: 'month', label: 'This Month' },
+    { value: 'year', label: 'This Year' },
+  ];
+
+  const gradeOptions = [
+    { value: 'all', label: 'All Grades' },
+    { value: 'grade6', label: 'Grade 6' },
+    { value: 'grade7', label: 'Grade 7' },
+    { value: 'grade8', label: 'Grade 8' },
+  ];
+
+  const handleTimeframeChange = (value: 'today' | 'week' | 'month' | 'year') => {
+    setSelectedTimeframe(value);
+    setShowTimeframeDropdown(false);
+  };
+
+  const handleGradeChange = (value: 'all' | 'grade6' | 'grade7' | 'grade8') => {
+    setSelectedGrade(value);
+    setShowGradeDropdown(false);
+  };
+
+  const renderSidebar = () => (
+    <View style={[styles.sidebar, sidebarCollapsed && styles.sidebarCollapsed]}>
+      <View style={styles.sidebarHeader}>
+        <Text style={[styles.sidebarTitle, sidebarCollapsed && styles.hidden]}>Admin Panel</Text>
+        <TouchableOpacity
+          style={styles.collapseButton}
+          onPress={() => setSidebarCollapsed(!sidebarCollapsed)}
+        >
+          {sidebarCollapsed ? <Menu size={20} color="#94A3B8" /> : <X size={20} color="#94A3B8" />}
+        </TouchableOpacity>
+      </View>
+      
+      <ScrollView style={styles.sidebarContent} showsVerticalScrollIndicator={false}>
+        {sidebarItems.map((item) => (
+          <TouchableOpacity
+            key={item.id}
+            style={[styles.sidebarItem, item.active && styles.sidebarItemActive]}
+          >
+            <item.icon 
+              size={20} 
+              color={item.active ? '#3B82F6' : '#94A3B8'} 
+            />
+            {!sidebarCollapsed && (
+              <Text style={[
+                styles.sidebarItemText,
+                item.active && styles.sidebarItemTextActive
+              ]}>
+                {item.label}
+              </Text>
+            )}
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+    </View>
+  );
+
+  const renderMetricCard = (metric: MetricCard) => (
+    <View key={metric.id} style={[styles.metricCard, { borderLeftColor: metric.color }]}>
+      <View style={styles.metricHeader}>
+        <View style={[styles.metricIcon, { backgroundColor: `${metric.color}15` }]}>
+          <metric.icon size={24} color={metric.color} />
+        </View>
+        <Text style={[styles.metricChange, { color: getChangeColor(metric.changeType) }]}>
+          {metric.change}
+        </Text>
+      </View>
+      <Text style={styles.metricValue}>{metric.value}</Text>
+      <Text style={styles.metricTitle}>{metric.title}</Text>
+    </View>
+  );
+
+  const renderLineChart = (data: any[], title: string, color: string) => (
+    <View style={styles.chartContainer}>
+      <Text style={styles.chartTitle}>{title}</Text>
+      <View style={styles.lineChart}>
+        <View style={styles.chartYAxis}>
+          {[1200, 900, 600, 300, 0].map((value) => (
+            <Text key={value} style={styles.axisLabel}>{value}</Text>
+          ))}
+        </View>
+        <View style={styles.chartArea}>
+          <View style={styles.chartGrid}>
+            {[0, 1, 2, 3, 4].map((line) => (
+              <View key={line} style={styles.gridLine} />
+            ))}
+          </View>
+          <View style={styles.chartLine}>
+            {data.map((point, index) => (
+              <View key={index} style={styles.chartPoint}>
+                <View style={[styles.dataPoint, { backgroundColor: color }]} />
+              </View>
+            ))}
+          </View>
+        </View>
+      </View>
+      <View style={styles.chartXAxis}>
+        {data.map((point) => (
+          <Text key={point.month} style={styles.axisLabel}>{point.month}</Text>
+        ))}
+      </View>
+    </View>
+  );
+
+  const renderBarChart = (data: any[], title: string) => (
+    <View style={styles.chartContainer}>
+      <Text style={styles.chartTitle}>{title}</Text>
+      <View style={styles.barChart}>
+        <View style={styles.chartYAxis}>
+          {[3600, 2700, 1800, 900, 0].map((value) => (
+            <Text key={value} style={styles.axisLabel}>{value}</Text>
+          ))}
+        </View>
+        <View style={styles.barsContainer}>
+          {data.map((bar, index) => (
+            <View key={index} style={styles.barColumn}>
+              <View 
+                style={[
+                  styles.bar, 
+                  { 
+                    height: `${(bar.revenue / 3600) * 100}%`,
+                    backgroundColor: '#10B981'
+                  }
+                ]} 
+              />
+            </View>
+          ))}
+        </View>
+      </View>
+      <View style={styles.chartXAxis}>
+        {data.map((point) => (
+          <Text key={point.month} style={styles.axisLabel}>{point.month}</Text>
+        ))}
+      </View>
+    </View>
+  );
+
+  const renderPieChart = () => (
+    <View style={styles.chartContainer}>
+      <Text style={styles.chartTitle}>Subject Usage</Text>
+      <View style={styles.pieChartContainer}>
+        <View style={styles.pieChart}>
+          <View style={styles.pieSlice} />
+        </View>
+        <View style={styles.pieChartLegend}>
+          {subjectUsageData.map((item) => (
+            <View key={item.label} style={styles.legendItem}>
+              <View style={[styles.legendColor, { backgroundColor: item.color }]} />
+              <Text style={styles.legendLabel}>{item.label}</Text>
+              <Text style={styles.legendValue}>{item.value}</Text>
+            </View>
+          ))}
+        </View>
+      </View>
+    </View>
+  );
+
+  const renderDataTable = () => (
+    <View style={styles.tableContainer}>
+      <View style={styles.tableHeader}>
+        <Text style={styles.tableTitle}>Recent Student Activity</Text>
+        <View style={styles.tableControls}>
+          <View style={styles.searchContainer}>
+            <Search size={16} color="#6B7280" />
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search students..."
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+            />
+          </View>
+          <TouchableOpacity style={styles.tableButton}>
+            <Filter size={16} color="#6B7280" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.tableButton}>
+            <Download size={16} color="#6B7280" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.tableButton}>
+            <RefreshCw size={16} color="#6B7280" />
+          </TouchableOpacity>
+        </View>
+      </View>
+      
+      <View style={styles.table}>
+        <View style={styles.tableHeaderRow}>
+          <TouchableOpacity style={[styles.tableHeaderCell, styles.nameColumn]}>
+            <Text style={styles.tableHeaderText}>Name</Text>
+            <ChevronDown size={12} color="#6B7280" />
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.tableHeaderCell, styles.gradeColumn]}>
+            <Text style={styles.tableHeaderText}>Grade</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.tableHeaderCell, styles.subjectColumn]}>
+            <Text style={styles.tableHeaderText}>Subject</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.tableHeaderCell, styles.scoreColumn]}>
+            <Text style={styles.tableHeaderText}>Score</Text>
+            <ChevronDown size={12} color="#6B7280" />
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.tableHeaderCell, styles.statusColumn]}>
+            <Text style={styles.tableHeaderText}>Status</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.tableHeaderCell, styles.lastActiveColumn]}>
+            <Text style={styles.tableHeaderText}>Last Active</Text>
+            <ChevronDown size={12} color="#6B7280" />
+          </TouchableOpacity>
+        </View>
+        
+        <ScrollView style={styles.tableBody} showsVerticalScrollIndicator={false}>
+          {recentStudents.map((student) => (
+            <TouchableOpacity key={student.id} style={styles.tableRow}>
+              <Text style={[styles.tableCell, styles.nameColumn]}>{student.name}</Text>
+              <Text style={[styles.tableCell, styles.gradeColumn]}>{student.grade}</Text>
+              <Text style={[styles.tableCell, styles.subjectColumn]}>{student.subject}</Text>
+              <Text style={[styles.tableCell, styles.scoreColumn]}>{student.score}%</Text>
+              <View style={[styles.tableCell, styles.statusColumn]}>
+                <View style={[styles.statusBadge, { backgroundColor: `${getStatusColor(student.status)}15` }]}>
+                  <View style={[styles.statusDot, { backgroundColor: getStatusColor(student.status) }]} />
+                  <Text style={[styles.statusText, { color: getStatusColor(student.status) }]}>
+                    {student.status}
+                  </Text>
+                </View>
+              </View>
+              <Text style={[styles.tableCell, styles.lastActiveColumn]}>{student.lastActive}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+    </View>
+  );
+
+  // Check if we're on desktop
+  const isDesktop = width >= 1200;
+
+  if (!isDesktop) {
+    return (
+      <View style={styles.mobileWarning}>
+        <Text style={styles.warningTitle}>Desktop Required</Text>
+        <Text style={styles.warningText}>
+          This admin dashboard is optimized for desktop viewing (minimum 1200px width).
+          Please access from a desktop computer for the full experience.
+        </Text>
+        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+          <ArrowLeft size={20} color="white" />
+          <Text style={styles.backButtonText}>Go Back</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.container}>
+      <DevModeIndicator />
+      
+      {renderSidebar()}
+      
+      <View style={[styles.mainContent, sidebarCollapsed && styles.mainContentExpanded]}>
+        {/* Top Header */}
+        <Animated.View
+          style={[
+            styles.topHeader,
+            {
+              opacity: fadeAnim,
+              transform: [{ translateY: slideAnim }],
+            },
+          ]}
+        >
+          <View style={styles.headerLeft}>
+            <Text style={styles.pageTitle}>Dashboard</Text>
+          </View>
+          
+          <View style={styles.headerRight}>
+            <View style={styles.headerControls}>
+              <View style={styles.dropdownContainer}>
+                <TouchableOpacity 
+                  style={styles.dropdown}
+                  onPress={() => setShowTimeframeDropdown(!showTimeframeDropdown)}
+                >
+                  <Text style={styles.dropdownLabel}>
+                    {timeframeOptions.find(opt => opt.value === selectedTimeframe)?.label || 'Select Timeframe'}
+                  </Text>
+                  <ChevronDown size={16} color="#6B7280" />
+                </TouchableOpacity>
+                {showTimeframeDropdown && (
+                  <View style={styles.dropdownMenu}>
+                    {timeframeOptions.map((option) => (
+                      <TouchableOpacity
+                        key={option.value}
+                        style={[
+                          styles.dropdownOption,
+                          selectedTimeframe === option.value && styles.dropdownOptionSelected
+                        ]}
+                        onPress={() => handleTimeframeChange(option.value as any)}
+                      >
+                        <Text style={[
+                          styles.dropdownOptionText,
+                          selectedTimeframe === option.value && styles.dropdownOptionTextSelected
+                        ]}>
+                          {option.label}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+              </View>
+              
+              <View style={styles.dropdownContainer}>
+                <TouchableOpacity 
+                  style={styles.dropdown}
+                  onPress={() => setShowGradeDropdown(!showGradeDropdown)}
+                >
+                  <Text style={styles.dropdownLabel}>
+                    {gradeOptions.find(opt => opt.value === selectedGrade)?.label || 'Select Grade'}
+                  </Text>
+                  <ChevronDown size={16} color="#6B7280" />
+                </TouchableOpacity>
+                {showGradeDropdown && (
+                  <View style={styles.dropdownMenu}>
+                    {gradeOptions.map((option) => (
+                      <TouchableOpacity
+                        key={option.value}
+                        style={[
+                          styles.dropdownOption,
+                          selectedGrade === option.value && styles.dropdownOptionSelected
+                        ]}
+                        onPress={() => handleGradeChange(option.value as any)}
+                      >
+                        <Text style={[
+                          styles.dropdownOptionText,
+                          selectedGrade === option.value && styles.dropdownOptionTextSelected
+                        ]}>
+                          {option.label}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+              </View>
+            </View>
+            
+            <View style={styles.headerActions}>
+              <TouchableOpacity style={styles.headerButton}>
+                <Bell size={20} color="#6B7280" />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.headerButton}>
+                <Settings size={20} color="#6B7280" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Animated.View>
+
+        {/* Metrics Cards */}
+        <Animated.View
+          style={[
+            styles.metricsSection,
+            {
+              opacity: fadeAnim,
+              transform: [{ translateY: slideAnim }],
+            },
+          ]}
+        >
+          {metricCards.map(renderMetricCard)}
+        </Animated.View>
+
+        {/* Charts Section */}
+        <Animated.View
+          style={[
+            styles.chartsSection,
+            {
+              opacity: fadeAnim,
+              transform: [{ translateY: slideAnim }],
+            },
+          ]}
+        >
+          <View style={styles.chartsRow}>
+            {renderLineChart(userGrowthData, 'User Growth', '#3B82F6')}
+            {renderBarChart(revenueData, 'Revenue')}
+          </View>
+          
+          <View style={styles.chartsRow}>
+            {renderPieChart()}
+            {renderDataTable()}
+          </View>
+        </Animated.View>
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: '#F8FAFC',
+    minHeight: height,
+  },
+  mobileWarning: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#1E293B',
+    padding: 40,
+  },
+  warningTitle: {
+    fontSize: 32,
+    fontFamily: 'Poppins-Bold',
+    color: 'white',
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  warningText: {
+    fontSize: 18,
+    fontFamily: 'Inter-Regular',
+    color: '#94A3B8',
+    textAlign: 'center',
+    lineHeight: 28,
+    marginBottom: 32,
+    maxWidth: 600,
+  },
+  backButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#3B82F6',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 8,
+  },
+  backButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontFamily: 'Inter-SemiBold',
+    marginLeft: 8,
+  },
+  sidebar: {
+    width: 250,
+    backgroundColor: '#1E293B',
+    borderRightWidth: 1,
+    borderRightColor: '#334155',
+    paddingVertical: 20,
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    zIndex: 10,
+  },
+  sidebarCollapsed: {
+    width: 70,
+  },
+  sidebarHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    marginBottom: 30,
+  },
+  sidebarTitle: {
+    fontSize: 18,
+    fontFamily: 'Poppins-Bold',
+    color: '#F1F5F9',
+  },
+  hidden: {
+    display: 'none',
+  },
+  collapseButton: {
+    padding: 5,
+  },
+  sidebarContent: {
+    flex: 1,
+  },
+  sidebarItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    marginHorizontal: 10,
+    borderRadius: 8,
+  },
+  sidebarItemActive: {
+    backgroundColor: '#1E40AF',
+  },
+  sidebarItemText: {
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
+    color: '#94A3B8',
+    marginLeft: 12,
+  },
+  sidebarItemTextActive: {
+    color: '#F1F5F9',
+  },
+  mainContent: {
+    flex: 1,
+    padding: 24,
+    marginLeft: 250,
+  },
+  mainContentExpanded: {
+    marginLeft: 70,
+  },
+  topHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 24,
+    paddingBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E2E8F0',
+  },
+  headerLeft: {
+    flex: 1,
+  },
+  pageTitle: {
+    fontSize: 28,
+    fontFamily: 'Poppins-Bold',
+    color: '#1E293B',
+  },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 20,
+  },
+  headerControls: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  dropdownContainer: {
+    position: 'relative',
+    zIndex: 1000,
+  },
+  dropdown: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    gap: 8,
+    minWidth: 150,
+  },
+  dropdownLabel: {
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
+    color: '#64748B',
+    flex: 1,
+  },
+  dropdownMenu: {
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    right: 0,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 8,
+    zIndex: 1001,
+  },
+  dropdownOption: {
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F1F5F9',
+  },
+  dropdownOptionSelected: {
+    backgroundColor: '#F8FAFC',
+  },
+  dropdownOptionText: {
+    fontSize: 14,
+    fontFamily: 'Inter-Regular',
+    color: '#1E293B',
+  },
+  dropdownOptionTextSelected: {
+    fontFamily: 'Inter-SemiBold',
+    color: '#3B82F6',
+  },
+  headerActions: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  headerButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 8,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+  },
+  metricsSection: {
+    flexDirection: 'row',
+    gap: 20,
+    marginBottom: 24,
+  },
+  metricCard: {
+    flex: 1,
+    backgroundColor: 'white',
+    borderRadius: 12,
+    padding: 20,
+    borderLeftWidth: 4,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  metricHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  metricIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  metricChange: {
+    fontSize: 14,
+    fontFamily: 'Inter-SemiBold',
+  },
+  metricValue: {
+    fontSize: 32,
+    fontFamily: 'Poppins-Bold',
+    color: '#1E293B',
+    marginBottom: 4,
+  },
+  metricTitle: {
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
+    color: '#64748B',
+  },
+  chartsSection: {
+    flex: 1,
+    gap: 20,
+  },
+  chartsRow: {
+    flexDirection: 'row',
+    gap: 20,
+    height: 300,
+  },
+  chartContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+    borderRadius: 12,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  chartTitle: {
+    fontSize: 18,
+    fontFamily: 'Poppins-SemiBold',
+    color: '#1E293B',
+    marginBottom: 20,
+  },
+  lineChart: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  barChart: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  chartYAxis: {
+    width: 40,
+    justifyContent: 'space-between',
+    paddingRight: 10,
+  },
+  chartArea: {
+    flex: 1,
+    position: 'relative',
+  },
+  chartGrid: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'space-between',
+  },
+  gridLine: {
+    height: 1,
+    backgroundColor: '#F1F5F9',
+  },
+  chartLine: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+  },
+  chartPoint: {
+    alignItems: 'center',
+  },
+  dataPoint: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  barsContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+  },
+  barColumn: {
+    flex: 1,
+    alignItems: 'center',
+    height: '100%',
+    justifyContent: 'flex-end',
+  },
+  bar: {
+    width: 30,
+    borderRadius: 4,
+  },
+  chartXAxis: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 50,
+    paddingTop: 10,
+  },
+  axisLabel: {
+    fontSize: 12,
+    fontFamily: 'Inter-Regular',
+    color: '#64748B',
+  },
+  pieChartContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  pieChart: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: '#8B5CF6',
+    marginRight: 30,
+  },
+  pieSlice: {
+    // Simplified pie chart representation
+  },
+  pieChartLegend: {
+    flex: 1,
+    gap: 8,
+  },
+  legendItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  legendColor: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+  },
+  legendLabel: {
+    flex: 1,
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
+    color: '#1E293B',
+  },
+  legendValue: {
+    fontSize: 14,
+    fontFamily: 'Inter-SemiBold',
+    color: '#64748B',
+  },
+  tableContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+    borderRadius: 12,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  tableHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  tableTitle: {
+    fontSize: 18,
+    fontFamily: 'Poppins-SemiBold',
+    color: '#1E293B',
+  },
+  tableControls: {
+    flexDirection: 'row',
+    gap: 8,
+    alignItems: 'center',
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F8FAFC',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    gap: 8,
+  },
+  searchInput: {
+    fontSize: 14,
+    fontFamily: 'Inter-Regular',
+    color: '#1E293B',
+    width: 150,
+  },
+  tableButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 6,
+    backgroundColor: '#F8FAFC',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+  },
+  table: {
+    flex: 1,
+  },
+  tableHeaderRow: {
+    flexDirection: 'row',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E2E8F0',
+  },
+  tableBody: {
+    flex: 1,
+    maxHeight: 200,
+  },
+  tableRow: {
+    flexDirection: 'row',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F1F5F9',
+  },
+  tableHeaderCell: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  tableHeaderText: {
+    fontSize: 12,
+    fontFamily: 'Inter-SemiBold',
+    color: '#64748B',
+    textTransform: 'uppercase',
+  },
+  tableCell: {
+    fontSize: 14,
+    fontFamily: 'Inter-Regular',
+    color: '#1E293B',
+    alignItems: 'center',
+  },
+  nameColumn: {
+    flex: 2,
+  },
+  gradeColumn: {
+    flex: 1,
+  },
+  subjectColumn: {
+    flex: 1.5,
+  },
+  scoreColumn: {
+    flex: 1,
+    textAlign: 'center',
+  },
+  statusColumn: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  lastActiveColumn: {
+    flex: 1.5,
+  },
+  statusBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+    gap: 6,
+  },
+  statusDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+  },
+  statusText: {
+    fontSize: 12,
+    fontFamily: 'Inter-SemiBold',
+    textTransform: 'capitalize',
+  },
+});

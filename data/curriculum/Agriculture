@@ -1,0 +1,3024 @@
+{
+  "id": "agriculture-grade8-cbc",
+  "name": "Agriculture",
+  "grade": 8,
+  "curriculum": "CBC",
+  "description": "Grade 8 Agriculture curriculum focusing on farming practices, crop and livestock production, and sustainable agriculture within the Kenyan CBC framework.",
+  "yearlyObjectives": [
+    {
+      "id": "agri8-obj1",
+      "description": "Participate actively in activities for conservation of agricultural environment",
+      "bloomsLevel": "apply",
+      "assessmentCriteria": [
+        "Demonstrates soil conservation practices",
+        "Implements water harvesting and storage techniques",
+        "Shows responsibility in environmental conservation"
+      ]
+    },
+    {
+      "id": "agri8-obj2",
+      "description": "Use scarce agricultural resources through innovative practices to contribute towards health, nutrition and food security",
+      "bloomsLevel": "apply",
+      "assessmentCriteria": [
+        "Applies resource-efficient farming methods",
+        "Demonstrates innovative agricultural practices",
+        "Contributes to household nutrition through farming"
+      ]
+    },
+    {
+      "id": "agri8-obj3",
+      "description": "Grow crops and rear animals as profitable agricultural enterprises through sustainable and ethical practices for self-reliance and economic development",
+      "bloomsLevel": "apply",
+      "assessmentCriteria": [
+        "Establishes and manages crop production projects",
+        "Implements animal production practices",
+        "Applies post-harvest handling techniques"
+      ]
+    },
+    {
+      "id": "agri8-obj4",
+      "description": "Apply existing and emerging technology in agriculture, digital and media resources to enhance sustainable agricultural practices",
+      "bloomsLevel": "apply",
+      "assessmentCriteria": [
+        "Uses ICT to access agricultural information",
+        "Designs innovative agricultural tools",
+        "Applies appropriate technology in farming"
+      ]
+    }
+  ],
+  "assessmentPolicy": {
+    "formativeWeight": 40,
+    "summativeWeight": 40,
+    "continuousAssessment": 20
+  },
+  "strands": [
+    {
+      "id": "conserving-agricultural-environment",
+      "title": "Conserving Agricultural Environment",
+      "description": "Understanding and implementing practices for sustainable agricultural environment",
+      "topics": [
+        {
+          "id": "soil-conservation-measures",
+          "title": "Soil Conservation Measures",
+          "description": "Exploring methods to prevent soil erosion and maintain soil fertility",
+          "duration": 6,
+          "prerequisites": ["basic-agriculture"],
+          "crossCurricularLinks": ["Geography - Soil types", "Integrated Science - Soil composition"],
+          "realWorldApplications": [
+            "Preventing soil erosion on farms",
+            "Maintaining soil fertility",
+            "Sustainable land management"
+          ],
+          "lessons": [
+            {
+              "id": "lesson-soil-conservation",
+              "title": "Soil Conservation Methods",
+              "duration": 40,
+              "introduction": "Soil is a vital resource for agriculture that needs to be conserved. Today we'll explore various methods of soil conservation.",
+              "objectives": [
+                {
+                  "id": "obj-soil1",
+                  "description": "Explain the importance of soil conservation in agricultural environment",
+                  "bloomsLevel": "understand",
+                  "assessmentCriteria": [
+                    "Correctly explains why soil conservation is important",
+                    "Identifies consequences of soil degradation",
+                    "Relates soil conservation to agricultural productivity"
+                  ]
+                },
+                {
+                  "id": "obj-soil2",
+                  "description": "Describe methods of soil conservation in agricultural environment",
+                  "bloomsLevel": "understand",
+                  "assessmentCriteria": [
+                    "Correctly describes various soil conservation methods",
+                    "Explains how each method works to conserve soil",
+                    "Identifies appropriate contexts for different methods"
+                  ]
+                }
+              ],
+              "activities": [
+                {
+                  "id": "act-soil-importance",
+                  "title": "Importance of Soil Conservation",
+                  "type": "pair",
+                  "duration": 15,
+                  "description": "Students discuss the importance of soil conservation in agricultural environment",
+                  "materials": ["Notebooks", "Pens", "Reference materials"],
+                  "instructions": [
+                    "Form pairs with a classmate",
+                    "Discuss why soil conservation is important in agriculture",
+                    "List at least five reasons for conserving soil",
+                    "Share your findings with the class"
+                  ],
+                  "learningStyle": ["verbal", "social"],
+                  "difficulty": "beginner",
+                  "prerequisites": []
+                },
+                {
+                  "id": "act-soil-methods",
+                  "title": "Soil Conservation Methods Research",
+                  "type": "group",
+                  "duration": 25,
+                  "description": "Students research and present on different soil conservation methods",
+                  "materials": ["Digital devices", "Print media", "Chart paper", "Markers"],
+                  "instructions": [
+                    "Form groups of 4-5 students",
+                    "Use digital devices and print media to research soil conservation methods",
+                    "Focus on strip cropping, grassed waterways, stone lines, trash lines, and bund formation",
+                    "Create a presentation on your findings",
+                    "Share your presentation with the class"
+                  ],
+                  "learningStyle": ["visual", "verbal", "social"],
+                  "difficulty": "intermediate",
+                  "prerequisites": ["basic-research-skills"]
+                }
+              ],
+              "assessment": {
+                "id": "assess-soil-conservation",
+                "title": "Soil Conservation Assessment",
+                "type": "formative",
+                "format": "project",
+                "duration": 120,
+                "totalMarks": 20,
+                "rubric": [
+                  {
+                    "criterion": "Understanding Soil Conservation Importance",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Gives an elaborately detailed explanation of the importance of soil conservation in agricultural environment",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Gives a clear explanation of the importance of soil conservation in agricultural environment",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Gives explanation of the importance of soil conservation in agricultural environment that require clarification of some details",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Gives explanation of the importance of soil conservation in agricultural environment that require correction of some details",
+                        "marks": 6
+                      }
+                    ]
+                  },
+                  {
+                    "criterion": "Knowledge of Soil Conservation Methods",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Makes an exemplary description of six or more methods of soil conservation in agricultural environment",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Makes a description of six methods of soil conservation in agricultural environment",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Males a description of five methods of soil conservation in agricultural environment",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Makes a description of less than five methods of soil conservation in agricultural environment",
+                        "marks": 6
+                      }
+                    ]
+                  }
+                ]
+              },
+              "resources": [
+                {
+                  "id": "res-soil-conservation",
+                  "title": "Soil Conservation Techniques",
+                  "type": "document",
+                  "description": "A comprehensive guide to soil conservation methods for sustainable agriculture",
+                  "ageAppropriate": true,
+                  "language": "english"
+                },
+                {
+                  "id": "res-soil-video",
+                  "title": "Soil Conservation in Practice",
+                  "type": "video",
+                  "description": "A video demonstrating various soil conservation methods being implemented on farms",
+                  "ageAppropriate": true,
+                  "language": "english"
+                }
+              ],
+              "vocabulary": [
+                {
+                  "term": "Soil conservation",
+                  "definition": "The prevention of soil loss from erosion or reduced fertility caused by overuse, acidification, salinization, or other chemical soil contamination",
+                  "translation": "Uhifadhi wa udongo"
+                },
+                {
+                  "term": "Strip cropping",
+                  "definition": "The practice of growing crops in alternating strips following the contour of the land to prevent soil erosion",
+                  "translation": "Kilimo cha mstari"
+                },
+                {
+                  "term": "Bund",
+                  "definition": "A constructed embankment or wall to control water flow and prevent soil erosion",
+                  "translation": "Tuta"
+                }
+              ],
+              "homework": "Design a soil conservation plan for a small farm in your local area, identifying the soil conservation methods that would be most appropriate based on the local terrain and climate.",
+              "differentiation": {
+                "support": [
+                  "Provide simplified diagrams of soil conservation methods",
+                  "Use local examples to illustrate concepts",
+                  "Offer step-by-step guides for model construction"
+                ],
+                "extension": [
+                  "Research advanced soil conservation technologies",
+                  "Design innovative soil conservation methods",
+                  "Analyze the economic benefits of soil conservation"
+                ]
+              }
+            }
+          ],
+          "unitAssessment": {
+            "id": "unit-soil-conservation-project",
+            "title": "Soil Conservation Model Project",
+            "type": "summative",
+            "format": "project",
+            "duration": 180,
+            "totalMarks": 30,
+            "rubric": [
+              {
+                "criterion": "Soil Conservation Knowledge",
+                "levels": [
+                  {
+                    "level": "E",
+                    "description": "Demonstrates comprehensive understanding of soil conservation principles and methods",
+                    "marks": 27
+                  },
+                  {
+                    "level": "M",
+                    "description": "Demonstrates good understanding of soil conservation principles and methods",
+                    "marks": 21
+                  },
+                  {
+                    "level": "A",
+                    "description": "Demonstrates partial understanding of soil conservation principles and methods",
+                    "marks": 15
+                  },
+                  {
+                    "level": "B",
+                    "description": "Demonstrates limited understanding of soil conservation principles and methods",
+                    "marks": 9
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "water-harvesting-storage",
+          "title": "Water Harvesting and Storage",
+          "description": "Learning methods to harvest and store water for agricultural purposes",
+          "duration": 6,
+          "prerequisites": ["basic-agriculture"],
+          "crossCurricularLinks": ["Geography - Water cycle", "Integrated Science - States of water"],
+          "realWorldApplications": [
+            "Rainwater harvesting for irrigation",
+            "Water conservation during dry seasons",
+            "Sustainable water management"
+          ],
+          "lessons": [
+            {
+              "id": "lesson-water-harvesting",
+              "title": "Water Harvesting Methods",
+              "duration": 40,
+              "introduction": "Water is a critical resource for agriculture. Today we'll explore various methods of harvesting and storing water for farming purposes.",
+              "objectives": [
+                {
+                  "id": "obj-water1",
+                  "description": "Outline methods of harvesting water for farming purposes",
+                  "bloomsLevel": "understand",
+                  "assessmentCriteria": [
+                    "Correctly identifies various water harvesting methods",
+                    "Explains how each method works",
+                    "Identifies appropriate contexts for different methods"
+                  ]
+                },
+                {
+                  "id": "obj-water2",
+                  "description": "Discuss ways of storing harvested water for farming purposes",
+                  "bloomsLevel": "understand",
+                  "assessmentCriteria": [
+                    "Correctly describes water storage methods",
+                    "Explains advantages and limitations of each method",
+                    "Identifies appropriate contexts for different storage methods"
+                  ]
+                }
+              ],
+              "activities": [
+                {
+                  "id": "act-water-harvesting-methods",
+                  "title": "Water Harvesting Methods",
+                  "type": "pair",
+                  "duration": 15,
+                  "description": "Students brainstorm methods of harvesting water for farming purposes",
+                  "materials": ["Notebooks", "Pens", "Reference materials"],
+                  "instructions": [
+                    "Form pairs with a classmate",
+                    "Brainstorm methods of harvesting water for farming purposes",
+                    "List at least five water harvesting methods",
+                    "Share your findings with the class"
+                  ],
+                  "learningStyle": ["verbal", "social"],
+                  "difficulty": "beginner",
+                  "prerequisites": []
+                },
+                {
+                  "id": "act-water-storage",
+                  "title": "Water Storage Research",
+                  "type": "group",
+                  "duration": 25,
+                  "description": "Students research and present on different water storage methods",
+                  "materials": ["Digital devices", "Print media", "Chart paper", "Markers"],
+                  "instructions": [
+                    "Form groups of 4-5 students",
+                    "Use digital devices and print media to research water storage methods",
+                    "Focus on shallow water pans, water ponds, and water tanks",
+                    "Create a presentation on your findings",
+                    "Share your presentation with the class"
+                  ],
+                  "learningStyle": ["visual", "verbal", "social"],
+                  "difficulty": "intermediate",
+                  "prerequisites": ["basic-research-skills"]
+                }
+              ],
+              "assessment": {
+                "id": "assess-water-harvesting",
+                "title": "Water Harvesting and Storage Assessment",
+                "type": "formative",
+                "format": "presentation",
+                "duration": 60,
+                "totalMarks": 20,
+                "rubric": [
+                  {
+                    "criterion": "Knowledge of Water Harvesting Methods",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Gives contextualized outline of the methods of harvesting water for farming purposes",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Outlines the methods of harvesting water for farming purposes",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Outlines with some details that require clarification on the methods of harvesting water for farming purposes",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Outlines with some details that require correction, the methods of harvesting water for farming purposes",
+                        "marks": 6
+                      }
+                    ]
+                  },
+                  {
+                    "criterion": "Understanding of Water Storage Methods",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Discusses in analytical details three ways of storing harvested water for farming purposes",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Discusses three ways of storing harvested water for farming purposes",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Discusses two ways of storing harvested water for farming purposes",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Discusses less than two ways of storing harvested water for farming purposes",
+                        "marks": 6
+                      }
+                    ]
+                  }
+                ]
+              },
+              "resources": [
+                {
+                  "id": "res-water-harvesting",
+                  "title": "Water Harvesting Techniques for Small-Scale Farmers",
+                  "type": "document",
+                  "description": "A guide to water harvesting methods suitable for small-scale farming",
+                  "ageAppropriate": true,
+                  "language": "english"
+                },
+                {
+                  "id": "res-water-storage",
+                  "title": "Water Storage Solutions",
+                  "type": "video",
+                  "description": "A video demonstrating various water storage methods for agricultural use",
+                  "ageAppropriate": true,
+                  "language": "english"
+                }
+              ],
+              "vocabulary": [
+                {
+                  "term": "Water harvesting",
+                  "definition": "The collection and storage of rainwater or surface runoff for later use",
+                  "translation": "Kuvuna maji"
+                },
+                {
+                  "term": "Water pan",
+                  "definition": "A shallow depression constructed to collect and store surface runoff water",
+                  "translation": "Bwawa la maji"
+                },
+                {
+                  "term": "Water pond",
+                  "definition": "A constructed basin for storing water, typically deeper than a water pan",
+                  "translation": "Dimbwi la maji"
+                }
+              ],
+              "homework": "Design a water harvesting and storage system for a small farm in your local area, considering the local rainfall patterns and terrain.",
+              "differentiation": {
+                "support": [
+                  "Provide simplified diagrams of water harvesting methods",
+                  "Use local examples to illustrate concepts",
+                  "Offer step-by-step guides for designing water harvesting systems"
+                ],
+                "extension": [
+                  "Research advanced water harvesting technologies",
+                  "Design innovative water storage solutions",
+                  "Calculate water requirements for different crops"
+                ]
+              }
+            }
+          ],
+          "unitAssessment": {
+            "id": "unit-water-conservation-project",
+            "title": "Water Conservation Structure Project",
+            "type": "summative",
+            "format": "project",
+            "duration": 180,
+            "totalMarks": 30,
+            "rubric": [
+              {
+                "criterion": "Water Conservation Knowledge",
+                "levels": [
+                  {
+                    "level": "E",
+                    "description": "Demonstrates comprehensive understanding of water harvesting and storage principles and methods",
+                    "marks": 27
+                  },
+                  {
+                    "level": "M",
+                    "description": "Demonstrates good understanding of water harvesting and storage principles and methods",
+                    "marks": 21
+                  },
+                  {
+                    "level": "A",
+                    "description": "Demonstrates partial understanding of water harvesting and storage principles and methods",
+                    "marks": 15
+                  },
+                  {
+                    "level": "B",
+                    "description": "Demonstrates limited understanding of water harvesting and storage principles and methods",
+                    "marks": 9
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "crop-production",
+      "title": "Crop Production",
+      "description": "Learning about various aspects of crop production from planting to marketing",
+      "topics": [
+        {
+          "id": "square-foot-gardening",
+          "title": "Square Foot Gardening",
+          "description": "Learning about intensive gardening method that maximizes space utilization",
+          "duration": 9,
+          "prerequisites": ["basic-agriculture"],
+          "crossCurricularLinks": ["Mathematics - Area calculation", "Home Science - Nutrition"],
+          "realWorldApplications": [
+            "Urban farming",
+            "Home gardening in limited spaces",
+            "Efficient use of resources"
+          ],
+          "lessons": [
+            {
+              "id": "lesson-square-foot-concept",
+              "title": "Square Foot Gardening Concept",
+              "duration": 40,
+              "introduction": "Square foot gardening is an efficient method of growing crops in small spaces. Today we'll explore this concept and its benefits.",
+              "objectives": [
+                {
+                  "id": "obj-sfg1",
+                  "description": "Describe the concept of square foot gardening in growing crops",
+                  "bloomsLevel": "understand",
+                  "assessmentCriteria": [
+                    "Correctly explains what square foot gardening is",
+                    "Describes the principles of square foot gardening",
+                    "Identifies benefits of square foot gardening"
+                  ]
+                },
+                {
+                  "id": "obj-sfg2",
+                  "description": "Prepare square foot garden for growing crops",
+                  "bloomsLevel": "apply",
+                  "assessmentCriteria": [
+                    "Correctly lays out a square foot garden",
+                    "Creates appropriate partitions",
+                    "Prepares soil mix suitable for square foot gardening"
+                  ]
+                }
+              ],
+              "activities": [
+                {
+                  "id": "act-sfg-research",
+                  "title": "Square Foot Gardening Research",
+                  "type": "group",
+                  "duration": 20,
+                  "description": "Students research and present on the concept of square foot gardening",
+                  "materials": ["Digital devices", "Print media", "Chart paper", "Markers"],
+                  "instructions": [
+                    "Form groups of 4-5 students",
+                    "Use digital devices and print media to research square foot gardening",
+                    "Focus on the concept, principles, and benefits",
+                    "Create a presentation on your findings",
+                    "Share your presentation with the class"
+                  ],
+                  "learningStyle": ["visual", "verbal", "social"],
+                  "difficulty": "intermediate",
+                  "prerequisites": ["basic-research-skills"]
+                },
+                {
+                  "id": "act-sfg-preparation",
+                  "title": "Square Foot Garden Preparation",
+                  "type": "group",
+                  "duration": 60,
+                  "description": "Students prepare a square foot garden with partitions",
+                  "materials": ["Garden tools", "Measuring tape", "String", "Wood or other materials for borders", "Soil", "Compost", "Sand"],
+                  "instructions": [
+                    "Form groups of 4-5 students",
+                    "Select a suitable location for your square foot garden",
+                    "Measure and mark a garden area",
+                    "Create borders for the garden",
+                    "Divide the garden into 1ft by 1ft (30cm by 30cm) partitions",
+                    "Prepare a suitable soil mix for the garden",
+                    "Fill the garden with the soil mix"
+                  ],
+                  "learningStyle": ["kinesthetic", "visual", "social"],
+                  "difficulty": "intermediate",
+                  "prerequisites": ["basic-gardening-skills"]
+                }
+              ],
+              "assessment": {
+                "id": "assess-square-foot-gardening",
+                "title": "Square Foot Gardening Assessment",
+                "type": "formative",
+                "format": "project",
+                "duration": 120,
+                "totalMarks": 20,
+                "rubric": [
+                  {
+                    "criterion": "Understanding of Square Foot Gardening Concept",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Gives a clear and illustrative description of the concept of square foot gardening in growing crops",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Gives a clear description of the concept of square foot gardening in growing crops",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Gives a description of the concept of square foot gardening in growing crops with some details that require clarification",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Gives a description of the concept of square foot gardening in growing crops with some details that require correction for accuracy",
+                        "marks": 6
+                      }
+                    ]
+                  },
+                  {
+                    "criterion": "Square Foot Garden Preparation Skills",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Demonstrates exceptional skills in preparing a square foot garden for growing crops",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Demonstrates ability to prepare a square foot garden for growing crops",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Demonstrates some ability that hesitates for affirmation to prepare a square foot garden for growing crops",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Demonstrates some ability that hesitates for affirmation and extra external guidance to prepare a square foot garden for growing crops",
+                        "marks": 6
+                      }
+                    ]
+                  }
+                ]
+              },
+              "resources": [
+                {
+                  "id": "res-square-foot-gardening",
+                  "title": "Square Foot Gardening Basics",
+                  "type": "document",
+                  "description": "A comprehensive guide to square foot gardening principles and practices",
+                  "ageAppropriate": true,
+                  "language": "english"
+                },
+                {
+                  "id": "res-sfg-video",
+                  "title": "Setting Up a Square Foot Garden",
+                  "type": "video",
+                  "description": "A step-by-step tutorial on how to set up a square foot garden",
+                  "ageAppropriate": true,
+                  "language": "english"
+                }
+              ],
+              "vocabulary": [
+                {
+                  "term": "Square foot gardening",
+                  "definition": "A method of intensive gardening that divides the growing area into small square sections, typically 1 foot by 1 foot",
+                  "translation": "Kilimo cha futi mraba"
+                },
+                {
+                  "term": "Partition",
+                  "definition": "A divider used to separate different sections of the garden",
+                  "translation": "Kigawanyo"
+                },
+                {
+                  "term": "Intensive gardening",
+                  "definition": "A method of maximizing crop yield from a small area of land",
+                  "translation": "Kilimo cha kuzidisha mazao"
+                }
+              ],
+              "homework": "Design a planting plan for a 4x4 square foot garden, indicating which crops you would plant in each square foot and why you chose those crops.",
+              "differentiation": {
+                "support": [
+                  "Provide templates for garden design",
+                  "Use visual aids to illustrate concepts",
+                  "Offer step-by-step guides for garden preparation"
+                ],
+                "extension": [
+                  "Research companion planting for square foot gardens",
+                  "Design vertical elements for the garden",
+                  "Calculate expected yields from the garden"
+                ]
+              }
+            }
+          ],
+          "unitAssessment": {
+            "id": "unit-square-foot-garden-project",
+            "title": "Square Foot Garden Project",
+            "type": "summative",
+            "format": "project",
+            "duration": 180,
+            "totalMarks": 30,
+            "rubric": [
+              {
+                "criterion": "Square Foot Gardening Knowledge and Skills",
+                "levels": [
+                  {
+                    "level": "E",
+                    "description": "Demonstrates comprehensive understanding and application of square foot gardening principles and practices",
+                    "marks": 27
+                  },
+                  {
+                    "level": "M",
+                    "description": "Demonstrates good understanding and application of square foot gardening principles and practices",
+                    "marks": 21
+                  },
+                  {
+                    "level": "A",
+                    "description": "Demonstrates partial understanding and application of square foot gardening principles and practices",
+                    "marks": 15
+                  },
+                  {
+                    "level": "B",
+                    "description": "Demonstrates limited understanding and application of square foot gardening principles and practices",
+                    "marks": 9
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "crop-management",
+          "title": "Crop Management",
+          "description": "Learning about pest and disease management in vegetable crops",
+          "duration": 9,
+          "prerequisites": ["basic-agriculture"],
+          "crossCurricularLinks": ["Integrated Science - Pests and diseases", "Health Education - Food safety"],
+          "realWorldApplications": [
+            "Vegetable farming",
+            "Integrated pest management",
+            "Organic farming"
+          ],
+          "lessons": [
+            {
+              "id": "lesson-crop-pests",
+              "title": "Pests in Vegetable Crops",
+              "duration": 40,
+              "introduction": "Pests can significantly reduce crop yields. Today we'll learn about common pests that attack vegetable crops and how to control them.",
+              "objectives": [
+                {
+                  "id": "obj-pests1",
+                  "description": "Give meaning of pests in vegetable crops",
+                  "bloomsLevel": "understand",
+                  "assessmentCriteria": [
+                    "Correctly defines what pests are",
+                    "Explains how pests affect vegetable crops",
+                    "Gives examples of common vegetable pests"
+                  ]
+                },
+                {
+                  "id": "obj-pests2",
+                  "description": "Identify vegetable crops attacked by pests",
+                  "bloomsLevel": "apply",
+                  "assessmentCriteria": [
+                    "Correctly identifies signs of pest attack on vegetables",
+                    "Recognizes specific crops susceptible to different pests",
+                    "Identifies common sites where pests are found"
+                  ]
+                },
+                {
+                  "id": "obj-pests3",
+                  "description": "Identify pests that attack growing vegetable crops",
+                  "bloomsLevel": "apply",
+                  "assessmentCriteria": [
+                    "Correctly identifies common vegetable pests",
+                    "Recognizes pest characteristics",
+                    "Matches pests to the damage they cause"
+                  ]
+                }
+              ],
+              "activities": [
+                {
+                  "id": "act-pest-meaning",
+                  "title": "Understanding Crop Pests",
+                  "type": "pair",
+                  "duration": 15,
+                  "description": "Students brainstorm the meaning of crop pests",
+                  "materials": ["Notebooks", "Pens"],
+                  "instructions": [
+                    "Form pairs with a classmate",
+                    "Brainstorm what the term 'crop pest' means",
+                    "List examples of crop pests you know",
+                    "Discuss how pests affect vegetable crops",
+                    "Share your ideas with the class"
+                  ],
+                  "learningStyle": ["verbal", "social"],
+                  "difficulty": "beginner",
+                  "prerequisites": []
+                },
+                {
+                  "id": "act-field-excursion",
+                  "title": "Field Excursion to Identify Pests",
+                  "type": "group",
+                  "duration": 60,
+                  "description": "Students visit a vegetable garden to observe and identify pest damage and pests",
+                  "materials": ["Notebooks", "Pens", "Magnifying glasses", "Collection containers", "Gloves"],
+                  "instructions": [
+                    "Form groups of 4-5 students",
+                    "Visit a vegetable garden",
+                    "Observe signs of pest damage (punctured leaves, cut-off seedlings, curling leaves)",
+                    "Look for pests (aphids, cutworms, caterpillars) on affected plants",
+                    "Note where pests are commonly found on plants",
+                    "Record your observations",
+                    "Share your findings with the class"
+                  ],
+                  "learningStyle": ["visual", "kinesthetic", "naturalist"],
+                  "difficulty": "intermediate",
+                  "prerequisites": ["basic-observation-skills"]
+                }
+              ],
+              "assessment": {
+                "id": "assess-crop-pests",
+                "title": "Crop Pests Assessment",
+                "type": "formative",
+                "format": "quiz",
+                "duration": 30,
+                "totalMarks": 20,
+                "rubric": [
+                  {
+                    "criterion": "Identification of Vegetable Pests",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Identifies with exceptional precision more than three pests that attack growing vegetable crops",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Identifies three pests that attack growing vegetable crops",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Identifies two pests that attack growing vegetable crops",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Identifies less than two pests that attack growing vegetable crops",
+                        "marks": 6
+                      }
+                    ]
+                  },
+                  {
+                    "criterion": "Pest Control Knowledge",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Demonstrates exemplary skills in controlling identified pests on vegetable crops using more four selected methods",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Ably controls identified pests on vegetable crops using four selected methods",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Controls some identified pests on vegetable crops using three selected methods",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Controls some identified pests on vegetable crops using less than three selected methods",
+                        "marks": 6
+                      }
+                    ]
+                  }
+                ]
+              },
+              "resources": [
+                {
+                  "id": "res-vegetable-pests",
+                  "title": "Common Vegetable Pests and Their Control",
+                  "type": "document",
+                  "description": "A guide to identifying and controlling common pests in vegetable crops",
+                  "ageAppropriate": true,
+                  "language": "english"
+                },
+                {
+                  "id": "res-pest-control",
+                  "title": "Organic Pest Control Methods",
+                  "type": "video",
+                  "description": "A video demonstrating organic methods for controlling vegetable pests",
+                  "ageAppropriate": true,
+                  "language": "english"
+                }
+              ],
+              "vocabulary": [
+                {
+                  "term": "Pest",
+                  "definition": "An organism that damages crops, food, livestock, or other property",
+                  "translation": "Wadudu waharibifu"
+                },
+                {
+                  "term": "Aphid",
+                  "definition": "A small sap-sucking insect that feeds on plant juices and can transmit plant diseases",
+                  "translation": "Vidukari"
+                },
+                {
+                  "term": "Cutworm",
+                  "definition": "The larvae of certain moths that cut off young plants at ground level",
+                  "translation": "Funza kata"
+                }
+              ],
+              "homework": "Create a pest identification guide for five common vegetable pests in your area, including pictures or drawings, descriptions, damage symptoms, and control methods.",
+              "differentiation": {
+                "support": [
+                  "Provide pest identification cards",
+                  "Use visual aids to illustrate pest damage",
+                  "Offer step-by-step guides for pest control methods"
+                ],
+                "extension": [
+                  "Research integrated pest management strategies",
+                  "Design experiments to test different pest control methods",
+                  "Investigate biological control agents for specific pests"
+                ]
+              }
+            }
+          ],
+          "unitAssessment": {
+            "id": "unit-crop-management-test",
+            "title": "Crop Management Assessment",
+            "type": "summative",
+            "format": "practical and written",
+            "duration": 90,
+            "totalMarks": 30,
+            "rubric": [
+              {
+                "criterion": "Pest and Disease Management Knowledge",
+                "levels": [
+                  {
+                    "level": "E",
+                    "description": "Demonstrates comprehensive understanding and application of pest and disease management principles and practices",
+                    "marks": 27
+                  },
+                  {
+                    "level": "M",
+                    "description": "Demonstrates good understanding and application of pest and disease management principles and practices",
+                    "marks": 21
+                  },
+                  {
+                    "level": "A",
+                    "description": "Demonstrates partial understanding and application of pest and disease management principles and practices",
+                    "marks": 15
+                  },
+                  {
+                    "level": "B",
+                    "description": "Demonstrates limited understanding and application of pest and disease management principles and practices",
+                    "marks": 9
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "crop-harvesting",
+          "title": "Crop Harvesting",
+          "description": "Learning about appropriate harvesting techniques for vegetable crops",
+          "duration": 6,
+          "prerequisites": ["basic-agriculture", "crop-management"],
+          "crossCurricularLinks": ["Home Science - Food preparation", "Business Studies - Value addition"],
+          "realWorldApplications": [
+            "Vegetable farming",
+            "Market gardening",
+            "Food quality management"
+          ],
+          "lessons": [
+            {
+              "id": "lesson-vegetable-harvesting",
+              "title": "Harvesting Vegetable Crops",
+              "duration": 40,
+              "introduction": "Proper harvesting is crucial for maintaining the quality of vegetable crops. Today we'll learn how to identify when vegetables are ready for harvest and the appropriate methods to use.",
+              "objectives": [
+                {
+                  "id": "obj-harvest1",
+                  "description": "Identify the appropriate stage of harvesting vegetable crops",
+                  "bloomsLevel": "understand",
+                  "assessmentCriteria": [
+                    "Correctly identifies signs of readiness for harvesting",
+                    "Distinguishes between mature and immature vegetables",
+                    "Explains the consequences of harvesting too early or too late"
+                  ]
+                },
+                {
+                  "id": "obj-harvest2",
+                  "description": "Harvest vegetable crops using suitable methods",
+                  "bloomsLevel": "apply",
+                  "assessmentCriteria": [
+                    "Selects appropriate harvesting methods for different vegetables",
+                    "Demonstrates correct harvesting techniques",
+                    "Handles harvested vegetables properly"
+                  ]
+                }
+              ],
+              "activities": [
+                {
+                  "id": "act-harvest-readiness",
+                  "title": "Identifying Harvest Readiness",
+                  "type": "group",
+                  "duration": 30,
+                  "description": "Students visit a vegetable garden to identify crops ready for harvesting",
+                  "materials": ["Notebooks", "Pens", "Access to a vegetable garden"],
+                  "instructions": [
+                    "Form groups of 4-5 students",
+                    "Visit a vegetable garden",
+                    "Observe different vegetable crops",
+                    "Identify vegetables that appear ready for harvesting",
+                    "Discuss and justify your observations on signs of readiness",
+                    "Record your findings",
+                    "Share your observations with the class"
+                  ],
+                  "learningStyle": ["visual", "kinesthetic", "naturalist"],
+                  "difficulty": "intermediate",
+                  "prerequisites": ["basic-observation-skills"]
+                },
+                {
+                  "id": "act-harvesting-demo",
+                  "title": "Vegetable Harvesting Demonstration",
+                  "type": "demonstration",
+                  "duration": 30,
+                  "description": "Teacher demonstrates proper harvesting techniques for different vegetables",
+                  "materials": ["Garden tools", "Harvesting containers", "Mature vegetable crops"],
+                  "instructions": [
+                    "Observe the demonstration of harvesting different types of vegetables",
+                    "Note the specific techniques used for each vegetable type",
+                    "Identify the tools used for different harvesting methods",
+                    "Observe how harvested vegetables are handled",
+                    "Ask questions about the demonstration",
+                    "Practice the demonstrated techniques under supervision"
+                  ],
+                  "learningStyle": ["visual", "kinesthetic"],
+                  "difficulty": "intermediate",
+                  "prerequisites": ["basic-gardening-skills"]
+                }
+              ],
+              "assessment": {
+                "id": "assess-vegetable-harvesting",
+                "title": "Vegetable Harvesting Assessment",
+                "type": "formative",
+                "format": "practical",
+                "duration": 60,
+                "totalMarks": 20,
+                "rubric": [
+                  {
+                    "criterion": "Identification of Harvest Readiness",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Demonstrates exemplary precision and justification in identifying appropriate stage of harvesting vegetable crops",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Identifies appropriate stage of harvesting vegetable crops",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Identifies some stages of harvesting vegetable crops",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "When guided, identifies stages of harvesting vegetable crops",
+                        "marks": 6
+                      }
+                    ]
+                  },
+                  {
+                    "criterion": "Harvesting Technique",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Demonstrates exemplary skills in harvesting vegetable crops using suitable methods",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Harvests vegetable crops using suitable methods",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Harvests some vegetable crops using suitable methods",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Harvests vegetable some crops using suitable methods only with extra guidance",
+                        "marks": 6
+                      }
+                    ]
+                  }
+                ]
+              },
+              "resources": [
+                {
+                  "id": "res-vegetable-harvesting",
+                  "title": "Vegetable Harvesting Guide",
+                  "type": "document",
+                  "description": "A comprehensive guide to harvesting different types of vegetables at the optimal time",
+                  "ageAppropriate": true,
+                  "language": "english"
+                },
+                {
+                  "id": "res-harvesting-video",
+                  "title": "Proper Vegetable Harvesting Techniques",
+                  "type": "video",
+                  "description": "A video demonstrating proper techniques for harvesting various vegetables",
+                  "ageAppropriate": true,
+                  "language": "english"
+                }
+              ],
+              "vocabulary": [
+                {
+                  "term": "Harvest",
+                  "definition": "The process of gathering mature crops from the fields",
+                  "translation": "Mavuno"
+                },
+                {
+                  "term": "Maturity",
+                  "definition": "The stage at which a crop has reached its full development and is ready for harvesting",
+                  "translation": "Ukomavu"
+                },
+                {
+                  "term": "Quality",
+                  "definition": "The standard of a crop in terms of its appearance, taste, nutritional value, and shelf life",
+                  "translation": "Ubora"
+                }
+              ],
+              "homework": "Create a harvesting calendar for five common vegetables grown in your area, indicating the signs of readiness for harvest and the appropriate harvesting method for each.",
+              "differentiation": {
+                "support": [
+                  "Provide visual guides for identifying harvest readiness",
+                  "Demonstrate harvesting techniques step by step",
+                  "Use simple tools for harvesting practice"
+                ],
+                "extension": [
+                  "Research optimal harvesting times for specialty vegetables",
+                  "Investigate the relationship between harvesting method and shelf life",
+                  "Design improved harvesting tools for specific vegetables"
+                ]
+              }
+            }
+          ],
+          "unitAssessment": {
+            "id": "unit-crop-harvesting-test",
+            "title": "Crop Harvesting Assessment",
+            "type": "summative",
+            "format": "practical and written",
+            "duration": 90,
+            "totalMarks": 30,
+            "rubric": [
+              {
+                "criterion": "Harvesting Knowledge and Skills",
+                "levels": [
+                  {
+                    "level": "E",
+                    "description": "Demonstrates comprehensive understanding and application of vegetable harvesting principles and techniques",
+                    "marks": 27
+                  },
+                  {
+                    "level": "M",
+                    "description": "Demonstrates good understanding and application of vegetable harvesting principles and techniques",
+                    "marks": 21
+                  },
+                  {
+                    "level": "A",
+                    "description": "Demonstrates partial understanding and application of vegetable harvesting principles and techniques",
+                    "marks": 15
+                  },
+                  {
+                    "level": "B",
+                    "description": "Demonstrates limited understanding and application of vegetable harvesting principles and techniques",
+                    "marks": 9
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "post-harvest-practices",
+          "title": "Post Harvest Practices",
+          "description": "Learning about handling vegetable produce after harvesting to maintain quality",
+          "duration": 5,
+          "prerequisites": ["basic-agriculture", "crop-harvesting"],
+          "crossCurricularLinks": ["Home Science - Food preservation", "Business Studies - Value addition"],
+          "realWorldApplications": [
+            "Vegetable marketing",
+            "Food preservation",
+            "Reducing post-harvest losses"
+          ],
+          "lessons": [
+            {
+              "id": "lesson-post-harvest",
+              "title": "Post-Harvest Practices for Vegetables",
+              "duration": 40,
+              "introduction": "Post-harvest practices are crucial for maintaining the quality and extending the shelf life of harvested vegetables. Today we'll explore various post-harvest practices.",
+              "objectives": [
+                {
+                  "id": "obj-postharvest1",
+                  "description": "Explain the meaning of post-harvest practices in vegetable crop production",
+                  "bloomsLevel": "understand",
+                  "assessmentCriteria": [
+                    "Correctly defines post-harvest practices",
+                    "Explains the importance of post-harvest handling",
+                    "Identifies when post-harvest practices begin and end"
+                  ]
+                },
+                {
+                  "id": "obj-postharvest2",
+                  "description": "Carry out various post-harvest practices on vegetable crop produce",
+                  "bloomsLevel": "apply",
+                  "assessmentCriteria": [
+                    "Correctly performs cleaning of harvested vegetables",
+                    "Demonstrates sorting and grading techniques",
+                    "Applies appropriate packaging methods"
+                  ]
+                }
+              ],
+              "activities": [
+                {
+                  "id": "act-postharvest-meaning",
+                  "title": "Understanding Post-Harvest Practices",
+                  "type": "group",
+                  "duration": 20,
+                  "description": "Students use digital resources to learn about post-harvest practices",
+                  "materials": ["Digital devices", "Internet access", "Notebooks", "Pens"],
+                  "instructions": [
+                    "Form groups of 4-5 students",
+                    "Use digital resources to search for information on post-harvest practices",
+                    "Watch video clips on post-harvest handling of vegetables",
+                    "Discuss your observations and deduce the meaning of post-harvest practices",
+                    "Create a list of post-harvest practices for vegetables",
+                    "Share your findings with the class"
+                  ],
+                  "learningStyle": ["visual", "verbal", "social"],
+                  "difficulty": "intermediate",
+                  "prerequisites": ["basic-research-skills"]
+                },
+                {
+                  "id": "act-postharvest-practical",
+                  "title": "Practical Post-Harvest Handling",
+                  "type": "group",
+                  "duration": 40,
+                  "description": "Students practice post-harvest handling techniques on vegetable samples",
+                  "materials": ["Freshly harvested vegetables", "Clean water", "Containers", "Sorting trays", "Packaging materials"],
+                  "instructions": [
+                    "Form groups of 4-5 students",
+                    "Observe the provided vegetable samples",
+                    "Clean the vegetables by removing soil and debris",
+                    "Sort the vegetables based on size, color, and quality",
+                    "Grade the vegetables into different quality categories",
+                    "Package the vegetables appropriately",
+                    "Discuss the importance of each practice in maintaining quality"
+                  ],
+                  "learningStyle": ["kinesthetic", "visual", "social"],
+                  "difficulty": "intermediate",
+                  "prerequisites": ["basic-handling-skills"]
+                }
+              ],
+              "assessment": {
+                "id": "assess-post-harvest",
+                "title": "Post-Harvest Practices Assessment",
+                "type": "formative",
+                "format": "practical",
+                "duration": 60,
+                "totalMarks": 20,
+                "rubric": [
+                  {
+                    "criterion": "Understanding of Post-Harvest Practices",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Gives an exemplary elaborate explanation of the meaning of post-harvest practices in vegetable crop production",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Gives a clear explanation of the meaning of post-harvest practices in vegetable crop production",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Gives an explanation of the meaning of post-harvest practices in vegetable crop production with some details missing",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Gives an explanation of the meaning of post-harvest practices in vegetable crop production only if given extra prompts",
+                        "marks": 6
+                      }
+                    ]
+                  },
+                  {
+                    "criterion": "Post-Harvest Handling Skills",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Demonstrates exemplary skillful ability to carry out five or more post-harvest practices in vegetable crop produce",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Demonstrates ability to carry out five post-harvest practices in vegetable crop produce",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Demonstrates some ability to carry out four post-harvest practices in vegetable crop produce",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Demonstrates some ability to carry out less than four post-harvest practices in vegetable crop produce",
+                        "marks": 6
+                      }
+                    ]
+                  }
+                ]
+              },
+              "resources": [
+                {
+                  "id": "res-post-harvest",
+                  "title": "Post-Harvest Handling of Vegetables",
+                  "type": "document",
+                  "description": "A comprehensive guide to post-harvest handling techniques for vegetables",
+                  "ageAppropriate": true,
+                  "language": "english"
+                },
+                {
+                  "id": "res-postharvest-video",
+                  "title": "Reducing Post-Harvest Losses",
+                  "type": "video",
+                  "description": "A video demonstrating techniques to reduce post-harvest losses in vegetables",
+                  "ageAppropriate": true,
+                  "language": "english"
+                }
+              ],
+              "vocabulary": [
+                {
+                  "term": "Post-harvest",
+                  "definition": "The stage after crops have been harvested, including handling, processing, and marketing",
+                  "translation": "Baada ya mavuno"
+                },
+                {
+                  "term": "Sorting",
+                  "definition": "The process of separating produce based on quality, size, color, or other characteristics",
+                  "translation": "Kupanga"
+                },
+                {
+                  "term": "Grading",
+                  "definition": "The classification of produce into quality categories based on specific criteria",
+                  "translation": "Kupanga kwa daraja"
+                }
+              ],
+              "homework": "Research and write a report on how post-harvest practices affect the shelf life and market value of three different vegetables commonly grown in your area.",
+              "differentiation": {
+                "support": [
+                  "Provide visual guides for post-harvest practices",
+                  "Demonstrate techniques step by step",
+                  "Use simple examples to illustrate concepts"
+                ],
+                "extension": [
+                  "Research advanced post-harvest technologies",
+                  "Investigate the economic impact of reducing post-harvest losses",
+                  "Design improved post-harvest handling systems"
+                ]
+              }
+            }
+          ],
+          "unitAssessment": {
+            "id": "unit-post-harvest-test",
+            "title": "Post-Harvest Practices Assessment",
+            "type": "summative",
+            "format": "practical and written",
+            "duration": 90,
+            "totalMarks": 30,
+            "rubric": [
+              {
+                "criterion": "Post-Harvest Knowledge and Skills",
+                "levels": [
+                  {
+                    "level": "E",
+                    "description": "Demonstrates comprehensive understanding and application of post-harvest principles and techniques",
+                    "marks": 27
+                  },
+                  {
+                    "level": "M",
+                    "description": "Demonstrates good understanding and application of post-harvest principles and techniques",
+                    "marks": 21
+                  },
+                  {
+                    "level": "A",
+                    "description": "Demonstrates partial understanding and application of post-harvest principles and techniques",
+                    "marks": 15
+                  },
+                  {
+                    "level": "B",
+                    "description": "Demonstrates limited understanding and application of post-harvest principles and techniques",
+                    "marks": 9
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "marketing-crop-produce",
+          "title": "Marketing Crop Produce",
+          "description": "Learning about preparing and marketing vegetable produce",
+          "duration": 6,
+          "prerequisites": ["basic-agriculture", "post-harvest-practices"],
+          "crossCurricularLinks": ["Business Studies - Marketing", "Mathematics - Calculations"],
+          "realWorldApplications": [
+            "Vegetable marketing",
+            "Entrepreneurship",
+            "Value addition"
+          ],
+          "lessons": [
+            {
+              "id": "lesson-marketing-preparation",
+              "title": "Preparing Vegetable Produce for Marketing",
+              "duration": 40,
+              "introduction": "Proper preparation of vegetable produce for marketing can significantly increase its value. Today we'll learn about various ways to prepare vegetables for the market.",
+              "objectives": [
+                {
+                  "id": "obj-marketing1",
+                  "description": "Give ways of preparing vegetable crop produce for marketing",
+                  "bloomsLevel": "understand",
+                  "assessmentCriteria": [
+                    "Correctly identifies preparation methods for marketing",
+                    "Explains the purpose of each preparation method",
+                    "Describes appropriate preparation for different vegetables"
+                  ]
+                },
+                {
+                  "id": "obj-marketing2",
+                  "description": "Prepare vegetable crop produce for marketing",
+                  "bloomsLevel": "apply",
+                  "assessmentCriteria": [
+                    "Correctly weighs vegetable produce",
+                    "Applies appropriate packaging techniques",
+                    "Demonstrates branding and labeling skills"
+                  ]
+                }
+              ],
+              "activities": [
+                {
+                  "id": "act-marketing-discussion",
+                  "title": "Vegetable Marketing Preparation Discussion",
+                  "type": "group",
+                  "duration": 20,
+                  "description": "Students discuss ways of preparing vegetable produce for marketing",
+                  "materials": ["Notebooks", "Pens", "Reference materials"],
+                  "instructions": [
+                    "Form groups of 4-5 students",
+                    "Discuss ways of preparing vegetable crop produce for marketing",
+                    "Focus on weighing, packaging, branding, and labeling",
+                    "Create a list of preparation methods and their importance",
+                    "Share your findings with the class"
+                  ],
+                  "learningStyle": ["verbal", "social"],
+                  "difficulty": "intermediate",
+                  "prerequisites": []
+                },
+                {
+                  "id": "act-market-visit",
+                  "title": "Vegetable Market Visit",
+                  "type": "field trip",
+                  "duration": 60,
+                  "description": "Students visit a vegetable market to observe marketing practices",
+                  "materials": ["Notebooks", "Pens", "Camera (if available)"],
+                  "instructions": [
+                    "Visit a local vegetable market",
+                    "Observe how different vegetables are weighed, packaged, branded, labeled, and displayed",
+                    "Note the differences in presentation between different vendors",
+                    "Interview vendors about their marketing strategies (if appropriate)",
+                    "Record your observations",
+                    "Share your findings with the class"
+                  ],
+                  "learningStyle": ["visual", "verbal", "social"],
+                  "difficulty": "intermediate",
+                  "prerequisites": ["basic-observation-skills"]
+                }
+              ],
+              "assessment": {
+                "id": "assess-vegetable-marketing",
+                "title": "Vegetable Marketing Assessment",
+                "type": "formative",
+                "format": "practical",
+                "duration": 60,
+                "totalMarks": 20,
+                "rubric": [
+                  {
+                    "criterion": "Vegetable Marketing Preparation",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Demonstrate exemplary innovative skill ability to prepare a vegetable crop produce for marketing using a set of four methods",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Demonstrate ability to prepare a vegetable crop produce for marketing using a set of four methods",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Demonstrate some ability to prepare a vegetable crop produce for marketing using three methods",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Demonstrate some ability to prepare a vegetable crop produce for marketing using a less than three methods",
+                        "marks": 6
+                      }
+                    ]
+                  },
+                  {
+                    "criterion": "Understanding of Market Outlets",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Discusses with analytical details various market outlets for vegetable crop produce within the two categories (digital platforms and physical outlets)",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Discusses various market outlets for vegetable crop produce within the two categories (digital platforms and physical outlets)",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Discusses some market outlets for vegetable crop produce within less than two categories (digital platforms and physical outlets)",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Discusses some market outlets for vegetable crop produce within less than two categories (digital platforms and physical outlets) only if given extra prompts",
+                        "marks": 6
+                      }
+                    ]
+                  }
+                ]
+              },
+              "resources": [
+                {
+                  "id": "res-vegetable-marketing",
+                  "title": "Vegetable Marketing Guide",
+                  "type": "document",
+                  "description": "A comprehensive guide to preparing and marketing vegetable produce",
+                  "ageAppropriate": true,
+                  "language": "english"
+                },
+                {
+                  "id": "res-marketing-video",
+                  "title": "Vegetable Marketing Techniques",
+                  "type": "video",
+                  "description": "A video demonstrating techniques for preparing and marketing vegetable produce",
+                  "ageAppropriate": true,
+                  "language": "english"
+                }
+              ],
+              "vocabulary": [
+                {
+                  "term": "Marketing",
+                  "definition": "The process of promoting and selling products or services",
+                  "translation": "Uuzaji"
+                },
+                {
+                  "term": "Packaging",
+                  "definition": "The process of enclosing or protecting products for distribution, storage, sale, and use",
+                  "translation": "Ufungaji"
+                },
+                {
+                  "term": "Branding",
+                  "definition": "The process of creating a unique name and image for a product in the consumers' mind",
+                  "translation": "Utambulisho wa bidhaa"
+                }
+              ],
+              "homework": "Design a marketing plan for a vegetable crop of your choice, including preparation methods, packaging design, branding strategy, and potential market outlets.",
+              "differentiation": {
+                "support": [
+                  "Provide templates for marketing plans",
+                  "Use visual guides for packaging techniques",
+                  "Offer step-by-step instructions for weighing and grading"
+                ],
+                "extension": [
+                  "Research digital marketing strategies for agricultural products",
+                  "Investigate value addition opportunities for vegetables",
+                  "Design innovative packaging solutions for specific vegetables"
+                ]
+              }
+            }
+          ],
+          "unitAssessment": {
+            "id": "unit-marketing-test",
+            "title": "Crop Marketing Assessment",
+            "type": "summative",
+            "format": "project",
+            "duration": 120,
+            "totalMarks": 30,
+            "rubric": [
+              {
+                "criterion": "Marketing Knowledge and Skills",
+                "levels": [
+                  {
+                    "level": "E",
+                    "description": "Demonstrates comprehensive understanding and application of vegetable marketing principles and techniques",
+                    "marks": 27
+                  },
+                  {
+                    "level": "M",
+                    "description": "Demonstrates good understanding and application of vegetable marketing principles and techniques",
+                    "marks": 21
+                  },
+                  {
+                    "level": "A",
+                    "description": "Demonstrates partial understanding and application of vegetable marketing principles and techniques",
+                    "marks": 15
+                  },
+                  {
+                    "level": "B",
+                    "description": "Demonstrates limited understanding and application of vegetable marketing principles and techniques",
+                    "marks": 9
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "animal-production",
+      "title": "Animal Production",
+      "description": "Learning about various aspects of animal production and management",
+      "topics": [
+        {
+          "id": "animal-safety",
+          "title": "Animal Safety",
+          "description": "Learning about safety measures when handling domestic animals",
+          "duration": 9,
+          "prerequisites": ["basic-agriculture"],
+          "crossCurricularLinks": ["Integrated Science - Animal behavior", "Health Education - Safety"],
+          "realWorldApplications": [
+            "Livestock farming",
+            "Pet keeping",
+            "Animal handling"
+          ],
+          "lessons": [
+            {
+              "id": "lesson-animal-safety",
+              "title": "Safety in Handling Domestic Animals",
+              "duration": 40,
+              "introduction": "Handling domestic animals safely is important for both the handler and the animal. Today we'll learn about structures, tools, and techniques for safe animal handling.",
+              "objectives": [
+                {
+                  "id": "obj-safety1",
+                  "description": "Describe the structures used to ensure safety in handling domestic animals",
+                  "bloomsLevel": "understand",
+                  "assessmentCriteria": [
+                    "Correctly identifies safety structures for animal handling",
+                    "Explains the purpose of each structure",
+                    "Describes how each structure contributes to safety"
+                  ]
+                },
+                {
+                  "id": "obj-safety2",
+                  "description": "Explain ways of ensuring safety of persons handling domestic animals",
+                  "bloomsLevel": "understand",
+                  "assessmentCriteria": [
+                    "Correctly describes safe animal handling techniques",
+                    "Explains precautions to take when handling animals",
+                    "Identifies potential risks and how to mitigate them"
+                  ]
+                }
+              ],
+              "activities": [
+                {
+                  "id": "act-safety-structures",
+                  "title": "Animal Handling Structures",
+                  "type": "group",
+                  "duration": 20,
+                  "description": "Students use digital devices to learn about animal handling structures",
+                  "materials": ["Digital devices", "Internet access", "Notebooks", "Pens"],
+                  "instructions": [
+                    "Form groups of 4-5 students",
+                    "Use digital devices to observe and research structures used for safe animal handling",
+                    "Focus on structures such as crushes and kennels",
+                    "Note the features of each structure that contribute to safety",
+                    "Create a presentation on your findings",
+                    "Share your presentation with the class"
+                  ],
+                  "learningStyle": ["visual", "verbal", "social"],
+                  "difficulty": "intermediate",
+                  "prerequisites": ["basic-research-skills"]
+                },
+                {
+                  "id": "act-safety-techniques",
+                  "title": "Safe Animal Handling Techniques",
+                  "type": "pair",
+                  "duration": 15,
+                  "description": "Students brainstorm ways to ensure safety when handling animals",
+                  "materials": ["Notebooks", "Pens"],
+                  "instructions": [
+                    "Form pairs with a classmate",
+                    "Brainstorm ways of ensuring safety when handling domestic animals",
+                    "Consider methods such as restraining animals, correct positioning, holding appropriate parts, and maintaining safe distance",
+                    "Create a list of safety guidelines",
+                    "Share your guidelines with the class"
+                  ],
+                  "learningStyle": ["verbal", "social"],
+                  "difficulty": "beginner",
+                  "prerequisites": []
+                }
+              ],
+              "assessment": {
+                "id": "assess-animal-safety",
+                "title": "Animal Safety Assessment",
+                "type": "formative",
+                "format": "quiz",
+                "duration": 30,
+                "totalMarks": 20,
+                "rubric": [
+                  {
+                    "criterion": "Understanding of Animal Handling Structures",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Gives elaborately illustrative description of two structures used to ensure safety in handling domestic animals",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Gives a clear description of two structures used to ensure safety in handling domestic animals",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Gives a clear description of one structures used to ensure safety in handling domestic animals",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Gives some description of structures used to ensure safety in handling domestic animals that need probing for clarification",
+                        "marks": 6
+                      }
+                    ]
+                  },
+                  {
+                    "criterion": "Knowledge of Animal Handling Tools",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Gives an elaborate outline of four or more tools and equipment used to ensure safety in handling domestic animals",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Gives a clear outline of four tools and equipment used to ensure safety in handling domestic animals",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Gives a clear outline of three tools and equipment used to ensure safety in handling domestic animals",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Gives an outline of less than three tools and equipment used to ensure safety in handling domestic animals",
+                        "marks": 6
+                      }
+                    ]
+                  }
+                ]
+              },
+              "resources": [
+                {
+                  "id": "res-animal-safety",
+                  "title": "Safe Animal Handling Guide",
+                  "type": "document",
+                  "description": "A comprehensive guide to safely handling different types of domestic animals",
+                  "ageAppropriate": true,
+                  "language": "english"
+                },
+                {
+                  "id": "res-safety-video",
+                  "title": "Animal Handling Safety Techniques",
+                  "type": "video",
+                  "description": "A video demonstrating safe techniques for handling various domestic animals",
+                  "ageAppropriate": true,
+                  "language": "english"
+                }
+              ],
+              "vocabulary": [
+                {
+                  "term": "Crush",
+                  "definition": "A narrow passage or enclosure for restraining livestock during handling or treatment",
+                  "translation": "Njia finyu"
+                },
+                {
+                  "term": "Restraint",
+                  "definition": "The act of holding back or controlling an animal to limit its movement",
+                  "translation": "Kuzuia"
+                },
+                {
+                  "term": "Halter",
+                  "definition": "A rope or strap with a headpiece used to lead or tie up an animal",
+                  "translation": "Hatamu"
+                }
+              ],
+              "homework": "Design a safety plan for handling a domestic animal of your choice, including necessary structures, tools, and handling techniques.",
+              "differentiation": {
+                "support": [
+                  "Provide visual guides for animal handling structures",
+                  "Use simple diagrams to illustrate handling techniques",
+                  "Offer step-by-step guides for using handling tools"
+                ],
+                "extension": [
+                  "Research specialized handling techniques for difficult animals",
+                  "Investigate modern animal handling technologies",
+                  "Design improved animal handling structures"
+                ]
+              }
+            }
+          ],
+          "unitAssessment": {
+            "id": "unit-animal-safety-test",
+            "title": "Animal Safety Assessment",
+            "type": "summative",
+            "format": "written and practical",
+            "duration": 90,
+            "totalMarks": 30,
+            "rubric": [
+              {
+                "criterion": "Animal Safety Knowledge and Skills",
+                "levels": [
+                  {
+                    "level": "E",
+                    "description": "Demonstrates comprehensive understanding and application of animal safety principles and techniques",
+                    "marks": 27
+                  },
+                  {
+                    "level": "M",
+                    "description": "Demonstrates good understanding and application of animal safety principles and techniques",
+                    "marks": 21
+                  },
+                  {
+                    "level": "A",
+                    "description": "Demonstrates partial understanding and application of animal safety principles and techniques",
+                    "marks": 15
+                  },
+                  {
+                    "level": "B",
+                    "description": "Demonstrates limited understanding and application of animal safety principles and techniques",
+                    "marks": 9
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "poultry-rearing",
+          "title": "Poultry Rearing",
+          "description": "Learning about rearing poultry in a fold system",
+          "duration": 8,
+          "prerequisites": ["basic-agriculture", "animal-safety"],
+          "crossCurricularLinks": ["Integrated Science - Animal nutrition", "Business Studies - Entrepreneurship"],
+          "realWorldApplications": [
+            "Poultry farming",
+            "Small-scale egg production",
+            "Meat production"
+          ],
+          "lessons": [
+            {
+              "id": "lesson-poultry-fold",
+              "title": "Poultry Fold System",
+              "duration": 40,
+              "introduction": "The fold system is a flexible and mobile method of rearing poultry. Today we'll learn about poultry folds and how to rear poultry using this system.",
+              "objectives": [
+                {
+                  "id": "obj-fold1",
+                  "description": "Describe a fold in poultry rearing",
+                  "bloomsLevel": "understand",
+                  "assessmentCriteria": [
+                    "Correctly defines what a poultry fold is",
+                    "Describes the features of a poultry fold",
+                    "Explains the advantages of using a fold system"
+                  ]
+                },
+                {
+                  "id": "obj-fold2",
+                  "description": "Construct a fold for rearing poultry",
+                  "bloomsLevel": "apply",
+                  "assessmentCriteria": [
+                    "Selects appropriate materials for fold construction",
+                    "Follows correct construction procedures",
+                    "Creates a functional and safe poultry fold"
+                  ]
+                }
+              ],
+              "activities": [
+                {
+                  "id": "act-fold-research",
+                  "title": "Poultry Fold Research",
+                  "type": "group",
+                  "duration": 20,
+                  "description": "Students research and learn about poultry folds",
+                  "materials": ["Digital devices", "Internet access", "Notebooks", "Pens"],
+                  "instructions": [
+                    "Form groups of 4-5 students",
+                    "Use digital devices to search for information on poultry folds",
+                    "Watch video clips on poultry fold systems",
+                    "Discuss the features and benefits of poultry folds",
+                    "Share your findings with the class"
+                  ],
+                  "learningStyle": ["visual", "verbal", "social"],
+                  "difficulty": "intermediate",
+                  "prerequisites": ["basic-research-skills"]
+                },
+                {
+                  "id": "act-fold-construction",
+                  "title": "Poultry Fold Construction",
+                  "type": "group",
+                  "duration": 60,
+                  "description": "Students construct a poultry fold using locally available materials",
+                  "materials": ["Reused and recycled wires", "Plastic materials", "Wood materials", "Tools (hammer, pliers, wire cutters)", "Measuring tape"],
+                  "instructions": [
+                    "Form groups of 4-5 students",
+                    "Design a simple poultry fold",
+                    "Collect locally available materials for construction",
+                    "Measure and cut materials according to your design",
+                    "Assemble the fold structure",
+                    "Add features such as feeding and watering areas",
+                    "Ensure the fold is secure and safe for poultry"
+                  ],
+                  "learningStyle": ["kinesthetic", "visual", "social"],
+                  "difficulty": "challenging",
+                  "prerequisites": ["basic-construction-skills"]
+                }
+              ],
+              "assessment": {
+                "id": "assess-poultry-fold",
+                "title": "Poultry Fold Assessment",
+                "type": "formative",
+                "format": "project",
+                "duration": 120,
+                "totalMarks": 20,
+                "rubric": [
+                  {
+                    "criterion": "Understanding of Poultry Fold Concept",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Gives an elaborately detailed description of a fold in poultry rearing",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Gives a clear description of a fold in poultry rearing",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Gives a description of a fold in poultry rearing with some details missing",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Gives a basic description of a fold in poultry rearing that requires clarification",
+                        "marks": 6
+                      }
+                    ]
+                  },
+                  {
+                    "criterion": "Fold Construction Skills",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Demonstrated exemplary creativity in constructing a fold for rearing poultry using some innovatively recycled materials",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Constructs a fold for rearing poultry using some innovatively recycled materials",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Constructs a fold to an incomplete status for rearing poultry",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Constructs a fold to an incomplete status for rearing poultry only if given extra assistance and guidance",
+                        "marks": 6
+                      }
+                    ]
+                  }
+                ]
+              },
+              "resources": [
+                {
+                  "id": "res-poultry-fold",
+                  "title": "Poultry Fold Systems Guide",
+                  "type": "document",
+                  "description": "A comprehensive guide to poultry fold systems and their management",
+                  "ageAppropriate": true,
+                  "language": "english"
+                },
+                {
+                  "id": "res-fold-video",
+                  "title": "Constructing a Poultry Fold",
+                  "type": "video",
+                  "description": "A step-by-step tutorial on how to construct a poultry fold using locally available materials",
+                  "ageAppropriate": true,
+                  "language": "english"
+                }
+              ],
+              "vocabulary": [
+                {
+                  "term": "Fold",
+                  "definition": "A portable enclosure for poultry that can be moved around to provide fresh grazing areas",
+                  "translation": "Zizi la kuku linalohamishika"
+                },
+                {
+                  "term": "Free-range",
+                  "definition": "A method of animal husbandry where animals can roam freely outdoors",
+                  "translation": "Ufugaji huru"
+                },
+                {
+                  "term": "Portable",
+                  "definition": "Able to be easily moved or carried",
+                  "translation": "Inayohamishika"
+                }
+              ],
+              "homework": "Design a management plan for a poultry fold system, including daily tasks, feeding schedule, and rotation plan for the fold.",
+              "differentiation": {
+                "support": [
+                  "Provide templates for fold design",
+                  "Use visual guides for construction steps",
+                  "Offer pre-cut materials for assembly"
+                ],
+                "extension": [
+                  "Research different fold designs for specific poultry types",
+                  "Investigate integration of folds with crop production",
+                  "Design automated features for the fold"
+                ]
+              }
+            }
+          ],
+          "unitAssessment": {
+            "id": "unit-poultry-fold-project",
+            "title": "Poultry Fold Project",
+            "type": "summative",
+            "format": "project",
+            "duration": 180,
+            "totalMarks": 30,
+            "rubric": [
+              {
+                "criterion": "Poultry Fold Knowledge and Skills",
+                "levels": [
+                  {
+                    "level": "E",
+                    "description": "Demonstrates comprehensive understanding and application of poultry fold principles and practices",
+                    "marks": 27
+                  },
+                  {
+                    "level": "M",
+                    "description": "Demonstrates good understanding and application of poultry fold principles and practices",
+                    "marks": 21
+                  },
+                  {
+                    "level": "A",
+                    "description": "Demonstrates partial understanding and application of poultry fold principles and practices",
+                    "marks": 15
+                  },
+                  {
+                    "level": "B",
+                    "description": "Demonstrates limited understanding and application of poultry fold principles and practices",
+                    "marks": 9
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "preparation-animal-products",
+          "title": "Preparation of Animal Products",
+          "description": "Learning about processing fish and dressing poultry carcass",
+          "duration": 6,
+          "prerequisites": ["basic-agriculture", "animal-safety"],
+          "crossCurricularLinks": ["Home Science - Food preparation", "Health Education - Food safety"],
+          "realWorldApplications": [
+            "Fish processing",
+            "Poultry processing",
+            "Value addition"
+          ],
+          "lessons": [
+            {
+              "id": "lesson-fish-processing",
+              "title": "Processing Fresh Fish",
+              "duration": 40,
+              "introduction": "Proper processing of fresh fish is important for consumption, storage, and transportation. Today we'll learn about various fish processing methods.",
+              "objectives": [
+                {
+                  "id": "obj-fish1",
+                  "description": "Describe how fresh fish is processed for various purposes",
+                  "bloomsLevel": "understand",
+                  "assessmentCriteria": [
+                    "Correctly describes fish processing methods",
+                    "Explains the purpose of each processing method",
+                    "Identifies appropriate processing for different purposes"
+                  ]
+                },
+                {
+                  "id": "obj-fish2",
+                  "description": "Process fresh fish for various purposes",
+                  "bloomsLevel": "apply",
+                  "assessmentCriteria": [
+                    "Correctly performs fish scaling",
+                    "Demonstrates proper gutting and cleaning",
+                    "Applies appropriate processing methods for different purposes"
+                  ]
+                }
+              ],
+              "activities": [
+                {
+                  "id": "act-fish-processing-discussion",
+                  "title": "Fish Processing Discussion",
+                  "type": "pair",
+                  "duration": 15,
+                  "description": "Students share experiences on fish processing",
+                  "materials": ["Notebooks", "Pens"],
+                  "instructions": [
+                    "Form pairs with a classmate",
+                    "Share your experiences on how to process fresh fish",
+                    "Discuss different methods of processing fish for various purposes",
+                    "Create a list of processing methods and their purposes",
+                    "Present your ideas to the class"
+                  ],
+                  "learningStyle": ["verbal", "social"],
+                  "difficulty": "beginner",
+                  "prerequisites": []
+                },
+                {
+                  "id": "act-fish-processing-practical",
+                  "title": "Fish Processing Practical",
+                  "type": "group",
+                  "duration": 45,
+                  "description": "Students practice processing fresh fish",
+                  "materials": ["Fresh fish", "Knives", "Cutting boards", "Containers", "Salt", "Cooking oil", "Heat source"],
+                  "instructions": [
+                    "Form groups of 4-5 students",
+                    "Observe a demonstration of fish processing",
+                    "Practice scaling the fish",
+                    "Practice gutting and cleaning the fish",
+                    "Apply salt to some fish pieces for preservation",
+                    "Fry some fish pieces",
+                    "Discuss the purpose of each processing step"
+                  ],
+                  "learningStyle": ["kinesthetic", "visual", "social"],
+                  "difficulty": "intermediate",
+                  "prerequisites": ["basic-knife-skills"]
+                }
+              ],
+              "assessment": {
+                "id": "assess-fish-processing",
+                "title": "Fish Processing Assessment",
+                "type": "formative",
+                "format": "practical",
+                "duration": 60,
+                "totalMarks": 20,
+                "rubric": [
+                  {
+                    "criterion": "Understanding of Fish Processing",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Gives an elaborately contextual clear description on how fresh fish is processed for storage, transport and consumption purposes",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Gives a clear description on how fresh fish is processed for storage, transport and consumption purposes",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Gives some description that requires clarification on how fresh fish is processed for storage, transport and consumption purposes",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Gives some description that requires on how fresh fish is processed for storage, transport and consumption purposes only if given extra prompts",
+                        "marks": 6
+                      }
+                    ]
+                  },
+                  {
+                    "criterion": "Fish Processing Skills",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Procedurally and skillfully processes fresh fish for three purposes (storage, transport or consumption)",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Processes fresh fish for a set of three purposes (storage, transport and consumption)",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Processes fresh fish for at least two purposes (storage, transport or consumption)",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Processes fresh fish for at least less than two purposes (storage, transport or consumption)",
+                        "marks": 6
+                      }
+                    ]
+                  }
+                ]
+              },
+              "resources": [
+                {
+                  "id": "res-fish-processing",
+                  "title": "Fish Processing Guide",
+                  "type": "document",
+                  "description": "A comprehensive guide to processing fresh fish for various purposes",
+                  "ageAppropriate": true,
+                  "language": "english"
+                },
+                {
+                  "id": "res-fish-video",
+                  "title": "Fish Processing Techniques",
+                  "type": "video",
+                  "description": "A video demonstrating techniques for processing fresh fish",
+                  "ageAppropriate": true,
+                  "language": "english"
+                }
+              ],
+              "vocabulary": [
+                {
+                  "term": "Scaling",
+                  "definition": "The process of removing scales from a fish",
+                  "translation": "Kuondoa magamba"
+                },
+                {
+                  "term": "Gutting",
+                  "definition": "The process of removing the internal organs of a fish",
+                  "translation": "Kutoa matumbo"
+                },
+                {
+                  "term": "Filleting",
+                  "definition": "The process of cutting fish into boneless pieces",
+                  "translation": "Kukata samaki vipande visivyo na mifupa"
+                }
+              ],
+              "homework": "Research and write a report on traditional fish processing methods used in your community or region, explaining the purpose and process of each method.",
+              "differentiation": {
+                "support": [
+                  "Provide step-by-step visual guides for fish processing",
+                  "Demonstrate techniques slowly and repeatedly",
+                  "Use pre-prepared fish for practice"
+                ],
+                "extension": [
+                  "Research advanced fish preservation techniques",
+                  "Investigate value addition opportunities for fish products",
+                  "Design improved fish processing tools"
+                ]
+              }
+            }
+          ],
+          "unitAssessment": {
+            "id": "unit-animal-products-test",
+            "title": "Animal Products Processing Assessment",
+            "type": "summative",
+            "format": "practical and written",
+            "duration": 120,
+            "totalMarks": 30,
+            "rubric": [
+              {
+                "criterion": "Animal Products Processing Knowledge and Skills",
+                "levels": [
+                  {
+                    "level": "E",
+                    "description": "Demonstrates comprehensive understanding and application of animal products processing principles and techniques",
+                    "marks": 27
+                  },
+                  {
+                    "level": "M",
+                    "description": "Demonstrates good understanding and application of animal products processing principles and techniques",
+                    "marks": 21
+                  },
+                  {
+                    "level": "A",
+                    "description": "Demonstrates partial understanding and application of animal products processing principles and techniques",
+                    "marks": 15
+                  },
+                  {
+                    "level": "B",
+                    "description": "Demonstrates limited understanding and application of animal products processing principles and techniques",
+                    "marks": 9
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "preservation-animal-products",
+          "title": "Preservation of Animal Products",
+          "description": "Learning about methods of preserving milk and meat at household level",
+          "duration": 5,
+          "prerequisites": ["basic-agriculture", "preparation-animal-products"],
+          "crossCurricularLinks": ["Home Science - Food preservation", "Integrated Science - Microorganisms"],
+          "realWorldApplications": [
+            "Meat preservation",
+            "Milk preservation",
+            "Food security"
+          ],
+          "lessons": [
+            {
+              "id": "lesson-milk-meat-preservation",
+              "title": "Preserving Milk and Meat",
+              "duration": 40,
+              "introduction": "Proper preservation of milk and meat is important for food security at the household level. Today we'll learn about various preservation methods.",
+              "objectives": [
+                {
+                  "id": "obj-preserve1",
+                  "description": "Describe methods used in preserving milk and meat at household levels",
+                  "bloomsLevel": "understand",
+                  "assessmentCriteria": [
+                    "Correctly identifies milk and meat preservation methods",
+                    "Explains how each preservation method works",
+                    "Describes appropriate contexts for different methods"
+                  ]
+                },
+                {
+                  "id": "obj-preserve2",
+                  "description": "Preserve milk and meat to prolong shelf life at household level",
+                  "bloomsLevel": "apply",
+                  "assessmentCriteria": [
+                    "Correctly applies preservation techniques to milk",
+                    "Correctly applies preservation techniques to meat",
+                    "Follows proper hygiene and safety procedures"
+                  ]
+                }
+              ],
+              "activities": [
+                {
+                  "id": "act-preservation-brainstorm",
+                  "title": "Preservation Methods Brainstorming",
+                  "type": "pair",
+                  "duration": 15,
+                  "description": "Students brainstorm methods of preserving milk and meat",
+                  "materials": ["Notebooks", "Pens"],
+                  "instructions": [
+                    "Form pairs with a classmate",
+                    "Brainstorm methods of preserving milk and meat in your locality",
+                    "List at least five preservation methods",
+                    "Discuss the advantages and limitations of each method",
+                    "Share your findings with the class"
+                  ],
+                  "learningStyle": ["verbal", "social"],
+                  "difficulty": "beginner",
+                  "prerequisites": []
+                },
+                {
+                  "id": "act-preservation-practical",
+                  "title": "Milk and Meat Preservation Practical",
+                  "type": "group",
+                  "duration": 45,
+                  "description": "Students practice preserving milk and meat using various methods",
+                  "materials": ["Milk samples", "Meat samples", "Salt", "Heat source", "Containers", "Utensils"],
+                  "instructions": [
+                    "Form groups of 4-5 students",
+                    "Apply appropriate techniques to preserve milk (boiling, fermenting)",
+                    "Apply appropriate techniques to preserve meat (sun drying, smoking, salting)",
+                    "Observe and record changes in the preserved products",
+                    "Discuss the effectiveness of each preservation method",
+                    "Share your findings with the class"
+                  ],
+                  "learningStyle": ["kinesthetic", "visual", "social"],
+                  "difficulty": "intermediate",
+                  "prerequisites": ["basic-food-handling-skills"]
+                }
+              ],
+              "assessment": {
+                "id": "assess-preservation",
+                "title": "Milk and Meat Preservation Assessment",
+                "type": "formative",
+                "format": "practical",
+                "duration": 60,
+                "totalMarks": 20,
+                "rubric": [
+                  {
+                    "criterion": "Knowledge of Preservation Methods",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Gives an analytical description of five or more methods used in preserving animal products",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Gives a clear description of five methods used in preserving animal products",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Gives a clear description of four methods used in preserving animal products",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Gives description of less than four methods used in preserving animal products",
+                        "marks": 6
+                      }
+                    ]
+                  },
+                  {
+                    "criterion": "Preservation Skills",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Demonstrates exceptional skills and innovation in applying five or more techniques to preserve animal products to prolong shelf life",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Ably applies five techniques to preserve animal products to prolong shelf life",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Demonstrates some ability to carry out four activities in preserving animal products to prolong shelf life",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Demonstrates some ability to carry out less than four activities in preserving animal products to prolong shelf life",
+                        "marks": 6
+                      }
+                    ]
+                  }
+                ]
+              },
+              "resources": [
+                {
+                  "id": "res-preservation",
+                  "title": "Milk and Meat Preservation Guide",
+                  "type": "document",
+                  "description": "A comprehensive guide to preserving milk and meat at the household level",
+                  "ageAppropriate": true,
+                  "language": "english"
+                },
+                {
+                  "id": "res-preservation-video",
+                  "title": "Traditional Preservation Techniques",
+                  "type": "video",
+                  "description": "A video demonstrating traditional techniques for preserving milk and meat",
+                  "ageAppropriate": true,
+                  "language": "english"
+                }
+              ],
+              "vocabulary": [
+                {
+                  "term": "Preservation",
+                  "definition": "The process of treating food to stop or slow down spoilage and extend its shelf life",
+                  "translation": "Uhifadhi"
+                },
+                {
+                  "term": "Fermentation",
+                  "definition": "A metabolic process that converts sugar to acids, gases, or alcohol, often used in food preservation",
+                  "translation": "Chacha"
+                },
+                {
+                  "term": "Curing",
+                  "definition": "A food preservation process that involves the addition of salt, nitrates, nitrites, or sugar",
+                  "translation": "Kutibu"
+                }
+              ],
+              "homework": "Research and document traditional methods of preserving milk and meat in your community, explaining the process, advantages, and limitations of each method.",
+              "differentiation": {
+                "support": [
+                  "Provide step-by-step visual guides for preservation methods",
+                  "Demonstrate techniques slowly and repeatedly",
+                  "Use simple preservation methods for practice"
+                ],
+                "extension": [
+                  "Research modern food preservation technologies",
+                  "Investigate the science behind different preservation methods",
+                  "Design experiments to test the effectiveness of different preservation techniques"
+                ]
+              }
+            }
+          ],
+          "unitAssessment": {
+            "id": "unit-preservation-test",
+            "title": "Animal Products Preservation Assessment",
+            "type": "summative",
+            "format": "practical and written",
+            "duration": 120,
+            "totalMarks": 30,
+            "rubric": [
+              {
+                "criterion": "Preservation Knowledge and Skills",
+                "levels": [
+                  {
+                    "level": "E",
+                    "description": "Demonstrates comprehensive understanding and application of milk and meat preservation principles and techniques",
+                    "marks": 27
+                  },
+                  {
+                    "level": "M",
+                    "description": "Demonstrates good understanding and application of milk and meat preservation principles and techniques",
+                    "marks": 21
+                  },
+                  {
+                    "level": "A",
+                    "description": "Demonstrates partial understanding and application of milk and meat preservation principles and techniques",
+                    "marks": 15
+                  },
+                  {
+                    "level": "B",
+                    "description": "Demonstrates limited understanding and application of milk and meat preservation principles and techniques",
+                    "marks": 9
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "agriculture-technology",
+      "title": "Agriculture and Technology",
+      "description": "Learning about innovative technologies and their application in agriculture",
+      "topics": [
+        {
+          "id": "innovative-waterer-project",
+          "title": "Innovative Waterer Project",
+          "description": "Designing and constructing an innovative waterer for small domestic animals",
+          "duration": 9,
+          "prerequisites": ["basic-agriculture"],
+          "crossCurricularLinks": ["Pre-technical Studies - Design and construction", "Integrated Science - Water conservation"],
+          "realWorldApplications": [
+            "Small-scale animal rearing",
+            "Water conservation",
+            "Appropriate technology"
+          ],
+          "lessons": [
+            {
+              "id": "lesson-waterer-design",
+              "title": "Designing an Innovative Waterer",
+              "duration": 40,
+              "introduction": "Innovative waterers can help conserve water and improve animal welfare. Today we'll learn about designing and constructing an innovative waterer for small domestic animals.",
+              "objectives": [
+                {
+                  "id": "obj-waterer1",
+                  "description": "Describe waterers used in the community for domestic animals",
+                  "bloomsLevel": "understand",
+                  "assessmentCriteria": [
+                    "Correctly identifies types of waterers used in the community",
+                    "Describes the features of different waterers",
+                    "Explains how different waterers function"
+                  ]
+                },
+                {
+                  "id": "obj-waterer2",
+                  "description": "Explain challenges with waterers used in the community",
+                  "bloomsLevel": "understand",
+                  "assessmentCriteria": [
+                    "Correctly identifies challenges with existing waterers",
+                    "Explains how these challenges affect animal welfare",
+                    "Suggests potential improvements to address challenges"
+                  ]
+                }
+              ],
+              "activities": [
+                {
+                  "id": "act-waterer-observation",
+                  "title": "Community Waterer Observation",
+                  "type": "group",
+                  "duration": 60,
+                  "description": "Students visit community households to observe animal waterers",
+                  "materials": ["Notebooks", "Pens", "Camera (if available)"],
+                  "instructions": [
+                    "Form groups of 4-5 students",
+                    "Identify school neighbors who rear small domestic animals",
+                    "Visit these households with permission",
+                    "Observe the equipment used to provide water to animals",
+                    "Note the features, functionality, and challenges of the waterers",
+                    "Record your observations",
+                    "Share your findings with the class"
+                  ],
+                  "learningStyle": ["visual", "verbal", "social"],
+                  "difficulty": "intermediate",
+                  "prerequisites": ["basic-observation-skills"]
+                },
+                {
+                  "id": "act-waterer-challenges",
+                  "title": "Waterer Challenges Analysis",
+                  "type": "group",
+                  "duration": 30,
+                  "description": "Students analyze challenges with existing waterers and propose solutions",
+                  "materials": ["Notebooks", "Pens", "Chart paper", "Markers"],
+                  "instructions": [
+                    "In your groups, discuss the challenges observed with existing waterers",
+                    "Analyze how these challenges affect animal welfare and water conservation",
+                    "Brainstorm innovative solutions to address these challenges",
+                    "Create a presentation on your findings and proposed solutions",
+                    "Present your ideas to the class"
+                  ],
+                  "learningStyle": ["verbal", "logical", "social"],
+                  "difficulty": "intermediate",
+                  "prerequisites": ["basic-analytical-skills"]
+                }
+              ],
+              "assessment": {
+                "id": "assess-waterer-design",
+                "title": "Innovative Waterer Design Assessment",
+                "type": "formative",
+                "format": "project",
+                "duration": 120,
+                "totalMarks": 20,
+                "rubric": [
+                  {
+                    "criterion": "Understanding of Existing Waterers",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Gives an elaborately detailed illustrative description of waterers used in the community",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Gives a clear description of waterers used in the community",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Gives a description that requires clarity of details on waterers used in the community",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Gives a description that require correction for accuracy of details on waterers used in the community",
+                        "marks": 6
+                      }
+                    ]
+                  },
+                  {
+                    "criterion": "Analysis of Waterer Challenges",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Gives an elaborately detailed explanation of challenges experienced with waterers used in the community",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Gives a clear explanation of the challenges experienced with waterers used in the community",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Gives some explanation that requires clarity of details on challenges experienced with waterers used in the community",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Gives some explanation that requires correction for accuracy of details on challenges experienced with waterers used in the community",
+                        "marks": 6
+                      }
+                    ]
+                  }
+                ]
+              },
+              "resources": [
+                {
+                  "id": "res-animal-waterers",
+                  "title": "Animal Waterer Systems Guide",
+                  "type": "document",
+                  "description": "A comprehensive guide to different types of animal waterers and their features",
+                  "ageAppropriate": true,
+                  "language": "english"
+                },
+                {
+                  "id": "res-waterer-video",
+                  "title": "Innovative Animal Waterers",
+                  "type": "video",
+                  "description": "A video showcasing innovative waterer designs for small domestic animals",
+                  "ageAppropriate": true,
+                  "language": "english"
+                }
+              ],
+              "vocabulary": [
+                {
+                  "term": "Waterer",
+                  "definition": "A device or container used to provide drinking water to animals",
+                  "translation": "Chombo cha maji"
+                },
+                {
+                  "term": "Innovation",
+                  "definition": "A new idea, method, or device that improves upon existing solutions",
+                  "translation": "Ubunifu"
+                },
+                {
+                  "term": "Water conservation",
+                  "definition": "The practice of using water efficiently to reduce unnecessary water usage",
+                  "translation": "Uhifadhi wa maji"
+                }
+              ],
+              "homework": "Research and document three innovative animal waterer designs from around the world, explaining their features, benefits, and potential applications in your community.",
+              "differentiation": {
+                "support": [
+                  "Provide templates for waterer design",
+                  "Use visual guides for design process",
+                  "Offer pre-selected materials for construction"
+                ],
+                "extension": [
+                  "Research automated watering systems",
+                  "Investigate water filtration and recycling options",
+                  "Design multi-species watering solutions"
+                ]
+              }
+            }
+          ],
+          "unitAssessment": {
+            "id": "unit-waterer-project",
+            "title": "Innovative Waterer Project",
+            "type": "summative",
+            "format": "project",
+            "duration": 180,
+            "totalMarks": 30,
+            "rubric": [
+              {
+                "criterion": "Innovative Waterer Knowledge and Skills",
+                "levels": [
+                  {
+                    "level": "E",
+                    "description": "Demonstrates comprehensive understanding and application of innovative waterer design and construction principles",
+                    "marks": 27
+                  },
+                  {
+                    "level": "M",
+                    "description": "Demonstrates good understanding and application of innovative waterer design and construction principles",
+                    "marks": 21
+                  },
+                  {
+                    "level": "A",
+                    "description": "Demonstrates partial understanding and application of innovative waterer design and construction principles",
+                    "marks": 15
+                  },
+                  {
+                    "level": "B",
+                    "description": "Demonstrates limited understanding and application of innovative waterer design and construction principles",
+                    "marks": 9
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "ict-agricultural-support",
+          "title": "ICT in Agricultural Support Services",
+          "description": "Learning about using ICT to access agricultural support services",
+          "duration": 6,
+          "prerequisites": ["basic-agriculture", "basic-ict"],
+          "crossCurricularLinks": ["Computer Science - Digital literacy", "Business Studies - E-commerce"],
+          "realWorldApplications": [
+            "Digital agriculture",
+            "E-extension services",
+            "Market information systems"
+          ],
+          "lessons": [
+            {
+              "id": "lesson-ict-agriculture",
+              "title": "ICT in Agricultural Support Services",
+              "duration": 40,
+              "introduction": "Information and Communication Technology (ICT) plays an important role in modern agriculture. Today we'll explore how ICT can be used to access various agricultural support services.",
+              "objectives": [
+                {
+                  "id": "obj-ict1",
+                  "description": "Describe agricultural support services that can be accessed through use of ICT",
+                  "bloomsLevel": "understand",
+                  "assessmentCriteria": [
+                    "Correctly identifies agricultural support services accessible through ICT",
+                    "Explains how ICT facilitates access to these services",
+                    "Describes benefits of using ICT for agricultural support"
+                  ]
+                },
+                {
+                  "id": "obj-ict2",
+                  "description": "Access agricultural support services using ICT",
+                  "bloomsLevel": "apply",
+                  "assessmentCriteria": [
+                    "Correctly uses ICT tools to access agricultural information",
+                    "Navigates relevant platforms and applications",
+                    "Retrieves and interprets agricultural information"
+                  ]
+                }
+              ],
+              "activities": [
+                {
+                  "id": "act-ict-brainstorm",
+                  "title": "Agricultural Support Services Brainstorming",
+                  "type": "group",
+                  "duration": 20,
+                  "description": "Students brainstorm agricultural support services accessible through ICT",
+                  "materials": ["Notebooks", "Pens", "Chart paper", "Markers"],
+                  "instructions": [
+                    "Form groups of 4-5 students",
+                    "Brainstorm various agricultural support services that can be accessed through ICT",
+                    "Focus on weather forecasts, veterinary services, input supply, extension services, market information, and banking services",
+                    "Create a chart showing these services and how ICT facilitates access",
+                    "Present your findings to the class"
+                  ],
+                  "learningStyle": ["verbal", "visual", "social"],
+                  "difficulty": "intermediate",
+                  "prerequisites": []
+                },
+                {
+                  "id": "act-ict-access",
+                  "title": "Accessing Agricultural Services Using ICT",
+                  "type": "group",
+                  "duration": 40,
+                  "description": "Students use ICT to access agricultural support services",
+                  "materials": ["Digital devices", "Internet access", "Notebooks", "Pens"],
+                  "instructions": [
+                    "Form groups of 4-5 students",
+                    "Use digital devices to access agricultural support services",
+                    "Visit websites or use applications for weather forecasts, market information, extension services, etc.",
+                    "Record the information accessed and how it could be useful to farmers",
+                    "Discuss ethical and security considerations when using these platforms",
+                    "Share your findings with the class"
+                  ],
+                  "learningStyle": ["visual", "digital", "social"],
+                  "difficulty": "intermediate",
+                  "prerequisites": ["basic-digital-literacy"]
+                }
+              ],
+              "assessment": {
+                "id": "assess-ict-agriculture",
+                "title": "ICT in Agriculture Assessment",
+                "type": "formative",
+                "format": "presentation",
+                "duration": 60,
+                "totalMarks": 20,
+                "rubric": [
+                  {
+                    "criterion": "Knowledge of Agricultural Support Services",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Gives an elaborately detailed description of six or more agricultural support services that can be accessed through use of ICT",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Gives a clear description of six agricultural support services that can be accessed through use of ICT",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Gives a description of five agricultural support services that can be accessed through use of ICT",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Gives a description of less than five agricultural support services that can be accessed through use of ICT",
+                        "marks": 6
+                      }
+                    ]
+                  },
+                  {
+                    "criterion": "ICT Access Skills",
+                    "levels": [
+                      {
+                        "level": "E",
+                        "description": "Demonstrates exceptional skills in accessing agricultural support services using ICT",
+                        "marks": 18
+                      },
+                      {
+                        "level": "M",
+                        "description": "Ably accesses agricultural support services using ICT",
+                        "marks": 14
+                      },
+                      {
+                        "level": "A",
+                        "description": "Experiences some skill challenges when accessing some agricultural support services using ICT",
+                        "marks": 10
+                      },
+                      {
+                        "level": "B",
+                        "description": "Experiences major skill challenges that necessitate external assistance when accessing some agricultural support services using ICT",
+                        "marks": 6
+                      }
+                    ]
+                  }
+                ]
+              },
+              "resources": [
+                {
+                  "id": "res-ict-agriculture",
+                  "title": "ICT Applications in Agriculture",
+                  "type": "document",
+                  "description": "A comprehensive guide to ICT applications and platforms for agricultural support services",
+                  "ageAppropriate": true,
+                  "language": "english"
+                },
+                {
+                  "id": "res-digital-agriculture",
+                  "title": "Digital Agriculture Revolution",
+                  "type": "video",
+                  "description": "A video showcasing how digital technologies are transforming agriculture",
+                  "ageAppropriate": true,
+                  "language": "english"
+                }
+              ],
+              "vocabulary": [
+                {
+                  "term": "ICT",
+                  "definition": "Information and Communication Technology; technologies that provide access to information through telecommunications",
+                  "translation": "Teknolojia ya Habari na Mawasiliano"
+                },
+                {
+                  "term": "E-extension",
+                  "definition": "The delivery of agricultural extension services through digital channels",
+                  "translation": "Huduma za ugani za kielektroniki"
+                },
+                {
+                  "term": "Digital platform",
+                  "definition": "A technology framework that enables the delivery of digital content or services",
+                  "translation": "Jukwaa la kidijitali"
+                }
+              ],
+              "homework": "Identify and evaluate three mobile applications or websites that provide agricultural support services, explaining their features, benefits, and potential limitations for farmers in your area.",
+              "differentiation": {
+                "support": [
+                  "Provide step-by-step guides for accessing digital platforms",
+                  "Use simplified interfaces for practice",
+                  "Offer peer support for digital activities"
+                ],
+                "extension": [
+                  "Research advanced agricultural technologies like precision farming",
+                  "Investigate the development of agricultural mobile applications",
+                  "Analyze the impact of digital technologies on agricultural productivity"
+                ]
+              }
+            }
+          ],
+          "unitAssessment": {
+            "id": "unit-ict-agriculture-test",
+            "title": "ICT in Agriculture Assessment",
+            "type": "summative",
+            "format": "project",
+            "duration": 120,
+            "totalMarks": 30,
+            "rubric": [
+              {
+                "criterion": "ICT in Agriculture Knowledge and Skills",
+                "levels": [
+                  {
+                    "level": "E",
+                    "description": "Demonstrates comprehensive understanding and application of ICT in agricultural support services",
+                    "marks": 27
+                  },
+                  {
+                    "level": "M",
+                    "description": "Demonstrates good understanding and application of ICT in agricultural support services",
+                    "marks": 21
+                  },
+                  {
+                    "level": "A",
+                    "description": "Demonstrates partial understanding and application of ICT in agricultural support services",
+                    "marks": 15
+                  },
+                  {
+                    "level": "B",
+                    "description": "Demonstrates limited understanding and application of ICT in agricultural support services",
+                    "marks": 9
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
