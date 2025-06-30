@@ -1,5 +1,9 @@
 import { Tabs } from 'expo-router';
+<<<<<<< HEAD
 import { Chrome as Home, BookOpen, Trophy, User, MessageCircle, Book } from 'lucide-react-native';
+=======
+import { Chrome as Home, BookOpen, Trophy, User, MessageCircle } from 'lucide-react-native';
+>>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
 
 export default function TabLayout() {
   return (
@@ -41,11 +45,19 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+<<<<<<< HEAD
         name="curriculum"
         options={{
           title: 'Curriculum',
           tabBarIcon: ({ size, color }) => (
             <Book size={size} color={color} />
+=======
+        name="achievements"
+        options={{
+          title: 'Achievements',
+          tabBarIcon: ({ size, color }) => (
+            <Trophy size={size} color={color} />
+>>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
           ),
         }}
       />

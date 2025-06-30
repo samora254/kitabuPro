@@ -238,10 +238,13 @@ export default function DesktopAdminDashboard() {
     }
   };
 
+<<<<<<< HEAD
   const handleCloseAdmin = () => {
     router.push('/dashboard');
   };
 
+=======
+>>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'active': return '#10B981';
@@ -490,6 +493,7 @@ export default function DesktopAdminDashboard() {
       {renderSidebar()}
 
       <View style={[styles.mainContent, sidebarCollapsed && styles.mainContentExpanded]}>
+<<<<<<< HEAD
         {/* Close Button */}
         <TouchableOpacity
           style={styles.closeAdminButton}
@@ -499,6 +503,8 @@ export default function DesktopAdminDashboard() {
           <Text style={styles.closeAdminButtonText}>Back to Student Dashboard</Text>
         </TouchableOpacity>
 
+=======
+>>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
         {/* Top Header */}
         <Animated.View
           style={[
@@ -705,6 +711,7 @@ const styles = StyleSheet.create({
       marginLeft: 70,
     }),
   },
+<<<<<<< HEAD
   closeAdminButton: {
     position: 'absolute',
     top: 16,
@@ -723,6 +730,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-Medium',
     marginLeft: 8,
   },
+=======
+>>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
   topHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',

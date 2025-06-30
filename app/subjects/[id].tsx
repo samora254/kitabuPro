@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Animated,
   Dimensions,
+<<<<<<< HEAD
   ScrollView,
   Image,
   ActivityIndicator,
@@ -16,11 +17,18 @@ import { DevModeIndicator } from '@/components/DevModeIndicator';
 import CurriculumService from '@/services/curriculumService';
 import { useCurriculumAI } from '@/hooks/useCurriculumAI';
 import { Topic, Resource, Activity, Assessment } from '@/constants/curriculum';
+=======
+} from 'react-native';
+import { router, useLocalSearchParams } from 'expo-router';
+import { ChevronLeft, ChevronRight, Brain, BookOpen, FileCheck, ArrowLeft } from 'lucide-react-native';
+import { DevModeIndicator } from '@/components/DevModeIndicator';
+>>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
 
 const { width, height } = Dimensions.get('window');
 
 export default function SubjectDetail() {
   const { id } = useLocalSearchParams();
+<<<<<<< HEAD
   const [currentTopicIndex, setCurrentTopicIndex] = useState(0);
   const [curriculum, setCurriculum] = useState<any>(null);
   const [topics, setTopics] = useState<Topic[]>([]);
@@ -38,6 +46,12 @@ export default function SubjectDetail() {
     userId: 'current-user' // In a real app, this would be the actual user ID
   });
 
+=======
+  const [currentTopic, setCurrentTopic] = useState(1);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(30)).current;
+
+>>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
   useEffect(() => {
     Animated.parallel([
       Animated.timing(fadeAnim, {
@@ -51,6 +65,7 @@ export default function SubjectDetail() {
         useNativeDriver: true,
       }),
     ]).start();
+<<<<<<< HEAD
 
     // Load curriculum data
     loadCurriculumData();
@@ -323,6 +338,76 @@ export default function SubjectDetail() {
     );
   }
 
+=======
+  }, []);
+
+  const getSubjectInfo = (subjectId: string) => {
+    const subjects: Record<string, any> = {
+      'mathematics': {
+        name: 'Mathematics',
+        color: '#008000',
+        topics: ['Numbers', 'Algebra', 'Geometry', 'Statistics', 'Probability'],
+        progress: 20,
+      },
+      'english': {
+        name: 'English',
+        color: '#008000',
+        topics: ['Grammar', 'Reading', 'Writing', 'Literature', 'Speaking', 'Listening'],
+        progress: 15,
+      },
+      'science': {
+        name: 'Science',
+        color: '#008000',
+        topics: ['Matter', 'Energy', 'Life Science', 'Earth Science', 'Chemistry', 'Physics', 'Biology', 'Environment'],
+        progress: 30,
+      },
+      'social-studies': {
+        name: 'Social Studies',
+        color: '#008000',
+        topics: ['Geography', 'History', 'Civics', 'Economics'],
+        progress: 10,
+      },
+    };
+    
+    return subjects[subjectId as string] || subjects['mathematics'];
+  };
+
+  const subject = getSubjectInfo(id as string);
+  const totalTopics = subject.topics.length;
+
+  const activities = [
+    {
+      title: 'Brain Tease',
+      description: 'Warm up your mind with quick exercises',
+      icon: Brain,
+      color: '#008000',
+      action: 'Start Challenge',
+    },
+    {
+      title: "Let's Learn",
+      description: 'Master the concepts with interactive lessons',
+      icon: BookOpen,
+      color: '#4299E1',
+      action: 'Start Learning',
+    },
+    {
+      title: 'Take Quiz',
+      description: 'Check your understanding with a quiz',
+      icon: FileCheck,
+      color: '#8B5CF6',
+      action: 'Take Quiz',
+    },
+  ];
+
+  const navigateTopic = (direction: 'prev' | 'next') => {
+    if (direction === 'prev' && currentTopic > 1) {
+      setCurrentTopic(currentTopic - 1);
+    } else if (direction === 'next' && currentTopic < totalTopics) {
+      setCurrentTopic(currentTopic + 1);
+    }
+  };
+
+>>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
   return (
     <View style={styles.container}>
       <DevModeIndicator />
@@ -343,7 +428,11 @@ export default function SubjectDetail() {
         >
           <ArrowLeft size={20} color="#2D3748" />
         </TouchableOpacity>
+<<<<<<< HEAD
         <Text style={styles.subjectTitle}>{curriculum?.subject || 'Subject'}</Text>
+=======
+        <Text style={styles.subjectTitle}>{subject.name}</Text>
+>>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
         <View style={styles.headerSpacer} />
       </Animated.View>
 
@@ -358,6 +447,7 @@ export default function SubjectDetail() {
         ]}
       >
         <TouchableOpacity
+<<<<<<< HEAD
           style={[styles.navButton, currentTopicIndex === 0 && styles.navButtonDisabled]}
           onPress={() => navigateTopic('prev')}
           disabled={currentTopicIndex === 0}
@@ -376,6 +466,26 @@ export default function SubjectDetail() {
           disabled={currentTopicIndex === topics.length - 1}
         >
           <ChevronRight size={18} color={currentTopicIndex === topics.length - 1 ? "#A0AEC0" : "#718096"} />
+=======
+          style={[styles.navButton, currentTopic === 1 && styles.navButtonDisabled]}
+          onPress={() => navigateTopic('prev')}
+          disabled={currentTopic === 1}
+        >
+          <ChevronLeft size={18} color={currentTopic === 1 ? "#A0AEC0" : "#718096"} />
+        </TouchableOpacity>
+        
+        <View style={styles.topicInfo}>
+          <Text style={styles.topicCounter}>Topic {currentTopic} of {totalTopics}</Text>
+          <Text style={styles.topicName}>{subject.topics[currentTopic - 1]}</Text>
+        </View>
+        
+        <TouchableOpacity
+          style={[styles.navButton, currentTopic === totalTopics && styles.navButtonDisabled]}
+          onPress={() => navigateTopic('next')}
+          disabled={currentTopic === totalTopics}
+        >
+          <ChevronRight size={18} color={currentTopic === totalTopics ? "#A0AEC0" : "#718096"} />
+>>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
         </TouchableOpacity>
       </Animated.View>
 
@@ -390,6 +500,7 @@ export default function SubjectDetail() {
         ]}
       >
         <View style={styles.progressBar}>
+<<<<<<< HEAD
           <View style={[styles.progressFill, { width: `${((currentTopicIndex + 1) / topics.length) * 100}%` }]} />
         </View>
         <Text style={styles.progressText}>{Math.round(((currentTopicIndex + 1) / topics.length) * 100)}% Complete</Text>
@@ -399,12 +510,24 @@ export default function SubjectDetail() {
       <Animated.View
         style={[
           styles.tabContainer,
+=======
+          <View style={[styles.progressFill, { width: `${subject.progress}%` }]} />
+        </View>
+        <Text style={styles.progressText}>{subject.progress}% Complete</Text>
+      </Animated.View>
+
+      {/* Activities - Optimized for viewport */}
+      <Animated.View
+        style={[
+          styles.activitiesContainer,
+>>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
           {
             opacity: fadeAnim,
             transform: [{ translateY: slideAnim }],
           },
         ]}
       >
+<<<<<<< HEAD
         <TouchableOpacity
           style={[styles.tab, activeTab === 'overview' && styles.activeTab]}
           onPress={() => setActiveTab('overview')}
@@ -536,6 +659,28 @@ export default function SubjectDetail() {
         
         <View style={{ height: 100 }} />
       </ScrollView>
+=======
+        {activities.map((activity, index) => (
+          <View key={index} style={styles.activityCard}>
+            <View style={styles.activityHeader}>
+              <View style={styles.activityContent}>
+                <Text style={styles.activityTitle}>{activity.title}</Text>
+                <Text style={styles.activityDescription}>{activity.description}</Text>
+              </View>
+              <View style={[styles.activityIcon, { backgroundColor: `${activity.color}20` }]}>
+                <activity.icon size={24} color={activity.color} />
+              </View>
+            </View>
+            
+            <TouchableOpacity
+              style={[styles.activityButton, { backgroundColor: activity.color }]}
+            >
+              <Text style={styles.activityButtonText}>{activity.action}</Text>
+            </TouchableOpacity>
+          </View>
+        ))}
+      </Animated.View>
+>>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
     </View>
   );
 }
@@ -544,6 +689,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F7FAFC',
+<<<<<<< HEAD
   },
   loadingContainer: {
     flex: 1,
@@ -556,22 +702,33 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Inter-Medium',
     color: '#4A5568',
+=======
+    paddingHorizontal: 20,
+>>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
   },
   compactHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingTop: 50,
+<<<<<<< HEAD
     paddingHorizontal: 20,
     paddingBottom: 12,
     backgroundColor: 'white',
     borderBottomWidth: 1,
     borderBottomColor: '#E2E8F0',
+=======
+    paddingBottom: 12,
+>>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
   },
   backButton: {
     width: 32,
     height: 32,
     borderRadius: 16,
+<<<<<<< HEAD
     backgroundColor: '#F7FAFC',
+=======
+    backgroundColor: 'white',
+>>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
@@ -597,11 +754,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'white',
+<<<<<<< HEAD
     paddingHorizontal: 16,
     paddingVertical: 12,
     marginHorizontal: 20,
     marginTop: 12,
     borderRadius: 12,
+=======
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 12,
+>>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -628,6 +791,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   topicCounter: {
+<<<<<<< HEAD
     fontSize: 12,
     fontFamily: 'Inter-Medium',
     color: '#718096',
@@ -643,6 +807,21 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginTop: 12,
     marginBottom: 16,
+=======
+    fontSize: 16,
+    fontFamily: 'Poppins-Bold',
+    color: '#2D3748',
+    marginBottom: 2,
+  },
+  topicName: {
+    fontSize: 14,
+    fontFamily: 'Inter-Regular',
+    color: '#718096',
+  },
+  progressSection: {
+    marginBottom: 16,
+    paddingHorizontal: 8,
+>>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
   },
   progressBar: {
     height: 4,
@@ -653,12 +832,17 @@ const styles = StyleSheet.create({
   },
   progressFill: {
     height: '100%',
+<<<<<<< HEAD
     backgroundColor: '#4299E1',
+=======
+    backgroundColor: '#008000',
+>>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
     borderRadius: 2,
   },
   progressText: {
     fontSize: 12,
     fontFamily: 'Inter-Medium',
+<<<<<<< HEAD
     color: '#4299E1',
     textAlign: 'right',
   },
@@ -931,11 +1115,26 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 12,
     padding: 16,
+=======
+    color: '#008000',
+    textAlign: 'center',
+  },
+  activitiesContainer: {
+    flex: 1,
+    marginBottom: 16,
+  },
+  activityCard: {
+    backgroundColor: 'white',
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 12,
+>>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
     },
+<<<<<<< HEAD
     shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 2,
@@ -963,10 +1162,30 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontFamily: 'Inter-SemiBold',
     color: '#4299E1',
+=======
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  activityHeader: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 12,
+  },
+  activityContent: {
+    flex: 1,
+  },
+  activityTitle: {
+    fontSize: 18,
+    fontFamily: 'Poppins-Bold',
+    color: '#2D3748',
+    marginBottom: 4,
+>>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
   },
   activityDescription: {
     fontSize: 14,
     fontFamily: 'Inter-Regular',
+<<<<<<< HEAD
     color: '#4A5568',
     lineHeight: 20,
     marginBottom: 12,
@@ -1092,5 +1311,27 @@ const styles = StyleSheet.create({
     color: '#718096',
     marginTop: 16,
     textAlign: 'center',
+=======
+    color: '#718096',
+    lineHeight: 18,
+  },
+  activityIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 12,
+  },
+  activityButton: {
+    paddingVertical: 12,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  activityButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontFamily: 'Poppins-SemiBold',
+>>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
   },
 });

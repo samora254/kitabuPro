@@ -55,6 +55,7 @@ const steps = [
   { id: 'contact', title: "How can we reach you?", subtitle: "Just in case we need to send you something awesome" },
   { id: 'security', title: "Keep your account safe", subtitle: "Choose a password you'll remember" },
   { id: 'personal', title: "Tell us about yourself", subtitle: "Help us personalize your experience" },
+<<<<<<< HEAD
   { id: 'school', title: "Where do you study?", subtitle: "Help us connect you with your school community" },
   { id: 'inspiration', title: "Who inspires you?", subtitle: "Tell us about your role model" },
   { id: 'dreams', title: "What's your dream career?", subtitle: "Share your aspirations with us" },
@@ -63,6 +64,16 @@ const steps = [
   { id: 'teacher', title: "Favorite Teacher", subtitle: "Who inspires your learning?" },
   { id: 'learning', title: "How do you learn best?", subtitle: "Help us personalize your experience" },
   { id: 'complete', title: "You're all set! 🎉", subtitle: "Ready to start your learning journey" },
+=======
+  { id: 'school', title: "Where do you study?", subtitle: "" },
+  { id: 'inspiration', title: "Who inspires you?", subtitle: "" },
+  { id: 'dreams', title: "What's your dream career?", subtitle: "" },
+  { id: 'subjects', title: "Your favorite subject?", subtitle: "" },
+  { id: 'social', title: "Best Friend", subtitle: "" },
+  { id: 'teacher', title: "Favorite Teacher", subtitle: "" },
+  { id: 'learning', title: "How do you learn best?", subtitle: "" },
+  { id: 'complete', title: "You're all set! 🎉", subtitle: "" },
+>>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
 ];
 
 export default function ProgressiveSignUp() {
