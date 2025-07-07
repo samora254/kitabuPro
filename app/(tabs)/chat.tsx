@@ -10,8 +10,17 @@ import {
   Platform,
   Animated,
 } from 'react-native';
-import { Send, Bot, User, Lightbulb, BookOpen, Calculator, Beaker, Globe, Mic, Paperclip, MoveHorizontal as MoreHorizontal } from 'lucide-react-native';
+import { Send, Bot, User, Lightbulb, BookOpen, Calculator, Beaker, Globe, Mic, Paperclip, MoveHorizontal as MoreHorizontal, X } from 'lucide-react-native';
+import TypewriterText from '@/components/TypewriterText';
 import { DevModeIndicator } from '@/components/DevModeIndicator';
+
+interface QuickAction {
+  id: string;
+  title: string;
+  icon: any;
+  color: string;
+  action: string;
+}
 
 interface Message {
   id: string;
@@ -29,7 +38,12 @@ interface QuickAction {
   action: string;
 }
 
-export default function ChatScreen() {
+interface ChatScreenProps {
+  initialMessage?: string;
+  onClose?: () => void;
+}
+
+export default function ChatScreen({ initialMessage = '', onClose }: ChatScreenProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -38,10 +52,17 @@ export default function ChatScreen() {
       timestamp: new Date(),
     },
   ]);
-  const [inputText, setInputText] = useState('');
+  const [inputText, setInputText] = useState(initialMessage);
   const [isTyping, setIsTyping] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
+  const inputRef = useRef<TextInput>(null);
   const fadeAnim = useRef(new Animated.Value(0)).current;
+  const [showQuickActions, setShowQuickActions] = useState(false);
+  const [inputFocused, setInputFocused] = useState(false);
+  const [welcomeMessage, setWelcomeMessage] = useState('');
+  const inputContainerHeightAnim = useRef(new Animated.Value(48)).current;
+  const sendButtonScaleAnim = useRef(new Animated.Value(1)).current;
+  const sendButtonColorAnim = useRef(new Animated.Value(0)).current;
 
   const quickActions: QuickAction[] = [
     {
@@ -82,9 +103,78 @@ export default function ChatScreen() {
     }).start();
   }, []);
 
+  // If there's an initial message, send it automatically
+  useEffect(() => {
+    if (initialMessage.trim()) {
+      setTimeout(() => {
+        sendMessage(initialMessage);
+      }, 500);
+    }
+  }, []);
+
   useEffect(() => {
     scrollViewRef.current?.scrollToEnd({ animated: true });
   }, [messages]);
+
+  // Handle input focus/blur
+  const handleInputFocus = () => {
+    setInputFocused(true);
+    setWelcomeMessage('Welcome! How can I help you today?');
+    
+    // Animate container expansion
+    Animated.timing(inputContainerHeightAnim, {
+      toValue: 80,
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+  };
+
+  const handleInputBlur = () => {
+    if (!inputText.trim()) {
+      setInputFocused(false);
+      setWelcomeMessage('');
+      
+      // Animate container contraction
+      Animated.timing(inputContainerHeightAnim, {
+        toValue: 48,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
+    }
+  };
+
+  // Animate send button when text changes
+  useEffect(() => {
+    if (inputText.trim()) {
+      // Pulse and color change animation
+      Animated.sequence([
+        Animated.timing(sendButtonScaleAnim, {
+          toValue: 1.1,
+          duration: 200,
+          useNativeDriver: true,
+        }),
+        Animated.timing(sendButtonScaleAnim, {
+          toValue: 1,
+          duration: 200,
+          useNativeDriver: true,
+        }),
+      ]).start();
+      
+      // Animate color change to green
+      Animated.timing(sendButtonColorAnim, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: false,
+      }).start();
+    } else {
+      // Animate color back to default
+      Animated.timing(sendButtonColorAnim, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: false,
+      }).start();
+    }
+  }, [inputText]);
 
   const sendMessage = (text: string) => {
     if (!text.trim()) return;
@@ -99,6 +189,11 @@ export default function ChatScreen() {
     setMessages(prev => [...prev, userMessage]);
     setInputText('');
     setIsTyping(true);
+    
+    // Scroll to bottom immediately after sending message
+    setTimeout(() => {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }, 100);
 
     // Simulate AI response
     setTimeout(() => {
@@ -111,6 +206,11 @@ export default function ChatScreen() {
       };
       setMessages(prev => [...prev, aiMessage]);
       setIsTyping(false);
+      
+      // Scroll to bottom after AI response is added
+      setTimeout(() => {
+        scrollViewRef.current?.scrollToEnd({ animated: true });
+      }, 100);
     }, 1500);
   };
 
@@ -153,9 +253,21 @@ export default function ChatScreen() {
           )}
         </View>
         <View style={[styles.messageBubble, isUser && styles.userMessageBubble]}>
-          <Text style={[styles.messageText, isUser && styles.userMessageText]}>
-            {message.text}
-          </Text>
+          {isUser ? (
+            <Text style={[styles.messageText, styles.userMessageText]}>
+              {message.text}
+            </Text>
+          ) : (
+            <TypewriterText 
+              text={message.text}
+              style={styles.messageText}
+              typingSpeed={20}
+              onComplete={() => {
+                // Scroll to bottom when typing is complete
+                scrollViewRef.current?.scrollToEnd({ animated: true });
+              }}
+            />
+          )}
           <Text style={[styles.messageTime, isUser && styles.userMessageTime]}>
             {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </Text>
@@ -200,43 +312,49 @@ export default function ChatScreen() {
             <Bot size={24} color="white" />
           </View>
           <View style={styles.headerInfo}>
-            <Text style={styles.headerTitle}>AI Tutor</Text>
+            <Text style={styles.headerTitle}>Rafiki</Text>
             <Text style={styles.headerSubtitle}>Always here to help you learn</Text>
           </View>
-          <TouchableOpacity style={styles.moreButton}>
-            <MoreHorizontal size={24} color="#718096" />
-          </TouchableOpacity>
+          {onClose && (
+            <TouchableOpacity
+              style={styles.closeButton} 
+              onPress={onClose}
+            >
+              <X size={24} color="#718096" />
+            </TouchableOpacity>
+          )}
         </View>
       </Animated.View>
 
       {/* Quick Actions */}
-      <Animated.View
-        style={[
-          styles.quickActionsContainer,
-          {
-            opacity: fadeAnim,
-          },
-        ]}
-      >
-        <ScrollView 
-          horizontal 
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.quickActionsContent}
+      {showQuickActions && (
+        <Animated.View
+          style={[
+            styles.quickActionsContainer,
+            {
+              opacity: fadeAnim,
+            },
+          ]}
         >
-          {quickActions.map((action) => (
-            <TouchableOpacity
-              key={action.id}
-              style={[styles.quickActionButton, { backgroundColor: `${action.color}20` }]}
-              onPress={() => handleQuickAction(action.action)}
-            >
-              <action.icon size={20} color={action.color} />
-              <Text style={[styles.quickActionText, { color: action.color }]}>
-                {action.title}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </Animated.View>
+          <ScrollView 
+            horizontal 
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.quickActionsContent}
+          >
+              <TouchableOpacity
+                key={action.id}
+                style={[styles.quickActionButton, { backgroundColor: `${action.color}20` }]}
+                onPress={() => handleQuickAction(action.action)}
+              >
+                <action.icon size={20} color={action.color} />
+                <Text style={[styles.quickActionText, { color: action.color }]}>
+                  {action.title}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </Animated.View>
+      )}
 
       {/* Messages */}
       <Animated.View
@@ -261,36 +379,63 @@ export default function ChatScreen() {
       {/* Input */}
       <Animated.View
         style={[
-          styles.inputContainer,
+          styles.inputWrapper,
           {
             opacity: fadeAnim,
           },
         ]}
       >
-        <View style={styles.inputWrapper}>
+        {welcomeMessage && inputFocused && (
+          <Text style={styles.welcomeMessage}>{welcomeMessage}</Text>
+        )}
+        <Animated.View style={[
+          styles.inputContainer,
+          {
+            height: inputContainerHeightAnim,
+          }
+        ]}>
           <TouchableOpacity style={styles.attachButton}>
             <Paperclip size={20} color="#718096" />
           </TouchableOpacity>
           <TextInput
+            ref={inputRef}
             style={styles.textInput}
             placeholder="Ask me anything about your studies..."
             placeholderTextColor="#A0AEC0"
             value={inputText}
             onChangeText={setInputText}
+            onFocus={handleInputFocus}
+            onBlur={handleInputBlur}
             multiline
             maxLength={500}
           />
           <TouchableOpacity style={styles.micButton}>
             <Mic size={20} color="#718096" />
           </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.sendButton, inputText.trim() && styles.sendButtonActive]}
-            onPress={() => sendMessage(inputText)}
-            disabled={!inputText.trim()}
-          >
-            <Send size={20} color={inputText.trim() ? "white" : "#A0AEC0"} />
-          </TouchableOpacity>
-        </View>
+          <Animated.View style={{
+            transform: [{ scale: sendButtonScaleAnim }]
+          }}>
+            <TouchableOpacity
+              style={[
+                styles.sendButton, 
+                inputText.trim() && styles.sendButtonActive,
+                {
+                  backgroundColor: sendButtonColorAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: ['#E2E8F0', '#48BB78']
+                  })
+                }
+              ]}
+              onPress={() => sendMessage(inputText)}
+              disabled={!inputText.trim()}
+            >
+              <Send 
+                size={20} 
+                color={inputText.trim() ? "white" : "#A0AEC0"} 
+              />
+            </TouchableOpacity>
+          </Animated.View>
+        </Animated.View>
       </Animated.View>
     </KeyboardAvoidingView>
   );
@@ -302,7 +447,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F7FAFC',
   },
   header: {
-    backgroundColor: 'white',
+    backgroundColor: '#FFFFFF',
     paddingTop: 60,
     paddingBottom: 16,
     paddingHorizontal: 20,
@@ -325,6 +470,10 @@ const styles = StyleSheet.create({
   headerInfo: {
     flex: 1,
   },
+  closeButton: {
+    position: 'absolute',
+    right: 0,
+  },
   headerTitle: {
     fontSize: 20,
     fontFamily: 'Poppins-SemiBold',
@@ -339,19 +488,18 @@ const styles = StyleSheet.create({
   moreButton: {
     width: 40,
     height: 40,
-    borderRadius: 20,
-    backgroundColor: '#F7FAFC',
+    borderRadius: 12,
+    backgroundColor: '#E2E8F0',
     justifyContent: 'center',
     alignItems: 'center',
   },
   quickActionsContainer: {
-    backgroundColor: 'white',
-    paddingVertical: 16,
-    borderBottomWidth: 1,
     borderBottomColor: '#E2E8F0',
+    borderRadius: 12,
+    backgroundColor: '#F7FAFC',
   },
   quickActionsContent: {
-    paddingHorizontal: 20,
+    padding: 12,
   },
   quickActionButton: {
     flexDirection: 'row',
@@ -468,20 +616,32 @@ const styles = StyleSheet.create({
   typingDot3: {
     // Animation would be added here
   },
-  inputContainer: {
+  inputWrapper: {
     backgroundColor: 'white',
     paddingHorizontal: 20,
     paddingVertical: 16,
     borderTopWidth: 1,
     borderTopColor: '#E2E8F0',
   },
-  inputWrapper: {
+  welcomeMessage: {
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
+    color: '#4299E1',
+    marginBottom: 8,
+    paddingHorizontal: 4,
+  },
+  inputContainer: {
     flexDirection: 'row',
     alignItems: 'flex-end',
     backgroundColor: '#F7FAFC',
     borderRadius: 24,
     paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingVertical: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
     minHeight: 48,
   },
   attachButton: {
@@ -497,8 +657,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Inter-Regular',
     color: '#2D3748',
-    maxHeight: 100,
     paddingVertical: 8,
+    maxHeight: 100
   },
   micButton: {
     width: 32,
@@ -511,13 +671,19 @@ const styles = StyleSheet.create({
   sendButton: {
     width: 32,
     height: 32,
-    borderRadius: 16,
+    borderRadius: 20,
     backgroundColor: '#E2E8F0',
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 8,
+    transition: 'all 0.2s ease',
   },
   sendButtonActive: {
-    backgroundColor: '#4299E1',
+    backgroundColor: '#EF4444',
+    transform: [{ scale: 1.05 }],
+    shadowColor: '#EF4444',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
   },
 });

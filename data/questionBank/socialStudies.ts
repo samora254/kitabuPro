@@ -286,6 +286,115 @@ export const socialStudiesQuestions: QuestionBank = {
       totalPoints: 30,
       estimatedTime: 105,
       difficulty: "easy"
+    },
+    {
+      id: "ss-economics-set-1",
+      title: "Basic Economics Concepts",
+      description: "Test your understanding of basic economic concepts and principles.",
+      subject: "Social Studies",
+      grade: "Grade 8",
+      topic: "Economics",
+      subtopic: "Basic Economics",
+      questions: [
+        {
+          id: "ss-econ-q1",
+          text: "What is economics?",
+          type: "multiple-choice",
+          difficulty: "easy",
+          topic: "Economics",
+          subtopic: "Basic Economics",
+          grade: "Grade 8",
+          points: 5,
+          timeEstimate: 20,
+          options: [
+            "The study of money only",
+            "The study of how society manages its scarce resources",
+            "The study of business management",
+            "The study of government spending"
+          ],
+          correctAnswer: 1,
+          explanation: "Economics is the study of how society manages its scarce resources. It examines how individuals, businesses, governments, and nations make choices about how to allocate resources."
+        },
+        {
+          id: "ss-econ-q2",
+          text: "What is the difference between goods and services?",
+          type: "multiple-choice",
+          difficulty: "easy",
+          topic: "Economics",
+          subtopic: "Basic Economics",
+          grade: "Grade 8",
+          points: 5,
+          timeEstimate: 25,
+          options: [
+            "Goods are expensive, services are cheap",
+            "Goods are tangible items, services are intangible activities",
+            "Goods are produced locally, services are imported",
+            "Goods are for businesses, services are for individuals"
+          ],
+          correctAnswer: 1,
+          explanation: "Goods are tangible, physical products that can be touched, seen, and stored (like food, clothing, or books). Services are intangible activities performed by people (like teaching, healthcare, or transportation)."
+        },
+        {
+          id: "ss-econ-q3",
+          text: "What is meant by 'demand' in economics?",
+          type: "multiple-choice",
+          difficulty: "medium",
+          topic: "Economics",
+          subtopic: "Basic Economics",
+          grade: "Grade 8",
+          points: 10,
+          timeEstimate: 30,
+          options: [
+            "The total amount of goods available in the market",
+            "The willingness and ability of consumers to purchase goods at various prices",
+            "The cost of producing goods",
+            "The government's request for certain products"
+          ],
+          correctAnswer: 1,
+          explanation: "In economics, demand refers to the willingness and ability of consumers to purchase a good or service at various price levels. It's not just about wanting something, but also having the means to buy it."
+        },
+        {
+          id: "ss-econ-q4",
+          text: "What happens to demand when the price of a good increases (assuming all other factors remain constant)?",
+          type: "multiple-choice",
+          difficulty: "medium",
+          topic: "Economics",
+          subtopic: "Basic Economics",
+          grade: "Grade 8",
+          points: 10,
+          timeEstimate: 30,
+          options: [
+            "Demand increases",
+            "Demand decreases",
+            "Demand remains the same",
+            "Demand becomes zero"
+          ],
+          correctAnswer: 1,
+          explanation: "According to the law of demand, when the price of a good increases (and all other factors remain constant), the quantity demanded decreases. This is because consumers are generally less willing to buy products at higher prices."
+        },
+        {
+          id: "ss-econ-q5",
+          text: "What is 'supply' in economics?",
+          type: "multiple-choice",
+          difficulty: "medium",
+          topic: "Economics",
+          subtopic: "Basic Economics",
+          grade: "Grade 8",
+          points: 10,
+          timeEstimate: 30,
+          options: [
+            "The total amount of money in an economy",
+            "The willingness and ability of producers to provide goods at various prices",
+            "The government's distribution of resources",
+            "The total demand for all products"
+          ],
+          correctAnswer: 1,
+          explanation: "Supply in economics refers to the willingness and ability of producers to provide goods and services at various price levels. It represents how much of a good producers are willing to offer at different prices."
+        }
+      ],
+      totalPoints: 40,
+      estimatedTime: 135,
+      difficulty: "medium"
     }
   ]
 };

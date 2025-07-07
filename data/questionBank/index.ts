@@ -3,14 +3,16 @@ import { englishQuestions } from './english';
 import { scienceQuestions } from './science';
 import { socialStudiesQuestions } from './socialStudies';
 import { kiswahiliQuestions } from './kiswahili';
+import { homeScience } from './homeScience';
 
 // Export all question banks
 export const questionBanks = {
   mathematics: mathQuestions,
   english: englishQuestions,
   science: scienceQuestions,
-  socialStudies: socialStudiesQuestions,
+  'social-studies': socialStudiesQuestions,
   kiswahili: kiswahiliQuestions,
+  'home-science': homeScience
 };
 
 // Export individual question banks
@@ -19,5 +21,6 @@ export {
   englishQuestions, 
   scienceQuestions, 
   socialStudiesQuestions,
-  kiswahiliQuestions
+  kiswahiliQuestions,
+  homeScience
 };

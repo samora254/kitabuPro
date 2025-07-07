@@ -6,13 +6,14 @@ import {
   TouchableOpacity,
   Animated,
   Dimensions,
-  Alert,
+  Modal,
 } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { ChevronLeft, ChevronRight, Brain, BookOpen, FileCheck, ArrowLeft } from 'lucide-react-native';
 import { DevModeIndicator } from '@/components/DevModeIndicator';
-import PopQuiz from '@/components/PopQuiz';
+import FlashcardChallenge from '@/components/FlashcardChallenge';
 import { getSubjectTheme } from '@/utils/subjectThemes';
+import QuickFactsService from '@/services/quickFactsService';
 
 const { width, height } = Dimensions.get('window');
 
@@ -20,6 +21,7 @@ export default function SubjectDetail() {
   const { id } = useLocalSearchParams();
   const [currentTopic, setCurrentTopic] = useState(1);
   const [showQuiz, setShowQuiz] = useState(false);
+  const [showFlashcards, setShowFlashcards] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [quizResults, setQuizResults] = useState({
     score: 0,
@@ -119,8 +121,8 @@ export default function SubjectDetail() {
     }
   };
 
-  const handleStartQuiz = () => {
-    setShowQuiz(true);
+  const handleStartChallenge = () => {
+    setShowFlashcards(true);
   };
 
   const handleQuizComplete = (score: number, totalPoints: number) => { 
@@ -130,6 +132,18 @@ export default function SubjectDetail() {
       totalPoints,
       correctAnswers: Math.round(score / (totalPoints / 20)), // Estimate based on 20 questions
       totalQuestions: 20,
+      timeSpent: 600, // Placeholder - in a real app, track actual time
+    });
+    setShowResults(true);
+  };
+
+  const handleFlashcardComplete = (score: number, total: number) => {
+    setShowFlashcards(false);
+    setQuizResults({
+      score,
+      totalPoints: total,
+      correctAnswers: score,
+      totalQuestions: total,
       timeSpent: 600, // Placeholder - in a real app, track actual time
     });
     setShowResults(true);
@@ -241,9 +255,8 @@ export default function SubjectDetail() {
             <TouchableOpacity
               style={[styles.activityButton, { backgroundColor: activity.color }]}
               onPress={() => {
-                if (activity.action === 'Pop Quiz') {
-                  console.log('Starting quiz...');
-                  setTimeout(() => handleStartQuiz(), 100);
+                if (activity.action === 'Start Challenge') {
+                  handleStartChallenge();
                 } else {
                   // Handle other activity types
                   console.log(`${activity.action} clicked`);
@@ -257,16 +270,25 @@ export default function SubjectDetail() {
       </Animated.View>
       
       {/* Pop Quiz Modal */}
-      {showQuiz && (
-        <PopQuiz
+      {showFlashcards && (
+        <Modal
+          visible={true}
+          transparent={true}
+          animationType="fade"
+          onRequestClose={() => setShowFlashcards(false)}
+        >
+        <FlashcardChallenge
           subjectId={id as string}
-          subjectName={subject.name}
-          grade="Grade 8"
-          questionCount={10}
-          timePerQuestion={20}
-          onClose={() => setShowQuiz(false)}
-          onComplete={handleQuizComplete}
+          topic={subject.topics[currentTopic - 1]}
+          customStyles={{
+            primaryColor: subjectTheme.primaryColor,
+            secondaryColor: subjectTheme.secondaryColor,
+            accentColor: subjectTheme.accentColor
+          }}
+          onClose={() => setShowFlashcards(false)}
+          onComplete={handleFlashcardComplete}
         />
+        </Modal>
       )}
     </View>
   );

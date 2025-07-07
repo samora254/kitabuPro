@@ -9,8 +9,8 @@ import {
   Animated,
   TextInput,
   Image,
-  Alert,
   Modal,
+  Alert,
   ScrollView,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -38,6 +38,7 @@ import {
   Check
 } from 'lucide-react-native';
 import { DevModeIndicator } from '@/components/DevModeIndicator';
+import ChatScreen from './(tabs)/chat';
 
 const { width } = Dimensions.get('window');
 
@@ -53,6 +54,7 @@ export default function Dashboard() {
   const [selectedGrade, setSelectedGrade] = useState('GRADE 8');
   const [userSubjects, setUserSubjects] = useState<Subject[]>([]); 
   const [showGradeDropdown, setShowGradeDropdown] = useState(false);
+  const [showChatModal, setShowChatModal] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(30)).current;
 
@@ -199,8 +201,9 @@ export default function Dashboard() {
 
   const handleSendHelp = () => {
     if (helpText.trim()) {
-      Alert.alert('Help Request', `Your question: "${helpText}" has been sent to our AI tutor!`);
+      // Open the chat modal with the initial message
       setHelpText('');
+      setShowChatModal(true);
     }
   };
 
@@ -363,15 +366,17 @@ export default function Dashboard() {
                 <Text style={styles.subjectText}>{subject.name}</Text>
               </TouchableOpacity>
             )) : (
-              allSubjects.slice(0, 5).map((subject) => (
-                <TouchableOpacity
-                  key={subject.id}
-                  style={[styles.subjectButton, { backgroundColor: subject.color }]}
-                  onPress={() => navigateToSubject(subject.id)}
-                >
-                  <Text style={styles.subjectText}>{subject.name}</Text>
-                </TouchableOpacity>
-              ))
+              <>
+                {allSubjects.slice(0, 5).map((subject) => (
+                  <TouchableOpacity
+                    key={subject.id}
+                    style={[styles.subjectButton, { backgroundColor: subject.color }]}
+                    onPress={() => navigateToSubject(subject.id)}
+                  >
+                    <Text style={styles.subjectText}>{subject.name}</Text>
+                  </TouchableOpacity>
+                ))}
+              </>
             )}
           </View>
         </Animated.View>
@@ -393,13 +398,17 @@ export default function Dashboard() {
             </TouchableOpacity>
             <TextInput
               style={styles.helpInput}
-              placeholder="Ask me anything..."
+              placeholder="Ask me anything about your studies..."
               placeholderTextColor="#9CA3AF"
               value={helpText}
               onChangeText={setHelpText}
               multiline
             />
-            <TouchableOpacity style={styles.sendButton} onPress={handleSendHelp}>
+            <TouchableOpacity 
+              style={[styles.sendButton, helpText.trim() && styles.sendButtonActive]} 
+              onPress={handleSendHelp}
+              activeOpacity={0.7}
+            >
               <Send size={20} color="#3B82F6" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.micButton}>
@@ -408,6 +417,22 @@ export default function Dashboard() {
           </View>
         </Animated.View>
       </View>
+
+      {/* Chat Modal */}
+      <Modal
+        visible={showChatModal}
+        animationType="slide"
+        transparent={false}
+        onRequestClose={() => setShowChatModal(false)}
+      >
+        <ChatScreen 
+          initialMessage={helpText}
+          onClose={() => {
+            setShowChatModal(false);
+            setHelpText('');
+          }}
+        />
+      </Modal>
     </View>
   );
 }
@@ -665,7 +690,16 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   sendButton: {
-    marginHorizontal: 12,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#E2E8F0',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 12,
+  },
+  sendButtonActive: {
+    backgroundColor: '#EF4444',
   },
   micButton: {
     width: 36,
