@@ -9,32 +9,12 @@ import {
   ScrollView,
   Dimensions,
   Platform,
+  Alert,
 } from 'react-native';
 import { router } from 'expo-router';
-import { 
-  X, 
-  ChevronDown,
-  Save,
-  LogOut,
-  Lock,
-  Bell,
-  Shield,
-  User,
-  Mail,
-  Phone,
-  School,
-  Users,
-  GraduationCap,
-  BookOpen,
-  Calculator,
-  Globe,
-  Beaker,
-  Palette,
-  Music,
-  Heart,
-  Zap
-} from 'lucide-react-native';
+import { X, CircleAlert as AlertCircle, ChevronDown, Save, LogOut, Lock, Bell, Shield, User, Mail, Phone, School, Users, GraduationCap, BookOpen, Calculator, Globe, Beaker, Palette, Music, Heart, Zap, CircleCheck as CheckCircle } from 'lucide-react-native';
 import { DevModeIndicator } from '@/components/DevModeIndicator';
+import AsyncStorage from '@react-native-async-storage/async-storage'; 
 
 const { width, height } = Dimensions.get('window');
 
@@ -58,6 +38,8 @@ export default function ProfileScreen() {
   const [activeTab, setActiveTab] = useState<'profile' | 'subjects'>('profile');
   const [isEditing, setIsEditing] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
+  const [selectionError, setSelectionError] = useState<string | null>(null);
+  const [saveSuccess, setSaveSuccess] = useState<boolean | null>(null);
   
   const [profileData, setProfileData] = useState<ProfileData>({
     firstName: 'Walter',
@@ -76,8 +58,54 @@ export default function ProfileScreen() {
   });
 
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>([
-    'Mathematics', 'English', 'Science', 'Social Studies'
+    'Mathematics', 'English', 'Kiswahili', 'Science', 'Social Studies'
   ]);
+
+  // Define default and optional subjects
+  const defaultSubjects = [
+    'Mathematics', 'English', 'Kiswahili', 'Science', 'Social Studies'
+  ];
+
+  // Load saved subjects on component mount
+  useEffect(() => {
+    const loadSavedSubjects = async () => {
+      try {
+        const storedSubjects = await AsyncStorage.getItem('selectedSubjects');
+        if (storedSubjects) {
+          setSelectedSubjects(JSON.parse(storedSubjects));
+        }
+      } catch (error) {
+        console.error('Error loading saved subjects:', error);
+      }
+    };
+    
+    loadSavedSubjects();
+  }, []);
+  
+  const optionalSubjects = [
+    'Home Science'
+  ];
+  
+  // All available subjects (including coming soon)
+  const allSubjects = [
+    { name: 'Mathematics', color: 'rgba(34, 197, 94, 0.19)', isDefault: true, isAvailable: true },
+    { name: 'English', color: 'rgba(239, 68, 68, 0.19)', isDefault: true, isAvailable: true },
+    { name: 'Kiswahili', color: 'rgba(6, 182, 212, 0.19)', isDefault: true, isAvailable: true },
+    { name: 'Science', color: 'rgba(69, 183, 209, 0.19)', isDefault: true, isAvailable: true },
+    { name: 'Social Studies', color: 'rgba(6, 182, 212, 0.19)', isDefault: true, isAvailable: true },
+    { name: 'Home Science', color: 'rgba(251, 113, 133, 0.19)', isDefault: false, isAvailable: true },
+    { name: 'Agriculture', color: 'rgba(34, 197, 94, 0.19)', isDefault: false, isAvailable: false },
+    { name: 'Business Studies', color: 'rgba(139, 92, 246, 0.19)', isDefault: false, isAvailable: false },
+    { name: 'Computer Science', color: 'rgba(245, 158, 11, 0.19)', isDefault: false, isAvailable: false },
+    { name: 'Creative Arts', color: 'rgba(236, 72, 153, 0.19)', isDefault: false, isAvailable: false },
+    { name: 'Geography', color: 'rgba(245, 158, 11, 0.19)', isDefault: false, isAvailable: false },
+    { name: 'Health Education', color: 'rgba(6, 182, 212, 0.19)', isDefault: false, isAvailable: false },
+    { name: 'History', color: 'rgba(59, 130, 246, 0.19)', isDefault: false, isAvailable: false },
+    { name: 'Life Skills Education', color: 'rgba(59, 130, 246, 0.19)', isDefault: false, isAvailable: false },
+    { name: 'Physical Education', color: 'rgba(245, 158, 11, 0.19)', isDefault: false, isAvailable: false },
+    { name: 'Pre-Technical', color: 'rgba(59, 130, 246, 0.19)', isDefault: false, isAvailable: false },
+    { name: 'Religious Education', color: 'rgba(236, 72, 153, 0.19)', isDefault: false, isAvailable: false }
+  ];
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(30)).current;
@@ -103,10 +131,30 @@ export default function ProfileScreen() {
   };
 
   const handleSaveChanges = () => {
+    // Validate that exactly 5 subjects are selected
+    if (selectedSubjects.length !== 5) {
+      setSelectionError('You must select exactly 5 subjects');
+      setSaveSuccess(null);
+      return;
+    }
+    setSelectionError(null);
+    
     // Save logic here
-    setIsEditing(false);
-    setHasChanges(false);
-    console.log('Saving changes:', profileData);
+    console.log('Saving changes:', profileData, 'Selected subjects:', selectedSubjects);
+    
+    // Save selected subjects to AsyncStorage
+    try {
+      AsyncStorage.setItem('selectedSubjects', JSON.stringify(selectedSubjects));
+      setSaveSuccess(true);
+      setHasChanges(false);
+      
+      // Show success message briefly
+      setTimeout(() => {
+        setSaveSuccess(null);
+      }, 3000);
+    } catch (error) {
+      console.error('Error saving subjects:', error);
+    }
   };
 
   const handleLogout = () => {
@@ -114,15 +162,41 @@ export default function ProfileScreen() {
   };
 
   const toggleSubject = (subject: string) => {
-    setSelectedSubjects(prev => {
-      const newSelection = prev.includes(subject)
-        ? prev.filter(s => s !== subject)
-        : [...prev, subject];
-      setHasChanges(true);
-      return newSelection;
-    });
+    // Check if the subject is available (not "Coming Soon") 
+    const subjectData = allSubjects.find(s => s.name === subject);
+    
+    // Set hasChanges to true to enable the Save Changes button
+    setHasChanges(true);
+    
+    // For web platform, handle the alert differently
+    if (Platform.OS === 'web') {
+      if (!subjectData || !subjectData.isAvailable) {
+        setSelectionError(`${subject} will be available in a future update.`);
+        setTimeout(() => setSelectionError(null), 3000);
+        return;
+      }
+    } else {
+      if (!subjectData || !subjectData.isAvailable) {
+        Alert.alert('Coming Soon', `${subject} will be available in a future update.`);
+        return;
+      }
+    }
+    
+    // Allow deselection regardless of count - validation will happen on save
+    if (selectedSubjects.includes(subject)) {
+      if (selectedSubjects.length > 1) {
+        setSelectedSubjects(prev => prev.filter(s => s !== subject));
+        setSelectionError(null);
+      } else {
+        setSelectionError('You must have at least one subject selected');
+      }
+    } else {
+      // Adding a subject
+      setSelectedSubjects(prev => [...prev, subject]);
+      setSelectionError(null);
+    }
   };
-
+  
   const primarySubjects = [
     { name: 'Agriculture', color: 'rgba(34, 197, 94, 0.19)' },
     { name: 'Business Studies', color: 'rgba(139, 92, 246, 0.19)' },
@@ -341,36 +415,83 @@ export default function ProfileScreen() {
   );
 
   const renderSubjectsSection = () => (
-    <ScrollView 
-      style={styles.scrollContainer}
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles.scrollContent}
-    >
-      {/* Primary Subjects */}
-      <View style={styles.section}>
-        <Text style={styles.sectionSubtitle}>Choose only 5 Subjects</Text>
-        
-        <View style={styles.subjectsGrid}>
-          {primarySubjects.map((subject, index) => (
-            <TouchableOpacity
-              key={index}
-              style={[
-                styles.subjectButton,
-                { backgroundColor: subject.color },
-                selectedSubjects.includes(subject.name) && styles.subjectButtonSelected
-              ]}
-              onPress={() => toggleSubject(subject.name)}
-            >
-              <Text style={styles.subjectButtonText}>{subject.name}</Text>
-              {selectedSubjects.includes(subject.name) && (
-                <View style={styles.selectedIndicator}>
-                  <Text style={styles.selectedIndicatorText}>✓</Text>
-                </View>
-              )}
-            </TouchableOpacity>
-          ))}
-        </View>
+    <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+      <View style={styles.selectionHeader}>
+        <Text style={styles.sectionTitle}>Subject Selection</Text>
+        <Text style={styles.selectionCount}>
+          Selected: <Text style={styles.selectionCountNumber}>{selectedSubjects.length}/5</Text> subjects
+        </Text>
       </View>
+      
+      {selectionError && (
+        <View style={styles.errorContainer}>
+          <AlertCircle size={16} color="#E53E3E" />
+          <Text style={styles.errorText}>{selectionError}</Text>
+        </View>
+      )}
+      
+      {saveSuccess && (
+        <View style={styles.successContainer}>
+          <CheckCircle size={16} color="#48BB78" />
+          <Text style={styles.successText}>
+            Subject selection saved successfully!
+          </Text>
+        </View>
+      )}
+      
+      <Text style={styles.selectionHelp}>
+        You must select exactly 5 subjects. The first 5 subjects are selected by default.
+        You can replace a default subject with Home Science if desired.
+      </Text>
+      
+      <Text style={styles.sectionSubtitle}>Available Subjects</Text>
+       
+      <View style={styles.subjectsGrid}>
+        {allSubjects.filter(subject => subject.isAvailable).map((subject, index) => (
+          <TouchableOpacity
+            key={index}
+            style={[
+              styles.subjectButton,
+              { backgroundColor: subject.color },
+              selectedSubjects.includes(subject.name) && styles.subjectButtonSelected
+            ]}
+            onPress={() => toggleSubject(subject.name)}
+          >
+            <Text style={styles.subjectButtonText}>{subject.name}</Text>
+            {subject.isDefault && (
+              <View style={styles.defaultBadge}>
+                <Text style={styles.defaultBadgeText}>Default</Text>
+              </View>
+            )}
+            {selectedSubjects.includes(subject.name) && ( 
+              <View style={styles.selectedIndicator}>
+                <Text style={styles.selectedIndicatorText}>✓</Text>
+              </View>
+            )}
+          </TouchableOpacity>
+        ))}
+      </View>
+       
+      <Text style={styles.sectionSubtitle}>Coming Soon</Text>
+      
+      <View style={styles.subjectsGrid}>
+        {allSubjects.filter(subject => !subject.isAvailable).map((subject, index) => (
+          <TouchableOpacity
+            key={index}
+            style={[
+              styles.subjectButton,
+              styles.comingSoonSubject,
+              { backgroundColor: subject.color }
+            ]} 
+            onPress={() => toggleSubject(subject.name)}
+          >
+            <Text style={styles.subjectButtonText}>{subject.name}</Text>
+            <View style={styles.comingSoonBadge}>
+              <Text style={styles.comingSoonText}>Coming Soon</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </View> 
 
       {/* Additional spacing for scroll */}
       <View style={{ height: 40 }} />
@@ -464,8 +585,7 @@ export default function ProfileScreen() {
         <View style={styles.bottomActions}>
           <TouchableOpacity
             style={styles.logoutButton}
-            onPress={handleLogout}
-          >
+            onPress={handleLogout}>
             <LogOut size={20} color="white" />
             <Text style={styles.logoutButtonText}>Logout</Text>
           </TouchableOpacity>
@@ -473,10 +593,10 @@ export default function ProfileScreen() {
           <TouchableOpacity
             style={[
               styles.saveButton,
-              (!hasChanges || !isEditing) && styles.saveButtonDisabled
+              (!hasChanges) && styles.saveButtonDisabled
             ]}
             onPress={handleSaveChanges}
-            disabled={!hasChanges || !isEditing}
+            disabled={!hasChanges}
           >
             <Save size={20} color="white" />
             <Text style={styles.saveButtonText}>Save Changes</Text>
@@ -677,7 +797,7 @@ const styles = StyleSheet.create({
   subjectsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     marginHorizontal: -6,
   },
   subjectButton: {
@@ -703,6 +823,56 @@ const styles = StyleSheet.create({
     elevation: 3,
     minHeight: 60, // Reduced height to fit more in viewport
   },
+  selectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  selectionCount: {
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
+    color: '#718096',
+  },
+  selectionCountNumber: {
+    fontFamily: 'Inter-Bold',
+    color: '#4299E1',
+  },
+  selectionHelp: {
+    fontSize: 14,
+    fontFamily: 'Inter-Regular',
+    color: '#718096',
+    marginBottom: 20,
+    lineHeight: 20,
+  },
+  errorContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FEF2F2',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 16,
+  },
+  errorText: {
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
+    color: '#E53E3E',
+    marginLeft: 8,
+  },
+  successContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F0FFF4',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 16,
+  },
+  successText: {
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
+    color: '#48BB78',
+    marginLeft: 8,
+  },
   subjectButtonSelected: {
     borderWidth: 1.5,
     borderColor: 'rgba(66, 153, 225, 0.4)',
@@ -712,6 +882,33 @@ const styles = StyleSheet.create({
     elevation: 6,
     transform: [{ scale: 1.02 }],
   },
+  comingSoonSubject: {
+    opacity: 0.6,
+    transform: [{ scale: 1 }],
+  },
+  defaultBadge: {
+    position: 'absolute',
+    top: 4,
+    left: 4,
+    backgroundColor: 'rgba(66, 153, 225, 0.2)',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+  },
+  defaultBadgeText: {
+    fontSize: 8,
+    fontFamily: 'Inter-Bold',
+    color: '#4299E1',
+  },
+  comingSoonBadge: {
+    position: 'absolute',
+    bottom: 4,
+    right: 4,
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+  },
   subjectButtonText: {
     fontSize: 14,
     fontFamily: 'Poppins-Bold',
@@ -719,6 +916,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 16,
     letterSpacing: 0.2,
+  },
+  comingSoonText: {
+    fontSize: 8,
+    fontFamily: 'Inter-Bold',
+    color: 'rgba(255, 255, 255, 0.9)',
+    textTransform: 'uppercase',
   },
   selectedIndicator: {
     position: 'absolute',

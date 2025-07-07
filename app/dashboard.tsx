@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useFocusEffect } from 'expo-router';
 import {
   View,
   Text,
@@ -50,6 +51,7 @@ interface Subject {
 export default function Dashboard() {
   const [helpText, setHelpText] = useState('');
   const [selectedGrade, setSelectedGrade] = useState('GRADE 8');
+  const [userSubjects, setUserSubjects] = useState<Subject[]>([]); 
   const [showGradeDropdown, setShowGradeDropdown] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(30)).current;
@@ -58,11 +60,41 @@ export default function Dashboard() {
     'GRADE 4', 'GRADE 5', 'GRADE 6', 'GRADE 7', 'GRADE 8', 
     'GRADE 9', 'GRADE 10', 'GRADE 11', 'GRADE 12'
   ];
-  // Fixed 7 subjects from profile - ensuring exactly 7 subjects are always displayed
-  // Load saved grade on component mount
+
+  // All available subjects
+  const allSubjects: Subject[] = [
+    { id: 'mathematics', name: 'Mathematics', color: '#E879F9', icon: Calculator },
+    { id: 'english', name: 'English', color: '#60A5FA', icon: BookOpen },
+    { id: 'kiswahili', name: 'Kiswahili', color: '#34D399', icon: Globe },
+    { id: 'science', name: 'Science', color: '#45B7D1', icon: Beaker },
+    { id: 'home-science', name: 'Home Science', color: '#FB7185', icon: Heart },
+    { id: 'social-studies', name: 'Social Studies', color: '#FBBF24', icon: Users },
+    { id: 'play-quiz', name: 'Play Quiz', color: '#8B5CF6', icon: Gamepad2 }
+  ];
+
+  // Fixed 3 quick actions
+  const quickActions = [
+    { id: 'podcasts', name: 'Podcasts', icon: Headphones, color: '#6B7280' },
+    { id: 'past-papers', name: 'Past Papers', icon: FileText, color: '#6B7280' },
+    { id: 'homework', name: 'Homework', icon: GraduationCap, color: '#6B7280' }
+  ];
+
+  // Default subjects to use if none are stored or on error
+  const defaultSubjectNames = ['Mathematics', 'English', 'Kiswahili', 'Science', 'Social Studies'];
+
   useEffect(() => {
     loadSavedGrade();
+    loadUserSubjects();
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      loadUserSubjects();
+      return () => {
+        // Cleanup function if needed
+      };
+    }, [])
+  );
 
   const loadSavedGrade = async () => {
     try {
@@ -82,21 +114,57 @@ export default function Dashboard() {
       console.log('Error saving grade:', error);
     }
   };
-  const subjects: Subject[] = [
-    { id: 'mathematics', name: 'Mathematics', color: '#E879F9', icon: Calculator },
-    { id: 'english', name: 'English', color: '#60A5FA', icon: BookOpen },
-    { id: 'kiswahili', name: 'Kiswahili', color: '#34D399', icon: Globe },
-    { id: 'science', name: 'Home Science', color: '#FB7185', icon: Beaker },
-    { id: 'social-studies', name: 'Social Studies', color: '#FBBF24', icon: Users },
-    { id: 'play-quiz', name: 'Play Quiz', color: '#8B5CF6', icon: Gamepad2 },
-  ];
 
-  // Fixed 3 quick actions
-  const quickActions = [
-    { id: 'podcasts', name: 'Podcasts', icon: Headphones, color: '#6B7280' },
-    { id: 'past-papers', name: 'Past Papers', icon: FileText, color: '#6B7280' },
-    { id: 'homework', name: 'Homework', icon: GraduationCap, color: '#6B7280' },
-  ];
+  const loadUserSubjects = async () => {
+    console.log('Loading user subjects');
+    try {
+      // Get stored subjects from AsyncStorage
+      let storedSubjects = await AsyncStorage.getItem('selectedSubjects');
+      
+      if (storedSubjects) {
+        const selectedSubjectNames = JSON.parse(storedSubjects);
+        console.log('Found stored subjects:', selectedSubjectNames);
+        
+        // Filter subjects based on stored names
+        const filteredSubjects = allSubjects.filter(subject => 
+          selectedSubjectNames.includes(subject.name)
+        );
+        
+        // Get the 5 selected subjects
+        const selectedSubjects = filteredSubjects.filter(s => s.id !== 'play-quiz');
+        
+        // Always add the Play Quiz button
+        const playQuizButton = allSubjects.find(s => s.id === 'play-quiz');
+        
+        console.log('Setting user subjects:', selectedSubjects.map(s => s.name));
+        
+        // Combine selected subjects with Play Quiz button
+        setUserSubjects([...selectedSubjects, playQuizButton!]);
+      } else {
+        console.log('No stored subjects found, using defaults');
+        const defaultSubjects = allSubjects.filter(subject => 
+          defaultSubjectNames.includes(subject.name)
+        );
+        
+        // Get the Play Quiz button
+        const playQuizButton = allSubjects.find(s => s.id === 'play-quiz');
+        
+        // Combine default subjects with Play Quiz button
+        setUserSubjects([...defaultSubjects, playQuizButton!]);
+      }
+    } catch (error) {
+      console.error('Error loading selected subjects:', error);
+      const defaultSubjects = allSubjects.filter(subject => 
+        defaultSubjectNames.includes(subject.name)
+      );
+      
+      // Get the Play Quiz button
+      const playQuizButton = allSubjects.find(s => s.id === 'play-quiz');
+      
+      // Combine default subjects with Play Quiz button
+      setUserSubjects([...defaultSubjects, playQuizButton!]);
+    }
+  };
 
   useEffect(() => {
     Animated.parallel([
@@ -142,9 +210,10 @@ export default function Dashboard() {
 
   const handleGradeSelect = (grade: string) => {
     setSelectedGrade(grade);
-    saveGrade(grade); // Auto-save the selection
+    saveGrade(grade);
     setShowGradeDropdown(false);
   };
+
   return (
     <View style={styles.container}>
       <DevModeIndicator />
@@ -248,6 +317,7 @@ export default function Dashboard() {
           </TouchableOpacity>
         </TouchableOpacity>
       </Modal>
+
       {/* Main Content - Fixed Layout */}
       <View style={styles.mainContent}>
         {/* Quick Actions Section - Fixed 3 buttons */}
@@ -279,15 +349,12 @@ export default function Dashboard() {
         <Animated.View
           style={[
             styles.subjectsSection,
-            {
-              opacity: fadeAnim,
-              transform: [{ translateY: slideAnim }],
-            },
+            { opacity: fadeAnim, transform: [{ translateY: slideAnim }] },
           ]}
         >
           <Text style={styles.sectionTitle}>My Subjects</Text>
           <View style={styles.subjectsContainer}>
-            {subjects.map((subject) => (
+            {userSubjects.length > 0 ? userSubjects.map((subject) => (
               <TouchableOpacity
                 key={subject.id}
                 style={[styles.subjectButton, { backgroundColor: subject.color }]}
@@ -295,7 +362,17 @@ export default function Dashboard() {
               >
                 <Text style={styles.subjectText}>{subject.name}</Text>
               </TouchableOpacity>
-            ))}
+            )) : (
+              allSubjects.slice(0, 5).map((subject) => (
+                <TouchableOpacity
+                  key={subject.id}
+                  style={[styles.subjectButton, { backgroundColor: subject.color }]}
+                  onPress={() => navigateToSubject(subject.id)}
+                >
+                  <Text style={styles.subjectText}>{subject.name}</Text>
+                </TouchableOpacity>
+              ))
+            )}
           </View>
         </Animated.View>
 
@@ -488,7 +565,6 @@ const styles = StyleSheet.create({
     color: '#1F2937',
     marginBottom: 8,
   },
-  // Quick Actions Section
   quickActionsSection: {
     marginBottom: 12,
   },
@@ -520,7 +596,6 @@ const styles = StyleSheet.create({
     marginTop: 6,
     textAlign: 'center',
   },
-  // Subjects Section - Fixed Layout
   subjectsSection: {
     marginBottom: 12,
   },
@@ -554,7 +629,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 15,
   },
-  // Help Section
   helpSection: {
     marginBottom: 16,
   },

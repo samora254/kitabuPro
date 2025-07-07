@@ -1,0 +1,271 @@
+import { QuestionBank } from './types';
+
+export const mathQuestions: QuestionBank = {
+  subject: "Mathematics",
+  grades: ["Grade 8"],
+  topics: [
+    { name: "Algebra", subtopics: ["Equations", "Expressions", "Functions"] },
+    { name: "Geometry", subtopics: ["Angles", "Shapes", "Transformations"] },
+    { name: "Statistics", subtopics: ["Data Analysis", "Probability", "Graphs"] },
+    { name: "Numbers", subtopics: ["Integers", "Fractions", "Decimals"] }
+  ],
+  questionSets: [
+    {
+      id: "math-algebra-set-1",
+      title: "Linear Equations",
+      description: "Practice solving linear equations and understanding their properties.",
+      subject: "Mathematics",
+      grade: "Grade 8",
+      topic: "Algebra",
+      subtopic: "Equations",
+      questions: [
+        {
+          id: "math-alg-q1",
+          text: "Solve for x: 3x + 5 = 20",
+          type: "multiple-choice",
+          difficulty: "easy",
+          topic: "Algebra",
+          subtopic: "Equations",
+          grade: "Grade 8",
+          points: 5,
+          timeEstimate: 30,
+          options: ["x = 5", "x = 15", "x = 7.5", "x = 5/3"],
+          correctAnswer: 0,
+          explanation: "To solve for x, subtract 5 from both sides: 3x = 15. Then divide both sides by 3: x = 5."
+        },
+        {
+          id: "math-alg-q2",
+          text: "Which of the following is a linear equation?",
+          type: "multiple-choice",
+          difficulty: "easy",
+          topic: "Algebra",
+          subtopic: "Equations",
+          grade: "Grade 8",
+          points: 5,
+          timeEstimate: 25,
+          options: ["y = x²", "y = 2x + 3", "y = 1/x", "y = √x"],
+          correctAnswer: 1,
+          explanation: "A linear equation has the form y = mx + b, where m and b are constants. Only y = 2x + 3 fits this form."
+        },
+        {
+          id: "math-alg-q3",
+          text: "Solve for x: 2(x - 3) = 10",
+          type: "multiple-choice",
+          difficulty: "medium",
+          topic: "Algebra",
+          subtopic: "Equations",
+          grade: "Grade 8",
+          points: 10,
+          timeEstimate: 40,
+          options: ["x = 8", "x = 5", "x = 13", "x = 7"],
+          correctAnswer: 0,
+          explanation: "First, distribute the 2: 2x - 6 = 10. Then, add 6 to both sides: 2x = 16. Finally, divide both sides by 2: x = 8."
+        },
+        {
+          id: "math-alg-q4",
+          text: "If 3x - 2y = 12 and y = 2, what is the value of x?",
+          type: "multiple-choice",
+          difficulty: "medium",
+          topic: "Algebra",
+          subtopic: "Equations",
+          grade: "Grade 8",
+          points: 10,
+          timeEstimate: 45,
+          options: ["x = 4", "x = 5.33", "x = 6", "x = 8"],
+          correctAnswer: 2,
+          explanation: "Substitute y = 2 into the equation: 3x - 2(2) = 12. Simplify: 3x - 4 = 12. Add 4 to both sides: 3x = 16. Divide both sides by 3: x = 16/3 = 5.33."
+        },
+        {
+          id: "math-alg-q5",
+          text: "Which value of x makes the equation 4x - 7 = 2x + 3 true?",
+          type: "multiple-choice",
+          difficulty: "medium",
+          topic: "Algebra",
+          subtopic: "Equations",
+          grade: "Grade 8",
+          points: 10,
+          timeEstimate: 45,
+          options: ["x = 5", "x = 4", "x = 10", "x = -5"],
+          correctAnswer: 0,
+          explanation: "Subtract 2x from both sides: 2x - 7 = 3. Add 7 to both sides: 2x = 10. Divide both sides by 2: x = 5."
+        }
+      ],
+      totalPoints: 40,
+      estimatedTime: 185,
+      difficulty: "medium"
+    },
+    {
+      id: "math-geometry-set-1",
+      title: "Angles and Triangles",
+      description: "Test your knowledge of angles, triangles, and their properties.",
+      subject: "Mathematics",
+      grade: "Grade 8",
+      topic: "Geometry",
+      subtopic: "Angles",
+      questions: [
+        {
+          id: "math-geo-q1",
+          text: "What is the sum of angles in a triangle?",
+          type: "multiple-choice",
+          difficulty: "easy",
+          topic: "Geometry",
+          subtopic: "Angles",
+          grade: "Grade 8",
+          points: 5,
+          timeEstimate: 20,
+          options: ["90 degrees", "180 degrees", "270 degrees", "360 degrees"],
+          correctAnswer: 1,
+          explanation: "The sum of the interior angles in any triangle is always 180 degrees."
+        },
+        {
+          id: "math-geo-q2",
+          text: "In a right-angled triangle, if one angle is 90° and another is 30°, what is the third angle?",
+          type: "multiple-choice",
+          difficulty: "easy",
+          topic: "Geometry",
+          subtopic: "Angles",
+          grade: "Grade 8",
+          points: 5,
+          timeEstimate: 25,
+          options: ["30°", "45°", "60°", "90°"],
+          correctAnswer: 2,
+          explanation: "The sum of angles in a triangle is 180°. If one angle is 90° and another is 30°, then the third angle is 180° - 90° - 30° = 60°."
+        },
+        {
+          id: "math-geo-q3",
+          text: "Which of the following triangles has all sides of equal length?",
+          type: "multiple-choice",
+          difficulty: "easy",
+          topic: "Geometry",
+          subtopic: "Angles",
+          grade: "Grade 8",
+          points: 5,
+          timeEstimate: 20,
+          options: ["Scalene triangle", "Isosceles triangle", "Equilateral triangle", "Right-angled triangle"],
+          correctAnswer: 2,
+          explanation: "An equilateral triangle has all three sides of equal length and all three angles equal to 60°."
+        },
+        {
+          id: "math-geo-q4",
+          text: "What are complementary angles?",
+          type: "multiple-choice",
+          difficulty: "medium",
+          topic: "Geometry",
+          subtopic: "Angles",
+          grade: "Grade 8",
+          points: 10,
+          timeEstimate: 30,
+          options: [
+            "Angles that sum to 90 degrees",
+            "Angles that sum to 180 degrees",
+            "Angles that are equal",
+            "Angles that form a straight line"
+          ],
+          correctAnswer: 0,
+          explanation: "Complementary angles are two angles that sum to 90 degrees (a right angle)."
+        },
+        {
+          id: "math-geo-q5",
+          text: "In an isosceles triangle, if the two equal angles are each 50°, what is the measure of the third angle?",
+          type: "multiple-choice",
+          difficulty: "medium",
+          topic: "Geometry",
+          subtopic: "Angles",
+          grade: "Grade 8",
+          points: 10,
+          timeEstimate: 35,
+          options: ["50°", "80°", "100°", "130°"],
+          correctAnswer: 1,
+          explanation: "The sum of angles in a triangle is 180°. If two angles are 50° each, then the third angle is 180° - 50° - 50° = 80°."
+        }
+      ],
+      totalPoints: 35,
+      estimatedTime: 130,
+      difficulty: "easy"
+    },
+    {
+      id: "math-statistics-set-1",
+      title: "Data Analysis",
+      description: "Practice analyzing data and understanding statistical measures.",
+      subject: "Mathematics",
+      grade: "Grade 8",
+      topic: "Statistics",
+      subtopic: "Data Analysis",
+      questions: [
+        {
+          id: "math-stat-q1",
+          text: "What is the mean of the following set of numbers: 5, 8, 12, 15, 20?",
+          type: "multiple-choice",
+          difficulty: "easy",
+          topic: "Statistics",
+          subtopic: "Data Analysis",
+          grade: "Grade 8",
+          points: 5,
+          timeEstimate: 30,
+          options: ["10", "12", "13", "15"],
+          correctAnswer: 1,
+          explanation: "To find the mean, add all the numbers and divide by the count of numbers: (5 + 8 + 12 + 15 + 20) ÷ 5 = 60 ÷ 5 = 12."
+        },
+        {
+          id: "math-stat-q2",
+          text: "What is the median of the following set of numbers: 3, 7, 8, 9, 11, 15?",
+          type: "multiple-choice",
+          difficulty: "medium",
+          topic: "Statistics",
+          subtopic: "Data Analysis",
+          grade: "Grade 8",
+          points: 10,
+          timeEstimate: 35,
+          options: ["8", "8.5", "9", "11"],
+          correctAnswer: 1,
+          explanation: "To find the median of an even number of values, arrange them in order and take the average of the middle two values. The middle values are 8 and 9, so the median is (8 + 9) ÷ 2 = 8.5."
+        },
+        {
+          id: "math-stat-q3",
+          text: "What is the mode of the following set of numbers: 2, 3, 5, 5, 7, 8, 5, 9?",
+          type: "multiple-choice",
+          difficulty: "easy",
+          topic: "Statistics",
+          subtopic: "Data Analysis",
+          grade: "Grade 8",
+          points: 5,
+          timeEstimate: 25,
+          options: ["2", "3", "5", "9"],
+          correctAnswer: 2,
+          explanation: "The mode is the value that appears most frequently in a data set. In this set, 5 appears three times, while all other numbers appear only once."
+        },
+        {
+          id: "math-stat-q4",
+          text: "What is the range of the following set of numbers: 12, 15, 18, 22, 25, 30?",
+          type: "multiple-choice",
+          difficulty: "easy",
+          topic: "Statistics",
+          subtopic: "Data Analysis",
+          grade: "Grade 8",
+          points: 5,
+          timeEstimate: 25,
+          options: ["12", "15", "18", "30"],
+          correctAnswer: 1,
+          explanation: "The range is the difference between the maximum and minimum values in a data set. In this case, 30 - 12 = 18."
+        },
+        {
+          id: "math-stat-q5",
+          text: "The test scores of 5 students are 75, 82, 90, 68, and 95. What is the average (mean) score?",
+          type: "multiple-choice",
+          difficulty: "medium",
+          topic: "Statistics",
+          subtopic: "Data Analysis",
+          grade: "Grade 8",
+          points: 10,
+          timeEstimate: 35,
+          options: ["80", "82", "85", "90"],
+          correctAnswer: 0,
+          explanation: "To find the mean, add all the scores and divide by the number of students: (75 + 82 + 90 + 68 + 95) ÷ 5 = 410 ÷ 5 = 82."
+        }
+      ],
+      totalPoints: 35,
+      estimatedTime: 150,
+      difficulty: "medium"
+    }
+  ]
+};

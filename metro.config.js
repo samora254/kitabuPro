@@ -11,7 +11,6 @@ const config = getDefaultConfig(__dirname, {
 const { resolver } = config;
 resolver.sourceExts = [...resolver.sourceExts, 'mjs', 'cjs'];
 
-<<<<<<< HEAD
 // Add environment configuration
 config.resolver.extraNodeModules = {
   ...config.resolver.extraNodeModules,
@@ -26,6 +25,4 @@ config.transformer.getTransformOptions = async () => ({
   },
 });
 
-=======
->>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
 module.exports = config;

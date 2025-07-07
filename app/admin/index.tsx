@@ -193,20 +193,6 @@ export default function DesktopAdminDashboard() {
     },
   ];
 
-  const timeframeOptions = [
-    { value: 'today', label: 'Today' },
-    { value: 'week', label: 'This Week' },
-    { value: 'month', label: 'This Month' },
-    { value: 'year', label: 'This Year' },
-  ];
-
-  const gradeOptions = [
-    { value: 'all', label: 'All Grades' },
-    { value: 'grade6', label: 'Grade 6' },
-    { value: 'grade7', label: 'Grade 7' },
-    { value: 'grade8', label: 'Grade 8' },
-  ];
-
   useEffect(() => {
     Animated.parallel([
       Animated.timing(fadeAnim, {
@@ -238,13 +224,10 @@ export default function DesktopAdminDashboard() {
     }
   };
 
-<<<<<<< HEAD
   const handleCloseAdmin = () => {
     router.push('/dashboard');
   };
 
-=======
->>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'active': return '#10B981';
@@ -493,7 +476,6 @@ export default function DesktopAdminDashboard() {
       {renderSidebar()}
 
       <View style={[styles.mainContent, sidebarCollapsed && styles.mainContentExpanded]}>
-<<<<<<< HEAD
         {/* Close Button */}
         <TouchableOpacity
           style={styles.closeAdminButton}
@@ -503,8 +485,6 @@ export default function DesktopAdminDashboard() {
           <Text style={styles.closeAdminButtonText}>Back to Student Dashboard</Text>
         </TouchableOpacity>
 
-=======
->>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
         {/* Top Header */}
         <Animated.View
           style={[
@@ -626,6 +606,20 @@ export default function DesktopAdminDashboard() {
   );
 }
 
+const timeframeOptions = [
+  { value: 'today', label: 'Today' },
+  { value: 'week', label: 'This Week' },
+  { value: 'month', label: 'This Month' },
+  { value: 'year', label: 'This Year' },
+];
+
+const gradeOptions = [
+  { value: 'all', label: 'All Grades' },
+  { value: 'grade6', label: 'Grade 6' },
+  { value: 'grade7', label: 'Grade 7' },
+  { value: 'grade8', label: 'Grade 8' },
+];
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -711,7 +705,6 @@ const styles = StyleSheet.create({
       marginLeft: 70,
     }),
   },
-<<<<<<< HEAD
   closeAdminButton: {
     position: 'absolute',
     top: 16,
@@ -730,8 +723,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-Medium',
     marginLeft: 8,
   },
-=======
->>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
   topHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',

@@ -13,10 +13,7 @@
     "@expo-google-fonts/poppins": "^0.2.2",
     "@expo/vector-icons": "~14.0.4",
     "@lucide/lab": "^0.1.2",
-<<<<<<< HEAD
     "@pinecone-database/pinecone": "^3.0.3",
-=======
->>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-navigation/bottom-tabs": "^7.2.0",
     "@react-navigation/native": "^7.0.14",
@@ -37,11 +34,8 @@
     "expo-system-ui": "~4.0.9",
     "expo-web-browser": "~14.0.2",
     "lucide-react-native": "^0.475.0",
-<<<<<<< HEAD
     "openai": "^4.73.1",
     "process": "^0.11.10",
-=======
->>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-native": "0.76.9",
@@ -62,8 +56,4 @@
     "ts-node": "^10.9.2",
     "typescript": "~5.8.3"
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1

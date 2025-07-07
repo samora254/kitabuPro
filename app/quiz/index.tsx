@@ -27,6 +27,7 @@ import {
   ChevronRight
 } from 'lucide-react-native';
 import { DevModeIndicator } from '@/components/DevModeIndicator';
+import { getSubjectTheme } from '@/utils/subjectThemes';
 
 const { width } = Dimensions.get('window');
 
@@ -90,6 +91,10 @@ export default function QuizSetup() {
   const handleSubjectSelect = (subjectId: string) => {
     setSelectedSubject(subjectId);
     setQuizSettings(prev => ({ ...prev, subject: subjectId }));
+    
+    // Apply subject-specific theme colors to UI elements
+    const theme = getSubjectTheme(subjectId);
+    // You could update UI elements here if needed
   };
 
   const handleCreateQuiz = () => {

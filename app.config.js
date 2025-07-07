@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
 export default {
   expo: {
     name: "Kitabu AI",
@@ -31,11 +27,7 @@ export default {
     },
     web: {
       bundler: "metro",
-<<<<<<< HEAD
-      output: "static",
-=======
       output: "single",
->>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1
       favicon: "./assets/images/favicon.png"
     },
     plugins: [
@@ -48,16 +40,9 @@ export default {
     extra: {
       eas: {
         projectId: "kitabu-ai-app"
-<<<<<<< HEAD
       },
       OPENAI_API_KEY: process.env.EXPO_PUBLIC_OPENAI_API_KEY || "demo-api-key",
       PINECONE_API_KEY: process.env.EXPO_PUBLIC_PINECONE_API_KEY || "demo-api-key"
     }
   }
 };
-=======
-      }
-    }
-  }
-};
->>>>>>> a0ceb0d07c76d30da3895ed28c088c71277282c1

@@ -12,10 +12,46 @@ import {
 } from 'react-native';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Bell, BookOpen, Calculator, Globe, Beaker, Users, Heart, Palette, Music, Gamepad2, Send, Mic, Paperclip, Share, Headphones as Headphones, Trophy, User, Settings } from 'lucide-react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  Bell,
+  BookOpen,
+  Calculator,
+  Globe,
+  Beaker,
+  Users,
+  Heart,
+  Gamepad2,
+  Send,
+  Mic,
+  Paperclip,
+  Share,
+  Headphones as Headphones,
+  Trophy,
+  User,
+  Settings
+} from 'lucide-react-native';
 import { DevModeIndicator } from '@/components/DevModeIndicator';
 
 const { width } = Dimensions.get('window');
+
+// Get selected subjects from AsyncStorage
+const getSelectedSubjects = async () => {
+  console.log('Getting selected subjects from AsyncStorage');
+  try {
+    const storedSubjects = await AsyncStorage.getItem('selectedSubjects');
+    if (storedSubjects) {
+      console.log('Found stored subjects:', JSON.parse(storedSubjects));
+      return JSON.parse(storedSubjects);
+    }
+    // Default subjects if none are stored
+    console.log('No stored subjects found, using defaults');
+    return ['Mathematics', 'English', 'Kiswahili', 'Science', 'Social Studies'];
+  } catch (error) {
+    console.error('Error loading selected subjects:', error);
+    return ['Mathematics', 'English', 'Kiswahili', 'Science', 'Social Studies'];
+  }
+};
 
 interface Subject {
   id: string;
@@ -26,16 +62,71 @@ interface Subject {
 
 export default function Dashboard() {
   const [helpText, setHelpText] = useState('');
+  const [selectedGrade, setSelectedGrade] = useState('GRADE 8');
+  const [userSubjects, setUserSubjects] = useState<Subject[]>([]);
+  const [showGradeDropdown, setShowGradeDropdown] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(30)).current;
 
-  const subjects: Subject[] = [
+  // Fixed 7 subjects from profile - ensuring exactly 7 subjects are always displayed
+  // Load saved grade on component mount
+  useEffect(() => {
+    loadSavedGrade();
+    loadUserSubjects();
+  }, []);
+
+  // Add a listener for when the component gains focus
+  useEffect(() => {
+    const unsubscribe = router.addListener('focus', () => {
+      console.log('Dashboard gained focus, reloading subjects');
+      loadUserSubjects();
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  const loadUserSubjects = async () => {
+    console.log('Loading user subjects');
+    const selectedSubjectNames = await getSelectedSubjects();
+    
+    // Filter the subjects based on user selection
+    const filteredSubjects = allSubjects.filter(subject => 
+      selectedSubjectNames.includes(subject.name)
+    );
+    
+    console.log('Setting user subjects:', filteredSubjects.map(s => s.name));
+    setUserSubjects(filteredSubjects);
+  };
+
+  const loadSavedGrade = async () => {
+    try {
+      const savedGrade = await AsyncStorage.getItem('selectedGrade');
+      if (savedGrade) {
+        setSelectedGrade(savedGrade);
+      }
+    } catch (error) {
+      console.error('Error loading saved grade:', error);
+    }
+  };
+
+  const saveGrade = async (grade: string) => {
+    try {
+      await AsyncStorage.setItem('selectedGrade', grade);
+    } catch (error) {
+      console.error('Error saving grade:', error);
+    }
+  };
+  
+  // All available subjects
+  const allSubjects: Subject[] = [
     { id: 'mathematics', name: 'Mathematics', color: '#E879F9', icon: Calculator },
     { id: 'english', name: 'English', color: '#60A5FA', icon: BookOpen },
     { id: 'kiswahili', name: 'Kiswahili', color: '#34D399', icon: Globe },
-    { id: 'science', name: 'Home Science', color: '#FB7185', icon: Beaker },
-    { id: 'social-studies', name: 'Social Studies', color: '#FBBF24', icon: Users },
-    { id: 'religious', name: 'Religious Education', color: '#F97316', icon: Heart },
+    { id: 'science', name: 'Science', color: '#45B7D1', icon: Beaker },
+    { id: 'social-studies', name: 'Social Studies', color: '#FBBF24', icon: Users }, 
+    { id: 'home-science', name: 'Home Science', color: '#FB7185', icon: Heart },
     { id: 'play-quiz', name: 'Play Quiz', color: '#8B5CF6', icon: Gamepad2 },
   ];
 
@@ -63,6 +154,8 @@ export default function Dashboard() {
   const navigateToSubject = (subjectId: string) => {
     if (subjectId === 'play-quiz') {
       router.push('/quiz');
+    } else if (subjectId === 'home-science') {
+      router.push(`/subjects/home-science`);
     } else {
       router.push(`/subjects/${subjectId}`);
     }
@@ -203,17 +296,27 @@ export default function Dashboard() {
             },
           ]}
         >
-          <View style={styles.subjectsGrid}>
-            {subjects.map((subject, index) => (
+          <View style={styles.subjectsContainer}>
+            {userSubjects.length > 0 ? userSubjects.map((subject) => (
               <TouchableOpacity
                 key={subject.id}
-                style={[styles.subjectCard, { backgroundColor: subject.color }]}
+                style={[styles.subjectButton, { backgroundColor: subject.color }]}
                 onPress={() => navigateToSubject(subject.id)}
               >
                 <subject.icon size={28} color="white" />
-                <Text style={styles.subjectName}>{subject.name}</Text>
+                <Text style={styles.subjectText}>{subject.name}</Text>
               </TouchableOpacity>
-            ))}
+            )) : (
+              // Show default subjects if none are loaded yet
+              allSubjects.slice(0, 5).map((subject) => (
+                <TouchableOpacity
+                  key={subject.id}
+                  style={[styles.subjectButton, { backgroundColor: subject.color }]}
+                  onPress={() => navigateToSubject(subject.id)}>
+                  <Text style={styles.subjectText}>{subject.name}</Text>
+                </TouchableOpacity>
+              ))
+            )}
           </View>
         </Animated.View>
 
@@ -263,9 +366,9 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: 'white',
-    paddingTop: 50,
+    paddingTop: 40,
     paddingHorizontal: 20,
-    paddingBottom: 20,
+    paddingBottom: 16,
   },
   headerTop: {
     flexDirection: 'row',
@@ -480,18 +583,20 @@ const styles = StyleSheet.create({
     color: 'white',
     marginTop: 8,
   },
-  subjectsGrid: {
+  subjectsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 12,
+    justifyContent: 'center',
+    gap: 8,
   },
-  subjectCard: {
+  subjectButton: {
     borderRadius: 16,
-    padding: 20,
+    padding: 12,
     alignItems: 'center',
     justifyContent: 'center',
-    width: (width - 56) / 2,
-    height: 100,
+    width: (width - 60) / 2,
+    height: 60,
+    marginBottom: 8,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -501,12 +606,12 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 4,
   },
-  subjectName: {
-    fontSize: 14,
+  subjectText: {
+    fontSize: 13,
     fontFamily: 'Inter-SemiBold',
     color: 'white',
-    marginTop: 8,
     textAlign: 'center',
+    lineHeight: 15,
   },
   helpTitle: {
     fontSize: 18,
