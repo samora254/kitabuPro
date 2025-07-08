@@ -11,8 +11,10 @@ import {
   TextInput,
 } from 'react-native';
 import { router } from 'expo-router';
-import { ArrowLeft, Users, BookOpen, ChartBar as BarChart3, Settings, Shield, Database, MessageSquare, TrendingUp, TriangleAlert as AlertTriangle, CircleCheck as CheckCircle, Clock, Eye, UserCheck, FileText, Activity, ChevronDown, Bell, Search, Filter, Download, RefreshCw, MoveHorizontal as MoreHorizontal, Calendar, DollarSign, Target, Zap, Award, GraduationCap, School, Bot, CircleHelp as HelpCircle, ChartBar as BarChart, ChartPie as PieChart, ChartLine as LineChart, Menu, X } from 'lucide-react-native';
+import { ArrowLeft, Users, BookOpen, ChartBar as BarChart3, Settings, Shield, Database, MessageSquare, TrendingUp, TriangleAlert as AlertTriangle, CircleCheck as CheckCircle, Clock, Eye, UserCheck, FileText, Activity, ChevronDown, Bell, Search, Filter, Download, RefreshCw, MoveHorizontal as MoreHorizontal, Calendar, DollarSign, Target, GraduationCap, School, Pizza as Quiz, ChartBar as BarChart, ChartPie as PieChart, ChartLine as LineChart, Menu, X } from 'lucide-react-native';
 import { DevModeIndicator } from '@/components/DevModeIndicator';
+import { useAuth } from '@/contexts/AuthContext';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 const { width, height } = Dimensions.get('window');
 
@@ -43,6 +45,7 @@ interface TableRow {
 }
 
 export default function DesktopAdminDashboard() {
+  const { user, userRole } = useAuth();
   const [selectedTimeframe, setSelectedTimeframe] = useState<'today' | 'week' | 'month' | 'year'>('month');
   const [selectedGrade, setSelectedGrade] = useState<'all' | 'grade6' | 'grade7' | 'grade8'>('all');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -63,13 +66,7 @@ export default function DesktopAdminDashboard() {
     { id: 'agents', label: 'Sales Agents', icon: UserCheck },
     { id: 'teachers', label: "Teacher's Portal", icon: GraduationCap },
     { id: 'parents', label: "Parents' Portal", icon: Users },
-    { id: 'chatbot', label: 'Chatbot Agent', icon: Bot },
-    { id: 'tutor', label: 'Tutor Agent', icon: MessageSquare },
-    { id: 'quickfacts', label: 'QuickFacts Agent', icon: Zap },
-    { id: 'homework', label: 'Homework Agent', icon: FileText },
-    { id: 'assessment', label: 'Assessment Agent', icon: Award },
-    { id: 'career', label: 'Career Coach Agent', icon: Target },
-    { id: 'quiz', label: 'Quiz Arena', icon: HelpCircle },
+    { id: 'quiz', label: 'Quiz Arena', icon: Activity },
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
@@ -470,139 +467,141 @@ export default function DesktopAdminDashboard() {
   const isDesktop = width >= 768; // Lowered threshold for development
 
   return (
-    <View style={styles.container}>
-      <DevModeIndicator />
+    <ProtectedRoute allowedRoles={['admin']}>
+      <View style={styles.container}>
+        <DevModeIndicator />
 
-      {renderSidebar()}
+        {renderSidebar()}
 
-      <View style={[styles.mainContent, sidebarCollapsed && styles.mainContentExpanded]}>
-        {/* Close Button */}
-        <TouchableOpacity
-          style={styles.closeAdminButton}
-          onPress={handleCloseAdmin}
-        >
-          <ArrowLeft size={20} color="white" />
-          <Text style={styles.closeAdminButtonText}>Back to Student Dashboard</Text>
-        </TouchableOpacity>
+        <View style={[styles.mainContent, sidebarCollapsed && styles.mainContentExpanded]}>
+          {/* Close Button */}
+          <TouchableOpacity
+            style={styles.closeAdminButton}
+            onPress={handleCloseAdmin}
+          >
+            <ArrowLeft size={20} color="white" />
+            <Text style={styles.closeAdminButtonText}>Back to Student Dashboard</Text>
+          </TouchableOpacity>
 
-        {/* Top Header */}
-        <Animated.View
-          style={[
-            styles.topHeader,
-            {
-              opacity: fadeAnim,
-              transform: [{ translateY: slideAnim }],
-            },
-          ]}
-        >
-          <View style={styles.headerLeft}>
-            <Text style={styles.pageTitle}>Dashboard</Text>
-          </View>
-
-          <View style={styles.headerRight}>
-            <View style={styles.dropdownContainer}>
-              <TouchableOpacity 
-                style={styles.dropdown}
-                onPress={() => setShowTimeframeDropdown(!showTimeframeDropdown)}
-              >
-                <Text style={styles.dropdownLabel}>
-                  {timeframeOptions.find(opt => opt.value === selectedTimeframe)?.label || 'Select Timeframe'}
-                </Text>
-                <ChevronDown size={16} color="#6B7280" />
-              </TouchableOpacity>
-              {showTimeframeDropdown && (
-                <View style={styles.dropdownMenu}>
-                  {timeframeOptions.map((option) => (
-                    <TouchableOpacity
-                      key={option.value}
-                      style={[
-                        styles.dropdownOption,
-                        selectedTimeframe === option.value && styles.dropdownOptionSelected
-                      ]}
-                      onPress={() => handleTimeframeChange(option.value as any)}
-                    >
-                      <Text style={[
-                        styles.dropdownOptionText,
-                        selectedTimeframe === option.value && styles.dropdownOptionTextSelected
-                      ]}>
-                        {option.label}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              )}
+          {/* Top Header */}
+          <Animated.View
+            style={[
+              styles.topHeader,
+              {
+                opacity: fadeAnim,
+                transform: [{ translateY: slideAnim }],
+              },
+            ]}
+          >
+            <View style={styles.headerLeft}>
+              <Text style={styles.pageTitle}>Dashboard</Text>
             </View>
 
-            <View style={styles.dropdownContainer}>
-              <TouchableOpacity 
-                style={styles.dropdown}
-                onPress={() => setShowGradeDropdown(!showGradeDropdown)}
-              >
-                <Text style={styles.dropdownLabel}>
-                  {gradeOptions.find(opt => opt.value === selectedGrade)?.label || 'Select Grade'}
-                </Text>
-                <ChevronDown size={16} color="#6B7280" />
-              </TouchableOpacity>
-              {showGradeDropdown && (
-                <View style={styles.dropdownMenu}>
-                  {gradeOptions.map((option) => (
-                    <TouchableOpacity
-                      key={option.value}
-                      style={[
-                        styles.dropdownOption,
-                        selectedGrade === option.value && styles.dropdownOptionSelected
-                      ]}
-                      onPress={() => handleGradeChange(option.value as any)}
-                    >
-                      <Text style={[
-                        styles.dropdownOptionText,
-                        selectedGrade === option.value && styles.dropdownOptionTextSelected
-                      ]}>
-                        {option.label}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              )}
+            <View style={styles.headerRight}>
+              <View style={styles.dropdownContainer}>
+                <TouchableOpacity 
+                  style={styles.dropdown}
+                  onPress={() => setShowTimeframeDropdown(!showTimeframeDropdown)}
+                >
+                  <Text style={styles.dropdownLabel}>
+                    {timeframeOptions.find(opt => opt.value === selectedTimeframe)?.label || 'Select Timeframe'}
+                  </Text>
+                  <ChevronDown size={16} color="#6B7280" />
+                </TouchableOpacity>
+                {showTimeframeDropdown && (
+                  <View style={styles.dropdownMenu}>
+                    {timeframeOptions.map((option) => (
+                      <TouchableOpacity
+                        key={option.value}
+                        style={[
+                          styles.dropdownOption,
+                          selectedTimeframe === option.value && styles.dropdownOptionSelected
+                        ]}
+                        onPress={() => handleTimeframeChange(option.value as any)}
+                      >
+                        <Text style={[
+                          styles.dropdownOptionText,
+                          selectedTimeframe === option.value && styles.dropdownOptionTextSelected
+                        ]}>
+                          {option.label}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+              </View>
+
+              <View style={styles.dropdownContainer}>
+                <TouchableOpacity 
+                  style={styles.dropdown}
+                  onPress={() => setShowGradeDropdown(!showGradeDropdown)}
+                >
+                  <Text style={styles.dropdownLabel}>
+                    {gradeOptions.find(opt => opt.value === selectedGrade)?.label || 'Select Grade'}
+                  </Text>
+                  <ChevronDown size={16} color="#6B7280" />
+                </TouchableOpacity>
+                {showGradeDropdown && (
+                  <View style={styles.dropdownMenu}>
+                    {gradeOptions.map((option) => (
+                      <TouchableOpacity
+                        key={option.value}
+                        style={[
+                          styles.dropdownOption,
+                          selectedGrade === option.value && styles.dropdownOptionSelected
+                        ]}
+                        onPress={() => handleGradeChange(option.value as any)}
+                      >
+                        <Text style={[
+                          styles.dropdownOptionText,
+                          selectedGrade === option.value && styles.dropdownOptionTextSelected
+                        ]}>
+                          {option.label}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+              </View>
             </View>
-          </View>
-        </Animated.View>
+          </Animated.View>
 
-        {/* Metrics Cards */}
-        <Animated.View
-          style={[
-            styles.metricsSection,
-            {
-              opacity: fadeAnim,
-              transform: [{ translateY: slideAnim }],
-            },
-          ]}
-        >
-          {metricCards.map(renderMetricCard)}
-        </Animated.View>
+          {/* Metrics Cards */}
+          <Animated.View
+            style={[
+              styles.metricsSection,
+              {
+                opacity: fadeAnim,
+                transform: [{ translateY: slideAnim }],
+              },
+            ]}
+          >
+            {metricCards.map(renderMetricCard)}
+          </Animated.View>
 
-        {/* Charts Section */}
-        <Animated.View
-          style={[
-            styles.chartsSection,
-            {
-              opacity: fadeAnim,
-              transform: [{ translateY: slideAnim }],
-            },
-          ]}
-        >
-          <View style={styles.chartsRow}>
-            {renderLineChart(userGrowthData, 'User Growth', '#3B82F6')}
-            {renderBarChart(revenueData, 'Revenue')}
-          </View>
+          {/* Charts Section */}
+          <Animated.View
+            style={[
+              styles.chartsSection,
+              {
+                opacity: fadeAnim,
+                transform: [{ translateY: slideAnim }],
+              },
+            ]}
+          >
+            <View style={styles.chartsRow}>
+              {renderLineChart(userGrowthData, 'User Growth', '#3B82F6')}
+              {renderBarChart(revenueData, 'Revenue')}
+            </View>
 
-          <View style={styles.chartsRow}>
-            {renderPieChart()}
-            {renderDataTable()}
-          </View>
-        </Animated.View>
+            <View style={styles.chartsRow}>
+              {renderPieChart()}
+              {renderDataTable()}
+            </View>
+          </Animated.View>
+        </View>
       </View>
-    </View>
+    </ProtectedRoute>
   );
 }
 

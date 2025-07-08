@@ -14,6 +14,10 @@ import {
 import { router } from 'expo-router';
 import { X, CircleAlert as AlertCircle, ChevronDown, Save, LogOut, Lock, Bell, Shield, User, Mail, Phone, School, Users, GraduationCap, BookOpen, Calculator, Globe, Beaker, Palette, Music, Heart, Zap, CircleCheck as CheckCircle } from 'lucide-react-native';
 import { DevModeIndicator } from '@/components/DevModeIndicator';
+import { useAuth } from '@/contexts/AuthContext';
+import { checkSubscriptionStatus } from '@/lib/mpesa';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import RenewSubscriptionButton from '@/components/RenewSubscriptionButton';
 import AsyncStorage from '@react-native-async-storage/async-storage'; 
 
 const { width, height } = Dimensions.get('window');
@@ -35,11 +39,20 @@ interface ProfileData {
 }
 
 export default function ProfileScreen() {
+  const { user, userRole, signOut: authSignOut } = useAuth();
   const [activeTab, setActiveTab] = useState<'profile' | 'subjects'>('profile');
   const [isEditing, setIsEditing] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
   const [selectionError, setSelectionError] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState<boolean | null>(null);
+  const [subscriptionStatus, setSubscriptionStatus] = useState<{
+    isActive: boolean;
+    endDate?: Date;
+    planType?: string;
+    daysRemaining?: number;
+    isInTrial?: boolean;
+  } | null>(null);
+  const [loadingSubscription, setLoadingSubscription] = useState(true);
   
   const [profileData, setProfileData] = useState<ProfileData>({
     firstName: 'Walter',
@@ -60,6 +73,25 @@ export default function ProfileScreen() {
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>([
     'Mathematics', 'English', 'Kiswahili', 'Science', 'Social Studies'
   ]);
+
+  // Load subscription status
+  useEffect(() => {
+    if (user) {
+      loadSubscriptionStatus();
+    }
+  }, [user]);
+
+  const loadSubscriptionStatus = async () => {
+    try {
+      setLoadingSubscription(true);
+      const status = await checkSubscriptionStatus(user.id);
+      setSubscriptionStatus(status);
+    } catch (error) {
+      console.error('Error loading subscription status:', error);
+    } finally {
+      setLoadingSubscription(false);
+    }
+  };
 
   // Define default and optional subjects
   const defaultSubjects = [
@@ -157,8 +189,13 @@ export default function ProfileScreen() {
     }
   };
 
-  const handleLogout = () => {
-    router.replace('/');
+  const handleLogout = async () => {
+    try {
+      await authSignOut();
+      router.replace('/');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
   };
 
   const toggleSubject = (subject: string) => {
@@ -499,28 +536,29 @@ export default function ProfileScreen() {
   );
 
   return (
-    <View style={styles.container}>
-      <DevModeIndicator />
-      
-      {/* Header */}
-      <Animated.View
-        style={[
-          styles.header,
-          {
-            opacity: fadeAnim,
-            transform: [{ translateY: slideAnim }],
-          },
-        ]}
-      >
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => router.back()}
+    <ProtectedRoute>
+      <View style={styles.container}>
+        <DevModeIndicator />
+        
+        {/* Header */}
+        <Animated.View
+          style={[
+            styles.header,
+            {
+              opacity: fadeAnim,
+              transform: [{ translateY: slideAnim }],
+            },
+          ]}
         >
-          <X size={24} color="#718096" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Profile Settings</Text>
-        <View style={styles.headerSpacer} />
-      </Animated.View>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => router.back()}
+          >
+            <X size={24} color="#718096" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Profile Settings</Text>
+          <View style={styles.headerSpacer} />
+        </Animated.View>
 
       {/* Tab Navigation */}
       <Animated.View
@@ -551,16 +589,310 @@ export default function ProfileScreen() {
       </Animated.View>
 
       {/* Content */}
-      <Animated.View
-        style={[
-          styles.contentContainer,
-          {
-            opacity: fadeAnim,
-            transform: [{ translateY: slideAnim }],
-          },
-        ]}
-      >
-        {activeTab === 'profile' ? renderProfileSection() : renderSubjectsSection()}
+      <Animated.View style={[styles.contentContainer, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
+        {activeTab === 'profile' ? (
+          <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+            {/* Subscription Status Section */}
+            <View style={styles.section}>
+              <View style={styles.sectionHeader}>
+                <Shield size={20} color="#4299E1" />
+                <Text style={styles.sectionTitle}>Subscription Status</Text>
+              </View>
+              
+              {loadingSubscription ? (
+                <View style={styles.loadingContainer}>
+                  <ActivityIndicator size="small" color="#4299E1" />
+                  <Text style={styles.loadingText}>Loading subscription status...</Text>
+                </View>
+              ) : (
+                <View style={styles.subscriptionCard}>
+                  <View style={styles.subscriptionHeader}>
+                    <View style={[
+                      styles.subscriptionBadge,
+                      {
+                        backgroundColor: subscriptionStatus?.isActive 
+                          ? subscriptionStatus.isInTrial 
+                            ? '#FEF3C7' 
+                            : '#F0FFF4'
+                          : '#FEF2F2'
+                      }
+                    ]}>
+                      <Text style={[
+                        styles.subscriptionBadgeText,
+                        {
+                          color: subscriptionStatus?.isActive 
+                            ? subscriptionStatus.isInTrial 
+                              ? '#D97706' 
+                              : '#10B981'
+                            : '#E53E3E'
+                        }
+                      ]}>
+                        {subscriptionStatus?.isActive 
+                          ? subscriptionStatus.isInTrial 
+                            ? 'Trial' 
+                            : 'Active'
+                          : 'Inactive'}
+                      </Text>
+                    </View>
+                    
+                    {subscriptionStatus?.isActive && subscriptionStatus.planType && !subscriptionStatus.isInTrial && (
+                      <Text style={styles.planTypeText}>
+                        {subscriptionStatus.planType === 'monthly' ? 'Monthly Plan' : 'Annual Plan'}
+                      </Text>
+                    )}
+                  </View>
+                  
+                  <View style={styles.subscriptionDetails}>
+                    {subscriptionStatus?.isActive ? (
+                      <>
+                        <Text style={styles.subscriptionText}>
+                          {subscriptionStatus.isInTrial 
+                            ? `Your free trial ${subscriptionStatus.daysRemaining && subscriptionStatus.daysRemaining > 0 ? 'expires' : 'expired'} on ${subscriptionStatus.endDate?.toLocaleDateString()}.` 
+                            : `Your subscription ${subscriptionStatus.daysRemaining && subscriptionStatus.daysRemaining > 0 ? 'renews' : 'expired'} on ${subscriptionStatus.endDate?.toLocaleDateString()}.`}
+                        </Text>
+                        
+                        {subscriptionStatus.daysRemaining && subscriptionStatus.daysRemaining > 0 ? (
+                          <Text style={styles.daysRemainingText}>
+                            {subscriptionStatus.daysRemaining} days remaining
+                          </Text>
+                        ) : (
+                          <Text style={styles.expiredText}>
+                            Your {subscriptionStatus.isInTrial ? 'trial has' : 'subscription has'} expired
+                          </Text>
+                        )}
+                      </>
+                    ) : (
+                      <Text style={styles.subscriptionText}>
+                        Your subscription is inactive. Subscribe to access premium features.
+                      </Text>
+                    )}
+                  </View>
+                  
+                  <View style={styles.subscriptionActions}>
+                    {subscriptionStatus?.isActive && !subscriptionStatus.isInTrial ? (
+                      <RenewSubscriptionButton 
+                        planType={subscriptionStatus.planType as 'monthly' | 'annual'} 
+                        onSuccess={loadSubscriptionStatus}
+                        style={styles.renewButton}
+                      />
+                    ) : (
+                      <TouchableOpacity
+                        style={styles.subscribeButton}
+                        onPress={() => router.push('/subscription')}
+                      >
+                        <Text style={styles.subscribeButtonText}>
+                          {subscriptionStatus?.isActive && subscriptionStatus.isInTrial 
+                            ? 'Upgrade to Premium' 
+                            : 'Subscribe Now'}
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+                    
+                    {subscriptionStatus?.isActive && !subscriptionStatus.isInTrial && (
+                      <TouchableOpacity
+                        style={styles.viewHistoryButton}
+                        onPress={() => router.push('/subscription/billing-history')}
+                      >
+                        <Text style={styles.viewHistoryButtonText}>View Billing History</Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                </View>
+              )}
+            </View>
+            
+            {/* Basic Information */}
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Personal Information</Text>
+              
+              <View style={styles.inputRow}>
+                <View style={[styles.inputContainer, { flex: 1, marginRight: 8 }]}>
+                  <Text style={styles.label}>First name</Text>
+                  <TextInput
+                    style={[styles.input, !isEditing && styles.inputDisabled]}
+                    value={profileData.firstName}
+                    onChangeText={(value) => handleInputChange('firstName', value)}
+                    editable={isEditing}
+                    placeholder="First name"
+                    placeholderTextColor="#A0AEC0"
+                  />
+                </View>
+                <View style={[styles.inputContainer, { flex: 1, marginLeft: 8 }]}>
+                  <Text style={styles.label}>Last name</Text>
+                  <TextInput
+                    style={[styles.input, !isEditing && styles.inputDisabled]}
+                    value={profileData.lastName}
+                    onChangeText={(value) => handleInputChange('lastName', value)}
+                    editable={isEditing}
+                    placeholder="Last name"
+                    placeholderTextColor="#A0AEC0"
+                  />
+                </View>
+              </View>
+
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Email</Text>
+                <TextInput
+                  style={[styles.input, !isEditing && styles.inputDisabled]}
+                  value={profileData.email}
+                  onChangeText={(value) => handleInputChange('email', value)}
+                  editable={isEditing}
+                  placeholder="Email address"
+                  placeholderTextColor="#A0AEC0"
+                  keyboardType="email-address"
+                />
+              </View>
+
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Phone</Text>
+                <TextInput
+                  style={[styles.input, !isEditing && styles.inputDisabled]}
+                  value={profileData.phone}
+                  onChangeText={(value) => handleInputChange('phone', value)}
+                  editable={isEditing}
+                  placeholder="Phone number"
+                  placeholderTextColor="#A0AEC0"
+                  keyboardType="phone-pad"
+                />
+              </View>
+
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>School</Text>
+                <View style={styles.selectContainer}>
+                  <TextInput
+                    style={[styles.input, !isEditing && styles.inputDisabled]}
+                    value={profileData.school}
+                    onChangeText={(value) => handleInputChange('school', value)}
+                    editable={isEditing}
+                    placeholder="School name"
+                    placeholderTextColor="#A0AEC0"
+                  />
+                  {!isEditing && <ChevronDown size={20} color="#A0AEC0" style={styles.selectIcon} />}
+                </View>
+              </View>
+
+              <View style={styles.inputRow}>
+                <View style={[styles.inputContainer, { flex: 1, marginRight: 8 }]}>
+                  <Text style={styles.label}>Gender</Text>
+                  <View style={styles.selectContainer}>
+                    <TextInput
+                      style={[styles.input, !isEditing && styles.inputDisabled]}
+                      value={profileData.gender}
+                      onChangeText={(value) => handleInputChange('gender', value)}
+                      editable={isEditing}
+                      placeholder="Gender"
+                      placeholderTextColor="#A0AEC0"
+                    />
+                    {!isEditing && <ChevronDown size={20} color="#A0AEC0" style={styles.selectIcon} />}
+                  </View>
+                </View>
+                <View style={[styles.inputContainer, { flex: 1, marginLeft: 8 }]}>
+                  <Text style={styles.label}>Grade</Text>
+                  <View style={styles.selectContainer}>
+                    <TextInput
+                      style={[styles.input, !isEditing && styles.inputDisabled]}
+                      value={profileData.grade}
+                      onChangeText={(value) => handleInputChange('grade', value)}
+                      editable={isEditing}
+                      placeholder="Grade"
+                      placeholderTextColor="#A0AEC0"
+                    />
+                    {!isEditing && <ChevronDown size={20} color="#A0AEC0" style={styles.selectIcon} />}
+                  </View>
+                </View>
+              </View>
+            </View>
+
+            {/* Account Settings */}
+            <View style={styles.section}>
+              <View style={styles.sectionHeader}>
+                <Shield size={20} color="#4299E1" />
+                <Text style={styles.sectionTitle}>Account Settings</Text>
+              </View>
+              
+              <TouchableOpacity style={styles.settingItem}>
+                <View style={styles.settingLeft}>
+                  <Lock size={20} color="#718096" />
+                  <Text style={styles.settingText}>Change Password</Text>
+                </View>
+                <ChevronDown size={20} color="#A0AEC0" />
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.settingItem}>
+                <View style={styles.settingLeft}>
+                  <User size={20} color="#718096" />
+                  <Text style={styles.settingText}>Privacy Settings</Text>
+                </View>
+                <ChevronDown size={20} color="#A0AEC0" />
+              </TouchableOpacity>
+
+              {userRole === 'admin' && (
+                <TouchableOpacity 
+                  style={styles.settingItem}
+                  onPress={() => router.push('/admin')}
+                >
+                  <View style={styles.settingLeft}>
+                    <Shield size={20} color="#8B5CF6" />
+                    <Text style={styles.settingText}>Admin Dashboard</Text>
+                  </View>
+                  <View style={styles.activeBadge}>
+                    <Text style={styles.activeBadgeText}>Active</Text>
+                  </View>
+                </TouchableOpacity>
+              )}
+            </View>
+
+            {/* Notification Preferences */}
+            <View style={styles.section}>
+              <View style={styles.sectionHeader}>
+                <Bell size={20} color="#48BB78" />
+                <Text style={styles.sectionTitle}>Notifications</Text>
+              </View>
+              
+              <View style={styles.toggleItem}>
+                <View style={styles.settingLeft}>
+                  <Mail size={20} color="#718096" />
+                  <Text style={styles.settingText}>Email Notifications</Text>
+                </View>
+                <TouchableOpacity
+                  style={[styles.toggle, profileData.emailNotifications && styles.toggleActive]}
+                  onPress={() => handleInputChange('emailNotifications', !profileData.emailNotifications)}
+                >
+                  <View style={[styles.toggleThumb, profileData.emailNotifications && styles.toggleThumbActive]} />
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.toggleItem}>
+                <View style={styles.settingLeft}>
+                  <Bell size={20} color="#718096" />
+                  <Text style={styles.settingText}>Push Notifications</Text>
+                </View>
+                <TouchableOpacity
+                  style={[styles.toggle, profileData.pushNotifications && styles.toggleActive]}
+                  onPress={() => handleInputChange('pushNotifications', !profileData.pushNotifications)}
+                >
+                  <View style={[styles.toggleThumb, profileData.pushNotifications && styles.toggleThumbActive]} />
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.toggleItem}>
+                <View style={styles.settingLeft}>
+                  <BookOpen size={20} color="#718096" />
+                  <Text style={styles.settingText}>Study Reminders</Text>
+                </View>
+                <TouchableOpacity
+                  style={[styles.toggle, profileData.studyReminders && styles.toggleActive]}
+                  onPress={() => handleInputChange('studyReminders', !profileData.studyReminders)}
+                >
+                  <View style={[styles.toggleThumb, profileData.studyReminders && styles.toggleThumbActive]} />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            {/* Additional spacing for scroll */}
+            <View style={{ height: 40 }} />
+          </ScrollView>
+        ) : renderSubjectsSection()}
       </Animated.View>
 
       {/* Action Buttons */}
@@ -603,7 +935,8 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
       </Animated.View>
-    </View>
+      </View>
+    </ProtectedRoute>
   );
 }
 
@@ -1013,5 +1346,102 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Inter-SemiBold',
     marginLeft: 8,
+  },
+  loadingContainer: {
+    padding: 20,
+    alignItems: 'center',
+  },
+  loadingText: {
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
+    color: '#718096',
+    marginTop: 8,
+  },
+  subscriptionCard: {
+    backgroundColor: 'white',
+    borderRadius: 12,
+    padding: 20,
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  subscriptionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  subscriptionBadge: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+    marginRight: 12,
+  },
+  subscriptionBadgeText: {
+    fontSize: 12,
+    fontFamily: 'Inter-SemiBold',
+  },
+  planTypeText: {
+    fontSize: 14,
+    fontFamily: 'Inter-SemiBold',
+    color: '#4A5568',
+  },
+  subscriptionDetails: {
+    marginBottom: 16,
+  },
+  subscriptionText: {
+    fontSize: 14,
+    fontFamily: 'Inter-Regular',
+    color: '#4A5568',
+    marginBottom: 8,
+  },
+  daysRemainingText: {
+    fontSize: 14,
+    fontFamily: 'Inter-SemiBold',
+    color: '#48BB78',
+  },
+  expiredText: {
+    fontSize: 14,
+    fontFamily: 'Inter-SemiBold',
+    color: '#E53E3E',
+  },
+  subscriptionActions: {
+    marginTop: 8,
+  },
+  renewButton: {
+    backgroundColor: '#48BB78',
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  subscribeButton: {
+    backgroundColor: '#4299E1',
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  subscribeButtonText: {
+    color: 'white',
+    fontSize: 14,
+    fontFamily: 'Inter-SemiBold',
+  },
+  viewHistoryButton: {
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+  },
+  viewHistoryButtonText: {
+    color: '#718096',
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
   },
 });

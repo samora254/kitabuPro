@@ -1,0 +1,51 @@
+# Node.js dependencies
+node_modules/
+# Justification: Contains thousands of files and is very large. These are external libraries, not part of the project's source code.
+# Impact on context window size: Significant reduction.
+
+# Build artifacts and temporary files
+.expo/
+# Justification: Expo's build cache and temporary files. These are generated during development and builds.
+# Impact on context window size: Significant reduction.
+
+dist/
+# Justification: Common directory for compiled web build output. Not source code.
+# Impact on context window size: Significant reduction.
+
+build/
+# Justification: Common directory for native build output. Not source code.
+# Impact on context window size: Significant reduction.
+
+*.log
+# Justification: Log files contain runtime information and can grow large. They are not part of the application's source code.
+# Impact on context window size: Moderate reduction.
+
+# Environment-specific files
+.env*
+# Justification: Contains sensitive environment variables and should not be shared in the context.
+# Impact on context window size: Minor reduction, but critical for security.
+
+package-lock.json
+# Justification: Dependency lock file. While important for reproducibility, it's a generated file and can be large.
+# Impact on context window size: Moderate reduction.
+
+# IDE/editor configuration files
+.vscode/
+# Justification: Contains user-specific VS Code settings and configurations. Not part of the project's functional code.
+# Impact on context window size: Minor reduction.
+
+.idea/
+# Justification: Contains IntelliJ/WebStorm IDE configuration files. Not part of the project's functional code.
+# Impact on context window size: Minor reduction.
+
+# Version control specific files
+.git/
+# Justification: Internal Git repository data. Not part of the project's source code.
+# Impact on context window size: Significant reduction.
+
+# Large binary files and media files (placeholders or assets not directly relevant to code logic)
+assets/images/*.jpg
+assets/images/*.png
+# Justification: Binary image files. While some are used, many are placeholders or large, and their content is not directly relevant to code logic.
+# Impact on context window size: Moderate to significant reduction depending on the number and size of images.
+

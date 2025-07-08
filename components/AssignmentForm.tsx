@@ -24,8 +24,8 @@ export interface AssignmentData {
   subject: string;
   title: string;
   description: string;
-  dueDate: string;
-  dueTime: string;
+  due_date: string;
+  due_time: string;
   attachments?: any[];
 }
 
@@ -35,8 +35,8 @@ export function AssignmentForm({ onSubmit, onCancel, initialData }: AssignmentFo
     subject: initialData?.subject || '',
     title: initialData?.title || '',
     description: initialData?.description || '',
-    dueDate: initialData?.dueDate || '',
-    dueTime: initialData?.dueTime || '',
+    due_date: initialData?.due_date || '',
+    due_time: initialData?.due_time || '',
     attachments: initialData?.attachments || [],
   });
   
@@ -75,12 +75,12 @@ export function AssignmentForm({ onSubmit, onCancel, initialData }: AssignmentFo
       newErrors.description = 'Description is required';
     }
     
-    if (!formData.dueDate) {
-      newErrors.dueDate = 'Due date is required';
+    if (!formData.due_date) {
+      newErrors.due_date = 'Due date is required';
     }
     
-    if (!formData.dueTime) {
-      newErrors.dueTime = 'Due time is required';
+    if (!formData.due_time) {
+      newErrors.due_time = 'Due time is required';
     }
     
     setErrors(newErrors);
@@ -239,29 +239,29 @@ export function AssignmentForm({ onSubmit, onCancel, initialData }: AssignmentFo
           <View style={styles.dateTimeContainer}>
             <View style={styles.dateContainer}>
               <TextInput
-                style={[styles.dateInput, errors.dueDate && styles.inputError]}
+                style={[styles.dateInput, errors.due_date && styles.inputError]}
                 placeholder="YYYY-MM-DD"
                 placeholderTextColor="#A0AEC0"
-                value={formData.dueDate}
-                onChangeText={(value) => handleInputChange('dueDate', value)}
+                value={formData.due_date}
+                onChangeText={(value) => handleInputChange('due_date', value)}
               />
               <Calendar size={20} color="#A0AEC0" style={styles.dateIcon} />
             </View>
             
             <View style={styles.timeContainer}>
               <TextInput
-                style={[styles.timeInput, errors.dueTime && styles.inputError]}
+                style={[styles.timeInput, errors.due_time && styles.inputError]}
                 placeholder="HH:MM"
                 placeholderTextColor="#A0AEC0"
-                value={formData.dueTime}
-                onChangeText={(value) => handleInputChange('dueTime', value)}
+                value={formData.due_time}
+                onChangeText={(value) => handleInputChange('due_time', value)}
               />
               <Clock size={20} color="#A0AEC0" style={styles.timeIcon} />
             </View>
           </View>
-          {(errors.dueDate || errors.dueTime) && (
+          {(errors.due_date || errors.due_time) && (
             <Text style={styles.errorText}>
-              {errors.dueDate || errors.dueTime}
+              {errors.due_date || errors.due_time}
             </Text>
           )}
         </View>
@@ -452,7 +452,7 @@ export function AssignmentForm({ onSubmit, onCancel, initialData }: AssignmentFo
               
               <View style={styles.previewSection}>
                 <Text style={styles.previewLabel}>Due Date</Text>
-                <Text style={styles.previewValue}>{formData.dueDate} at {formData.dueTime}</Text>
+                <Text style={styles.previewValue}>{formData.due_date} at {formData.due_time}</Text>
               </View>
             </ScrollView>
             

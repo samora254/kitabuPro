@@ -14,6 +14,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { ChevronLeft, ChevronRight } from 'lucide-react-native';
 import { GestureHandlerRootView, PanGestureHandler, State } from 'react-native-gesture-handler';
 import { DevModeIndicator } from '@/components/DevModeIndicator';
+import { useAuth } from '@/contexts/AuthContext';
 
 const { width, height } = Dimensions.get('window');
 
@@ -42,11 +43,19 @@ const landingScreens = [
 ];
 
 export default function LandingPage() {
+  const { user } = useAuth();
   const [currentScreen, setCurrentScreen] = useState(0);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(50)).current;
   const translateX = useRef(new Animated.Value(0)).current;
   const imageScale = useRef(new Animated.Value(0.8)).current;
+
+  // If user is already logged in, redirect to dashboard
+  useEffect(() => {
+    if (user) {
+      router.replace('/dashboard');
+    }
+  }, [user]);
 
   useEffect(() => {
     animateIn();

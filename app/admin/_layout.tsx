@@ -8,7 +8,7 @@ export default function AdminLayout() {
       <Stack.Screen name="subjects" />
       <Stack.Screen name="users" />
       <Stack.Screen name="agents" />
-     <Stack.Screen name="teachers" />
+      <Stack.Screen name="teachers" />
     </Stack>
   );
 }

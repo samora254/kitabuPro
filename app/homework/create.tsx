@@ -10,19 +10,28 @@ import {
   Alert
 } from 'react-native';
 import { router } from 'expo-router';
-import { ArrowLeft, Save, Send } from 'lucide-react-native';
+import { ArrowLeft, Save } from 'lucide-react-native';
 import { DevModeIndicator } from '@/components/DevModeIndicator';
 import { AssignmentForm } from '@/components/AssignmentForm';
+import { useAuth } from '@/contexts/AuthContext';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import { createHomeworkAssignment } from '@/lib/supabase';
 
 export default function CreateAssignmentScreen() {
+  const { user } = useAuth();
   const [isSaving, setIsSaving] = useState(false);
   
-  const handleSubmit = (assignmentData: any) => {
+  const handleSubmit = async (assignmentData: any) => {
     setIsSaving(true);
     
-    // Simulate API call
-    setTimeout(() => {
-      setIsSaving(false);
+    try {
+      const assignment = {
+        ...assignmentData,
+        teacher_id: user?.id,
+      };
+      
+      await createHomeworkAssignment(assignment);
+      
       Alert.alert(
         'Assignment Created',
         'Your assignment has been created successfully.',
@@ -33,82 +42,84 @@ export default function CreateAssignmentScreen() {
           }
         ]
       );
-    }, 1500);
+    } catch (error: any) {
+      console.error('Error creating assignment:', error);
+      Alert.alert('Error', error.message || 'Failed to create assignment');
+    } finally {
+      setIsSaving(false);
+    }
   };
-  
+
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
-    >
-      <DevModeIndicator />
-      
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => router.back()}
-        >
-          <ArrowLeft size={24} color="#2D3748" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Create Assignment</Text>
-        <View style={styles.headerSpacer} />
-      </View>
-      
-      <ScrollView 
-        style={styles.content}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
+    <ProtectedRoute allowedRoles={['teacher', 'admin']}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
       >
-        <AssignmentForm 
-          onSubmit={handleSubmit}
-          onCancel={() => router.back()}
-        />
-      </ScrollView>
-      
-      {/* Action Buttons */}
-      <View style={styles.actionButtons}>
-        <TouchableOpacity
-          style={styles.cancelButton}
-          onPress={() => router.back()}
+        <DevModeIndicator />
+
+        {/* Header */}
+        <View style={styles.header}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => router.back()}
+          >
+            <ArrowLeft size={24} color="#2D3748" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Create Assignment</Text>
+          <View style={styles.headerSpacer} />
+        </View>
+
+        <ScrollView 
+          style={styles.content}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent}
         >
-          <Text style={styles.cancelButtonText}>Cancel</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity
-          style={[styles.saveButton, isSaving && styles.disabledButton]}
-          onPress={() => {
-            // This would normally be connected to the form submission
-            // For demo purposes, we'll just show an alert
-            Alert.alert(
-              'Save Assignment',
-              'This would save the assignment as a draft.',
-              [
-                {
-                  text: 'Cancel',
-                  style: 'cancel'
-                },
-                {
-                  text: 'Save',
-                  onPress: () => {
-                    setIsSaving(true);
-                    setTimeout(() => {
-                      setIsSaving(false);
-                      router.push('/homework');
-                    }, 1000);
+          <AssignmentForm 
+            onSubmit={handleSubmit}
+            onCancel={() => router.back()}
+          />
+        </ScrollView>
+
+        {/* Action Buttons */}
+        <View style={styles.actionButtons}>
+          <TouchableOpacity
+            style={styles.cancelButton}
+            onPress={() => router.back()}
+          >
+            <Text style={styles.cancelButtonText}>Cancel</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.saveButton, isSaving && styles.disabledButton]}
+            onPress={() => {
+              Alert.alert(
+                'Save Assignment',
+                'This would save the assignment as a draft.',
+                [
+                  { text: 'Cancel', style: 'cancel' },
+                  {
+                    text: 'Save',
+                    onPress: () => {
+                      setIsSaving(true);
+                      setTimeout(() => {
+                        setIsSaving(false);
+                        router.push('/homework');
+                      }, 1000);
+                    }
                   }
-                }
-              ]
-            );
-          }}
-          disabled={isSaving}
-        >
-          <Save size={20} color="white" />
-          <Text style={styles.saveButtonText}>Save Draft</Text>
-        </TouchableOpacity>
-      </View>
-    </KeyboardAvoidingView>
+                ]
+              );
+            }}
+            disabled={isSaving}
+          >
+            <Save size={20} color="white" />
+            <Text style={styles.saveButtonText}>Save Draft</Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
+    </ProtectedRoute>
   );
 }
 

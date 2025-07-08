@@ -39,6 +39,10 @@ import {
 } from 'lucide-react-native';
 import { DevModeIndicator } from '@/components/DevModeIndicator';
 import ChatScreen from './(tabs)/chat';
+import { useAuth } from '@/contexts/AuthContext';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import SubscriptionBanner from '@/components/SubscriptionBanner';
+import { useHomeworkAssignments } from '@/hooks/useSupabaseData';
 
 const { width } = Dimensions.get('window');
 
@@ -50,6 +54,10 @@ interface Subject {
 }
 
 export default function Dashboard() {
+  const { user, userRole } = useAuth();
+  const { data: homeworkAssignments, loading: loadingHomework } = useHomeworkAssignments({
+    grade: selectedGrade.replace('GRADE ', 'Grade '),
+  });
   const [helpText, setHelpText] = useState('');
   const [selectedGrade, setSelectedGrade] = useState('GRADE 8');
   const [userSubjects, setUserSubjects] = useState<Subject[]>([]); 
@@ -202,6 +210,7 @@ export default function Dashboard() {
   const handleSendHelp = () => {
     if (helpText.trim()) {
       // Open the chat modal with the initial message
+      console.log('Sending help request:', helpText);
       setHelpText('');
       setShowChatModal(true);
     }
@@ -218,222 +227,227 @@ export default function Dashboard() {
   };
 
   return (
-    <View style={styles.container}>
-      <DevModeIndicator />
-      
-      {/* Header */}
-      <Animated.View
-        style={[
-          styles.header,
-          {
-            opacity: fadeAnim,
-            transform: [{ translateY: slideAnim }],
-          },
-        ]}
-      >
-        <View style={styles.headerTop}>
-          <View style={styles.logoContainer}>
-            <View style={styles.logoIcon}>
-              <Text style={styles.logoText}>📚</Text>
+    <ProtectedRoute allowedRoles={['student']}>
+      <View style={styles.container}>
+        <DevModeIndicator />
+        
+        {/* Subscription Banner */}
+        <SubscriptionBanner />
+        
+        {/* Header */}
+        <Animated.View
+          style={[
+            styles.header,
+            {
+              opacity: fadeAnim,
+              transform: [{ translateY: slideAnim }],
+            },
+          ]}
+        >
+          <View style={styles.headerTop}>
+            <View style={styles.logoContainer}>
+              <View style={styles.logoIcon}>
+                <Text style={styles.logoText}>📚</Text>
+              </View>
+              <Text style={styles.logoTitle}>
+                KITABU<Text style={styles.logoAccent}>.AI</Text>
+              </Text>
+              <TouchableOpacity 
+                style={styles.gradeBadge}
+                onPress={() => setShowGradeDropdown(true)}
+              >
+                <Text style={styles.gradeText}>{selectedGrade}</Text>
+                <ChevronDown size={14} color="white" style={styles.chevronIcon} />
+              </TouchableOpacity>
             </View>
-            <Text style={styles.logoTitle}>
-              KITABU<Text style={styles.logoAccent}>.AI</Text>
-            </Text>
-            <TouchableOpacity 
-              style={styles.gradeBadge}
-              onPress={() => setShowGradeDropdown(true)}
-            >
-              <Text style={styles.gradeText}>{selectedGrade}</Text>
-              <ChevronDown size={14} color="white" style={styles.chevronIcon} />
-            </TouchableOpacity>
+            <View style={styles.headerActions}>
+              <TouchableOpacity style={styles.headerButton}>
+                <Bell size={20} color="#6B7280" />
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={styles.headerButton}
+                onPress={openProfileSettings}
+              >
+                <User size={20} color="#6B7280" />
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={styles.headerActions}>
-            <TouchableOpacity style={styles.headerButton}>
-              <Bell size={20} color="#6B7280" />
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={styles.headerButton}
-              onPress={openProfileSettings}
-            >
-              <User size={20} color="#6B7280" />
-            </TouchableOpacity>
+
+          {/* Hero Banner */}
+          <View style={styles.heroBanner}>
+            <Image
+              source={{ uri: 'https://images.pexels.com/photos/5212345/pexels-photo-5212345.jpeg?auto=compress&cs=tinysrgb&w=800' }}
+              style={styles.carouselImage}
+              resizeMode="cover"
+            />
           </View>
-        </View>
+        </Animated.View>
 
-        {/* Hero Banner */}
-        <View style={styles.heroBanner}>
-          <Image
-            source={{ uri: 'https://images.pexels.com/photos/5212345/pexels-photo-5212345.jpeg?auto=compress&cs=tinysrgb&w=800' }}
-            style={styles.carouselImage}
-            resizeMode="cover"
-          />
-        </View>
-      </Animated.View>
-
-      {/* Grade Selection Modal */}
-      <Modal
-        visible={showGradeDropdown}
-        transparent={true}
-        animationType="fade"
-        onRequestClose={() => setShowGradeDropdown(false)}
-      >
-        <TouchableOpacity 
-          style={styles.modalOverlay}
-          activeOpacity={1}
-          onPress={() => setShowGradeDropdown(false)}
+        {/* Grade Selection Modal */}
+        <Modal
+          visible={showGradeDropdown}
+          transparent={true}
+          animationType="fade"
+          onRequestClose={() => setShowGradeDropdown(false)}
         >
           <TouchableOpacity 
-            style={styles.gradeDropdown}
+            style={styles.modalOverlay}
             activeOpacity={1}
-            onPress={(e) => e.stopPropagation()}
+            onPress={() => setShowGradeDropdown(false)}
           >
-            <View style={styles.dropdownHeader}>
-              <Text style={styles.dropdownTitle}>Select Grade</Text>
-            </View>
-            <ScrollView 
-              style={styles.gradeScrollView}
-              showsVerticalScrollIndicator={true}
-              indicatorStyle="default"
+            <TouchableOpacity 
+              style={styles.gradeDropdown}
+              activeOpacity={1}
+              onPress={(e) => e.stopPropagation()}
             >
-              {grades.map((grade, index) => (
-                <TouchableOpacity
-                  key={grade}
-                  style={[
-                    styles.gradeOption,
-                    selectedGrade === grade && styles.selectedGradeOption,
-                    index === grades.length - 1 && styles.lastGradeOption
-                  ]}
-                  onPress={() => handleGradeSelect(grade)}
-                >
-                  <Text style={[
-                    styles.gradeOptionText,
-                    selectedGrade === grade && styles.selectedGradeOptionText
-                  ]}>
-                    {grade}
-                  </Text>
-                  {selectedGrade === grade && (
-                    <Check size={16} color="#10B981" />
-                  )}
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-          </TouchableOpacity>
-        </TouchableOpacity>
-      </Modal>
-
-      {/* Main Content - Fixed Layout */}
-      <View style={styles.mainContent}>
-        {/* Quick Actions Section - Fixed 3 buttons */}
-        <Animated.View
-          style={[
-            styles.quickActionsSection,
-            {
-              opacity: fadeAnim,
-              transform: [{ translateY: slideAnim }],
-            },
-          ]}
-        >
-          <Text style={styles.sectionTitle}>Quick Actions</Text>
-          <View style={styles.quickActionsContainer}>
-            {quickActions.map((action) => (
-              <TouchableOpacity
-                key={action.id}
-                style={styles.quickActionButton}
-                onPress={() => handleQuickAction(action.name)}
+              <View style={styles.dropdownHeader}>
+                <Text style={styles.dropdownTitle}>Select Grade</Text>
+              </View>
+              <ScrollView 
+                style={styles.gradeScrollView}
+                showsVerticalScrollIndicator={true}
+                indicatorStyle="default"
               >
-                <action.icon size={24} color={action.color} />
-                <Text style={styles.quickActionText}>{action.name}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </Animated.View>
-
-        {/* Subjects Section - Fixed 7 buttons, no scroll */}
-        <Animated.View
-          style={[
-            styles.subjectsSection,
-            { opacity: fadeAnim, transform: [{ translateY: slideAnim }] },
-          ]}
-        >
-          <Text style={styles.sectionTitle}>My Subjects</Text>
-          <View style={styles.subjectsContainer}>
-            {userSubjects.length > 0 ? userSubjects.map((subject) => (
-              <TouchableOpacity
-                key={subject.id}
-                style={[styles.subjectButton, { backgroundColor: subject.color }]}
-                onPress={() => navigateToSubject(subject.id)}
-              >
-                <Text style={styles.subjectText}>{subject.name}</Text>
-              </TouchableOpacity>
-            )) : (
-              <>
-                {allSubjects.slice(0, 5).map((subject) => (
+                {grades.map((grade, index) => (
                   <TouchableOpacity
-                    key={subject.id}
-                    style={[styles.subjectButton, { backgroundColor: subject.color }]}
-                    onPress={() => navigateToSubject(subject.id)}
+                    key={grade}
+                    style={[
+                      styles.gradeOption,
+                      selectedGrade === grade && styles.selectedGradeOption,
+                      index === grades.length - 1 && styles.lastGradeOption
+                    ]}
+                    onPress={() => handleGradeSelect(grade)}
                   >
-                    <Text style={styles.subjectText}>{subject.name}</Text>
+                    <Text style={[
+                      styles.gradeOptionText,
+                      selectedGrade === grade && styles.selectedGradeOptionText
+                    ]}>
+                      {grade}
+                    </Text>
+                    {selectedGrade === grade && (
+                      <Check size={16} color="#10B981" />
+                    )}
                   </TouchableOpacity>
                 ))}
-              </>
-            )}
-          </View>
-        </Animated.View>
+              </ScrollView>
+            </TouchableOpacity>
+          </TouchableOpacity>
+        </Modal>
 
-        {/* Help Section */}
-        <Animated.View
-          style={[
-            styles.helpSection,
-            {
-              opacity: fadeAnim,
-              transform: [{ translateY: slideAnim }],
-            },
-          ]}
+        {/* Main Content - Fixed Layout */}
+        <View style={styles.mainContent}>
+          {/* Quick Actions Section - Fixed 3 buttons */}
+          <Animated.View
+            style={[
+              styles.quickActionsSection,
+              {
+                opacity: fadeAnim,
+                transform: [{ translateY: slideAnim }],
+              },
+            ]}
+          >
+            <Text style={styles.sectionTitle}>Quick Actions</Text>
+            <View style={styles.quickActionsContainer}>
+              {quickActions.map((action) => (
+                <TouchableOpacity
+                  key={action.id}
+                  style={styles.quickActionButton}
+                  onPress={() => handleQuickAction(action.name)}
+                >
+                  <action.icon size={24} color={action.color} />
+                  <Text style={styles.quickActionText}>{action.name}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </Animated.View>
+
+          {/* Subjects Section - Fixed 7 buttons, no scroll */}
+          <Animated.View
+            style={[
+              styles.subjectsSection,
+              { opacity: fadeAnim, transform: [{ translateY: slideAnim }] },
+            ]}
+          >
+            <Text style={styles.sectionTitle}>My Subjects</Text>
+            <View style={styles.subjectsContainer}>
+              {userSubjects.length > 0 ? userSubjects.map((subject) => (
+                <TouchableOpacity
+                  key={subject.id}
+                  style={[styles.subjectButton, { backgroundColor: subject.color }]}
+                  onPress={() => navigateToSubject(subject.id)}
+                >
+                  <Text style={styles.subjectText}>{subject.name}</Text>
+                </TouchableOpacity>
+              )) : (
+                <>
+                  {allSubjects.slice(0, 5).map((subject) => (
+                    <TouchableOpacity
+                      key={subject.id}
+                      style={[styles.subjectButton, { backgroundColor: subject.color }]}
+                      onPress={() => navigateToSubject(subject.id)}
+                    >
+                      <Text style={styles.subjectText}>{subject.name}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </>
+              )}
+            </View>
+          </Animated.View>
+
+          {/* Help Section */}
+          <Animated.View
+            style={[
+              styles.helpSection,
+              {
+                opacity: fadeAnim,
+                transform: [{ translateY: slideAnim }],
+              },
+            ]}
+          >
+            <Text style={styles.helpTitle}>Need help with homework?</Text>
+            <View style={styles.helpInputContainer}>
+              <TouchableOpacity style={styles.attachButton}>
+                <Paperclip size={20} color="#6B7280" />
+              </TouchableOpacity>
+              <TextInput
+                style={styles.helpInput}
+                placeholder="Ask me anything about your studies..."
+                placeholderTextColor="#9CA3AF"
+                value={helpText}
+                onChangeText={setHelpText}
+                multiline
+              />
+              <TouchableOpacity 
+                style={[styles.sendButton, helpText.trim() && styles.sendButtonActive]} 
+                onPress={handleSendHelp}
+                activeOpacity={0.7}
+              >
+                <Send size={20} color="#3B82F6" />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.micButton}>
+                <Mic size={20} color="white" />
+              </TouchableOpacity>
+            </View>
+          </Animated.View>
+        </View>
+
+        {/* Chat Modal */}
+        <Modal
+          visible={showChatModal}
+          animationType="slide"
+          transparent={false}
+          onRequestClose={() => setShowChatModal(false)}
         >
-          <Text style={styles.helpTitle}>Need help with homework?</Text>
-          <View style={styles.helpInputContainer}>
-            <TouchableOpacity style={styles.attachButton}>
-              <Paperclip size={20} color="#6B7280" />
-            </TouchableOpacity>
-            <TextInput
-              style={styles.helpInput}
-              placeholder="Ask me anything about your studies..."
-              placeholderTextColor="#9CA3AF"
-              value={helpText}
-              onChangeText={setHelpText}
-              multiline
-            />
-            <TouchableOpacity 
-              style={[styles.sendButton, helpText.trim() && styles.sendButtonActive]} 
-              onPress={handleSendHelp}
-              activeOpacity={0.7}
-            >
-              <Send size={20} color="#3B82F6" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.micButton}>
-              <Mic size={20} color="white" />
-            </TouchableOpacity>
-          </View>
-        </Animated.View>
+          <ChatScreen 
+            initialMessage={helpText}
+            onClose={() => {
+              setShowChatModal(false);
+              setHelpText('');
+            }}
+          />
+        </Modal>
       </View>
-
-      {/* Chat Modal */}
-      <Modal
-        visible={showChatModal}
-        animationType="slide"
-        transparent={false}
-        onRequestClose={() => setShowChatModal(false)}
-      >
-        <ChatScreen 
-          initialMessage={helpText}
-          onClose={() => {
-            setShowChatModal(false);
-            setHelpText('');
-          }}
-        />
-      </Modal>
-    </View>
+    </ProtectedRoute>
   );
 }
 
