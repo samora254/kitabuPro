@@ -34,9 +34,6 @@ export default {
       "expo-router",
       "expo-font"
     ],
-    web: {
-      output: "server"
-    },
     experiments: {
       typedRoutes: true
     },
@@ -46,8 +43,8 @@ export default {
       },
       EXPO_PUBLIC_OPENAI_API_KEY: process.env.EXPO_PUBLIC_OPENAI_API_KEY || "demo-api-key",
       EXPO_PUBLIC_PINECONE_API_KEY: process.env.EXPO_PUBLIC_PINECONE_API_KEY || "demo-api-key",
-      EXPO_PUBLIC_SUPABASE_URL: process.env.EXPO_PUBLIC_SUPABASE_URL,
-      EXPO_PUBLIC_SUPABASE_ANON_KEY: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
+      EXPO_PUBLIC_SUPABASE_URL: process.env.EXPO_PUBLIC_SUPABASE_URL || "",
+      EXPO_PUBLIC_SUPABASE_ANON_KEY: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || "",
       EXPO_PUBLIC_MPESA_CONSUMER_KEY: process.env.EXPO_PUBLIC_MPESA_CONSUMER_KEY,
       EXPO_PUBLIC_MPESA_CONSUMER_SECRET: process.env.EXPO_PUBLIC_MPESA_CONSUMER_SECRET,
       EXPO_PUBLIC_MPESA_PASSKEY: process.env.EXPO_PUBLIC_MPESA_PASSKEY,

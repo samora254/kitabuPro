@@ -7,6 +7,15 @@ import Constants from 'expo-constants';
 const supabaseUrl = Constants.expoConfig?.extra?.EXPO_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = Constants.expoConfig?.extra?.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
 
+// Validate required environment variables
+if (!supabaseUrl || supabaseUrl === '') {
+  throw new Error('EXPO_PUBLIC_SUPABASE_URL is required. Please set it in your environment variables.');
+}
+
+if (!supabaseAnonKey || supabaseAnonKey === '') {
+  throw new Error('EXPO_PUBLIC_SUPABASE_ANON_KEY is required. Please set it in your environment variables.');
+}
+
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     storage: AsyncStorage,

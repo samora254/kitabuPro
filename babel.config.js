@@ -6,8 +6,8 @@ module.exports = function(api) {
       ['babel-preset-expo', { jsxRuntime: 'automatic' }]
     ],
     plugins: [
-      'react-native-reanimated/plugin',
-      '@babel/plugin-proposal-export-namespace-from'
+      '@babel/plugin-proposal-export-namespace-from',
+      'react-native-reanimated/plugin'
     ],
   };
 };

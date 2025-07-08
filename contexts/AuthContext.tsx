@@ -26,51 +26,60 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Listen for auth changes
   useEffect(() => {
+    let isMounted = true;
+    
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
+        if (!isMounted) return;
+        
         setSession(session);
         setLoading(true);
         
         if (session) {
           try {
             const currentUser = await getCurrentUser();
-            setUser(currentUser);
+            if (isMounted) setUser(currentUser);
             const role = await getUserRole();
-            setUserRole(role);
+            if (isMounted) setUserRole(role);
           } catch (error) {
             console.error('Error fetching user data:', error);
           }
         } else {
-          setUser(null);
-          setUserRole(null);
+          if (isMounted) {
+            setUser(null);
+            setUserRole(null);
+          }
         }
         
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     );
 
     // Initial session check
     const initializeAuth = async () => {
+      if (!isMounted) return;
+      
       try {
         const { data: { session } } = await supabase.auth.getSession();
-        setSession(session);
+        if (isMounted) setSession(session);
         
         if (session) {
           const currentUser = await getCurrentUser();
-          setUser(currentUser);
+          if (isMounted) setUser(currentUser);
           const role = await getUserRole();
-          setUserRole(role);
+          if (isMounted) setUserRole(role);
         }
       } catch (error) {
         console.error('Error initializing auth:', error);
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     };
 
     initializeAuth();
 
     return () => {
+      isMounted = false;
       subscription.unsubscribe();
     };
   }, []);
