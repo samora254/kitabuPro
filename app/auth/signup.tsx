@@ -1,15 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
-  Text,
+  Text, 
   StyleSheet,
   TextInput,
   TouchableOpacity,
   Animated,
-  KeyboardAvoidingView,
+  KeyboardAvoidingView, 
   Platform,
   ScrollView,
-  Dimensions,
+  Dimensions, 
+  FlatList,
+  ActivityIndicator,
+  Linking,
 } from 'react-native';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -22,7 +25,10 @@ import {
   Users, 
   Trophy,
   Sparkles,
-  Check
+  Check,
+  GraduationCap,
+  User as UserIcon,
+  School,
 } from 'lucide-react-native';
 import { DevModeIndicator } from '@/components/DevModeIndicator';
 import { isDevelopmentBypass, shouldAllowEmptyForms } from '@/constants/config';
@@ -39,6 +45,10 @@ interface FormData {
   gender: string;
   grade: string;
   school: string;
+  role: 'student' | 'teacher' | '';
+  examNumber: string;
+  teachingGrades: string[];
+  teachingSubjects: string[];
   roleModel: string;
   dreamCareer: string;
   favoriteSubject: string;
@@ -49,11 +59,35 @@ interface FormData {
   learningStyle: string;
 }
 
+// Mock school database
+const schoolsDatabase = [
+  { id: '1', name: 'Nairobi Academy', county: 'Nairobi' },
+  { id: '2', name: 'Alliance High School', county: 'Kiambu' },
+  { id: '3', name: 'Mang\'u High School', county: 'Kiambu' },
+  { id: '4', name: 'Starehe Boys Centre', county: 'Nairobi' },
+  { id: '5', name: 'Kenya High School', county: 'Nairobi' },
+  { id: '6', name: 'Precious Blood Riruta', county: 'Nairobi' },
+  { id: '7', name: 'Moi Girls School Nairobi', county: 'Nairobi' },
+  { id: '8', name: 'Lenana School', county: 'Nairobi' },
+  { id: '9', name: 'Sunshine Secondary School', county: 'Nairobi' },
+  { id: '10', name: 'Maryhill Girls High School', county: 'Kiambu' },
+  { id: '11', name: 'Nyeri High School', county: 'Nyeri' },
+  { id: '12', name: 'Nakuru High School', county: 'Nakuru' },
+  { id: '13', name: 'Mombasa High School', county: 'Mombasa' },
+  { id: '14', name: 'Kisumu Boys High School', county: 'Kisumu' },
+  { id: '15', name: 'St. Mary\'s School Yala', county: 'Siaya' },
+];
+
 const steps = [
   { id: 'welcome', title: "Welcome to KITABU.AI!", subtitle: "Your personalized learning journey starts here" },
   { id: 'name', title: "What's your name?", subtitle: "We'd love to know what to call you" },
   { id: 'contact', title: "How can we reach you?", subtitle: "Just in case we need to send you something awesome" },
   { id: 'security', title: "Keep your account safe", subtitle: "Choose a password you'll remember" },
+  { id: 'role', title: "Select Your Role", subtitle: "Are you a teacher or a student?" },
+  { id: 'student-exam', title: "Exam Number", subtitle: "Please enter your exam number" },
+  { id: 'teacher-school', title: "School Information", subtitle: "Tell us where you teach" },
+  { id: 'teacher-grades', title: "Grade Levels", subtitle: "Select the grades you teach" },
+  { id: 'teacher-subjects', title: "Teaching Subjects", subtitle: "Select the subjects you teach" },
   { id: 'personal', title: "Tell us about yourself", subtitle: "Help us personalize your experience" },
   { id: 'school', title: "Where do you study?", subtitle: "Help us connect you with your school community" },
   { id: 'inspiration', title: "Who inspires you?", subtitle: "Tell us about your role model" },
@@ -77,6 +111,10 @@ export default function ProgressiveSignUp() {
     gender: '',
     grade: 'GRADE 8',
     school: '',
+    role: '',
+    examNumber: '',
+    teachingGrades: [],
+    teachingSubjects: [],
     roleModel: '',
     dreamCareer: '',
     favoriteSubject: '',
@@ -88,6 +126,31 @@ export default function ProgressiveSignUp() {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
+
+  // School search state
+  const [schoolSearchResults, setSchoolSearchResults] = useState<Array<{ id: string; name: string; county: string }>>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [showSchoolResults, setShowSchoolResults] = useState(false);
+
+  // Available grades for teacher selection
+  const availableGrades = ['GRADE 4', 'GRADE 5', 'GRADE 6', 'GRADE 7', 'GRADE 8', 'GRADE 9', 'GRADE 10', 'GRADE 11', 'GRADE 12'];
+  
+  // Available subjects for teacher selection
+  const availableSubjects = ['Mathematics', 'English', 'Kiswahili', 'Science', 'Social Studies', 'Home Science'];
+  
+  // Available schools for teacher selection
+  const availableSchools = [
+    'Nairobi Academy',
+    'Moi Girls High School',
+    'Alliance High School',
+    'Starehe Boys Centre',
+    'Kenya High School',
+    'Precious Blood Riruta',
+    'Mangu High School',
+    'Nyabururu Girls High School',
+    'Maryhill Girls High School',
+    'St. Mary\'s School Yala'
+  ];
 
   const fadeAnim = useRef(new Animated.Value(1)).current;
   const slideAnim = useRef(new Animated.Value(0)).current;
@@ -101,6 +164,43 @@ export default function ProgressiveSignUp() {
       useNativeDriver: false,
     }).start();
   }, [currentStep]);
+
+  // Search schools based on input
+  const searchSchools = (query: string) => {
+    setFormData(prev => ({ ...prev, school: query }));
+    
+    if (query.length < 2) {
+      setSchoolSearchResults([]);
+      setShowSchoolResults(false);
+      return;
+    }
+    
+    setIsSearching(true);
+    setShowSchoolResults(true);
+    
+    // Simulate API call with setTimeout
+    setTimeout(() => {
+      const results = schoolsDatabase.filter(school => 
+        school.name.toLowerCase().includes(query.toLowerCase())
+      );
+      setSchoolSearchResults(results);
+      setIsSearching(false);
+    }, 300);
+  };
+
+  // Handle school selection
+  const handleSelectSchool = (school: { id: string; name: string; county: string }) => {
+    setFormData(prev => ({ ...prev, school: school.name }));
+    setShowSchoolResults(false);
+    if (errors.school) {
+      setErrors(prev => ({ ...prev, school: undefined }));
+    }
+  };
+
+  // Contact admin via WhatsApp
+  const contactAdmin = () => {
+    Linking.openURL('https://wa.me/254704646611');
+  };
 
   const animateTransition = (callback: () => void) => {
     Animated.sequence([
@@ -151,6 +251,24 @@ export default function ProgressiveSignUp() {
       if (currentStep === 2 || currentStep === 5 || currentStep === 8) {
         celebrateProgress();
       }
+      
+      // Skip student-specific steps if user is a teacher
+      if (formData.role === 'teacher' && currentStep === 4) {
+        // First ask for gender (personal info)
+        animateTransition(() => {
+          setCurrentStep(9); // Go to personal info for gender selection
+        });
+        return;
+      }
+      
+      // Skip teacher-specific steps if user is a student
+      if (formData.role === 'student' && currentStep === 5) {
+        animateTransition(() => {
+          setCurrentStep(9); // Skip to personal info
+        });
+        return;
+      }
+      
       animateTransition(() => {
         setCurrentStep(prev => Math.min(prev + 1, steps.length - 1));
       });
@@ -158,6 +276,28 @@ export default function ProgressiveSignUp() {
   };
 
   const prevStep = () => {
+    // Handle special navigation for role-specific paths
+    if (formData.role === 'teacher' && currentStep === 18) {
+      animateTransition(() => {
+        setCurrentStep(8); // Go back to teacher subjects from complete screen
+      });
+      return;
+    }
+    
+    if (formData.role === 'teacher' && currentStep === 9) {
+      animateTransition(() => {
+        setCurrentStep(4); // Go back to role selection
+      });
+      return;
+    }
+    
+    if (formData.role === 'student' && currentStep === 9) {
+      animateTransition(() => {
+        setCurrentStep(5); // Go back to student exam number
+      });
+      return;
+    }
+    
     animateTransition(() => {
       setCurrentStep(prev => Math.max(prev - 1, 0));
     });
@@ -200,12 +340,37 @@ export default function ProgressiveSignUp() {
           newErrors.confirmPassword = 'Passwords do not match';
         }
         break;
-      case 4: // Personal
+      case 4: // Role selection
+        if (!formData.role && !shouldAllowEmptyForms()) {
+          newErrors.role = 'Please select a role';
+        }
+        break;
+      case 5: // Student exam number
+        if (formData.role === 'student' && !formData.examNumber.trim() && !shouldAllowEmptyForms()) {
+          newErrors.examNumber = 'Exam number is required';
+        }
+        break;
+      case 6: // Teacher school
+        if (formData.role === 'teacher' && !formData.school.trim() && !shouldAllowEmptyForms()) {
+          newErrors.school = 'School name is required';
+        }
+        break;
+      case 7: // Teacher grades
+        if (formData.role === 'teacher' && formData.teachingGrades.length === 0 && !shouldAllowEmptyForms()) {
+          newErrors.teachingGrades = 'Please select at least one grade';
+        }
+        break;
+      case 8: // Teacher subjects
+        if (formData.role === 'teacher' && formData.teachingSubjects.length === 0 && !shouldAllowEmptyForms()) {
+          newErrors.teachingSubjects = 'Please select at least one subject';
+        }
+        break;
+      case 9: // Personal
         if (!formData.gender && !shouldAllowEmptyForms()) {
           newErrors.gender = 'Please select your gender';
         }
         break;
-      case 5: // School
+      case 10: // School
         if (!formData.school.trim() && !shouldAllowEmptyForms()) {
           newErrors.school = 'School name is required';
         }
@@ -216,7 +381,7 @@ export default function ProgressiveSignUp() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const updateFormData = (field: keyof FormData, value: string) => {
+  const updateFormData = (field: keyof FormData, value: string | string[]) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));
@@ -228,7 +393,12 @@ export default function ProgressiveSignUp() {
     // Simulate API call to save user data
     setTimeout(() => {
       setIsLoading(false);
-      router.replace('/dashboard');
+      // Route to appropriate dashboard based on role
+      if (formData.role === 'teacher') {
+        router.replace('/admin'); // Direct teachers to admin dashboard
+      } else {
+        router.replace('/dashboard');
+      }
     }, 2000);
   };
 
@@ -353,54 +523,370 @@ export default function ProgressiveSignUp() {
           </View>
         );
 
-      case 'personal':
+      case 'role':
+        return (
+          <View style={styles.stepContainer}>
+            <Text style={styles.roleSelectionTitle}>I am a:</Text>
+            <View style={styles.roleButtonsContainer}>
+              <TouchableOpacity
+                style={[
+                  styles.roleButton,
+                  formData.role === 'student' && styles.selectedRoleButton
+                ]}
+                onPress={() => updateFormData('role', 'student')}
+              >
+                <UserIcon size={40} color={formData.role === 'student' ? "white" : "#4299E1"} />
+                <Text style={[
+                  styles.roleButtonText,
+                  formData.role === 'student' && styles.selectedRoleButtonText
+                ]}>
+                  Student
+                </Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity
+                style={[
+                  styles.roleButton,
+                  formData.role === 'teacher' && styles.selectedRoleButton
+                ]}
+                onPress={() => updateFormData('role', 'teacher')}
+              >
+                <GraduationCap size={40} color={formData.role === 'teacher' ? "white" : "#4299E1"} />
+                <Text style={[
+                  styles.roleButtonText,
+                  formData.role === 'teacher' && styles.selectedRoleButtonText
+                ]}>
+                  Teacher
+                </Text>
+              </TouchableOpacity>
+            </View>
+            {errors.role && <Text style={styles.errorText}>{errors.role}</Text>}
+          </View>
+        );
+
+      case 'student-exam':
         return (
           <View style={styles.stepContainer}>
             <View style={styles.inputContainer}>
-              <Text style={[styles.label, styles.centeredLabel]}>I am...</Text>
-              <View style={styles.genderContainer}>
-                {['Male', 'Female', 'Prefer not to say'].map((option) => (
-                  <TouchableOpacity
-                    key={option}
-                    style={[
-                      styles.optionButton,
-                      formData.gender === option && styles.optionButtonSelected
-                    ]}
-                    onPress={() => updateFormData('gender', option)}
-                  >
-                    <Text style={[
-                      styles.optionText,
-                      formData.gender === option && styles.optionTextSelected
-                    ]}>
-                      {option}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-              {errors.gender && <Text style={styles.errorText}>{errors.gender}</Text>}
+              <Text style={styles.label}>Exam Number</Text>
+              <TextInput
+                style={[styles.input, errors.examNumber && styles.inputError]}
+                placeholder="Enter your exam number"
+                placeholderTextColor="#A0AEC0"
+                value={formData.examNumber}
+                onChangeText={(value) => updateFormData('examNumber', value)}
+                autoFocus
+              />
+              {errors.examNumber && <Text style={styles.errorText}>{errors.examNumber}</Text>}
+              <Text style={styles.helpText}>
+                Your exam number is used to link your account with your academic records.
+              </Text>
             </View>
+          </View>
+        );
+
+      case 'teacher-school':
+        return (
+          <View style={styles.stepContainer}>
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Grade Level</Text>
-              <View style={styles.gradeContainer}>
-                {['GRADE 6', 'GRADE 7', 'GRADE 8', 'GRADE 9'].map((grade) => (
+              <Text style={styles.label}>Select Your School</Text>
+              <View style={styles.schoolSelector}>
+                <ScrollView style={styles.schoolList}>
+                  {availableSchools.map((school) => (
+                    <TouchableOpacity
+                      key={school}
+                      style={[
+                        styles.schoolOption,
+                        formData.school === school && styles.selectedSchoolOption
+                      ]}
+                      onPress={() => updateFormData('school', school)}
+                    >
+                      <School size={20} color={formData.school === school ? "#4299E1" : "#718096"} />
+                      <Text style={[
+                        styles.schoolOptionText,
+                        formData.school === school && styles.selectedSchoolOptionText
+                      ]}>
+                        {school}
+                      </Text>
+                      {formData.school === school && (
+                        <Check size={20} color="#4299E1" />
+                      )}
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+              {errors.school && <Text style={styles.errorText}>{errors.school}</Text>}
+              <Text style={styles.helpText}>
+                If your school is not listed, please contact our support team.
+              </Text>
+            </View>
+          </View>
+        );
+
+      case 'teacher-grades':
+        return (
+          <View style={styles.stepContainer}>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Select Grades You Teach</Text>
+              <Text style={styles.sublabel}>Select all that apply</Text>
+              
+              <View style={styles.gradesGrid}>
+                {availableGrades.map((grade) => (
                   <TouchableOpacity
                     key={grade}
                     style={[
-                      styles.gradeButton,
-                      formData.grade === grade && styles.gradeButtonSelected
+                      styles.gradeCheckbox,
+                      formData.teachingGrades.includes(grade) && styles.selectedGradeCheckbox
                     ]}
-                    onPress={() => updateFormData('grade', grade)}
+                    onPress={() => {
+                      const updatedGrades = formData.teachingGrades.includes(grade)
+                        ? formData.teachingGrades.filter(g => g !== grade)
+                        : [...formData.teachingGrades, grade];
+                      updateFormData('teachingGrades', updatedGrades);
+                    }}
                   >
-                    <Text style={[
-                      styles.gradeText,
-                      formData.grade === grade && styles.gradeTextSelected
+                    <View style={[
+                      styles.checkbox,
+                      formData.teachingGrades.includes(grade) && styles.checkedCheckbox
                     ]}>
-                      {grade}
-                    </Text>
+                      {formData.teachingGrades.includes(grade) && (
+                        <Check size={16} color="white" />
+                      )}
+                    </View>
+                    <Text style={styles.gradeCheckboxText}>{grade}</Text>
                   </TouchableOpacity>
                 ))}
               </View>
+              
+              {errors.teachingGrades && <Text style={styles.errorText}>{errors.teachingGrades}</Text>}
             </View>
+          </View>
+        );
+
+      case 'teacher-subjects':
+        return (
+          <View style={styles.stepContainer}>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Select Subjects You Teach</Text>
+              <Text style={styles.sublabel}>Select all that apply</Text>
+              
+              <View style={styles.subjectsContainer}>
+                {availableSubjects.map((subject) => (
+                  <TouchableOpacity
+                    key={subject}
+                    style={[
+                      styles.subjectCheckbox,
+                      formData.teachingSubjects.includes(subject) && styles.selectedSubjectCheckbox
+                    ]}
+                    onPress={() => {
+                      const updatedSubjects = formData.teachingSubjects.includes(subject)
+                        ? formData.teachingSubjects.filter(s => s !== subject)
+                        : [...formData.teachingSubjects, subject];
+                      updateFormData('teachingSubjects', updatedSubjects);
+                    }}
+                  >
+                    <View style={[
+                      styles.checkbox,
+                      formData.teachingSubjects.includes(subject) && styles.checkedCheckbox
+                    ]}>
+                      {formData.teachingSubjects.includes(subject) && (
+                        <Check size={16} color="white" />
+                      )}
+                    </View>
+                    <Text style={styles.subjectCheckboxText}>{subject}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+              
+              {errors.teachingSubjects && <Text style={styles.errorText}>{errors.teachingSubjects}</Text>}
+            </View>
+          </View>
+        );
+
+      case 'personal':
+        return (
+          <View style={styles.stepContainer}>
+            {formData.role === 'teacher' ? (
+              <View>
+                <Text style={[styles.label, styles.centeredLabel]}>I am...</Text>
+                <View style={styles.genderContainer}>
+                  {['Male', 'Female', 'Prefer not to say'].map((option) => (
+                    <TouchableOpacity
+                      key={option}
+                      style={[
+                        styles.optionButton,
+                        formData.gender === option && styles.optionButtonSelected
+                      ]}
+                      onPress={() => updateFormData('gender', option)}
+                    >
+                      <Text style={[
+                        styles.optionText,
+                        formData.gender === option && styles.optionTextSelected
+                      ]}>
+                        {option}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+                {errors.gender && <Text style={styles.errorText}>{errors.gender}</Text>}
+                
+                {/* After gender selection, show school selection for teachers */}
+                {formData.gender && (
+                  <View style={styles.teacherSchoolContainer}>
+                    <Text style={styles.label}>Select Your School</Text>
+                    <View style={styles.schoolSelector}>
+                      <ScrollView style={styles.schoolList}>
+                        {availableSchools.map((school) => (
+                          <TouchableOpacity
+                            key={school}
+                            style={[
+                              styles.schoolOption,
+                              formData.school === school && styles.selectedSchoolOption
+                            ]}
+                            onPress={() => updateFormData('school', school)}
+                          >
+                            <School size={20} color={formData.school === school ? "#4299E1" : "#718096"} />
+                            <Text style={[
+                              styles.schoolOptionText,
+                              formData.school === school && styles.selectedSchoolOptionText
+                            ]}>
+                              {school}
+                            </Text>
+                            {formData.school === school && (
+                              <Check size={20} color="#4299E1" />
+                            )}
+                          </TouchableOpacity>
+                        ))}
+                      </ScrollView>
+                    </View>
+                    {errors.school && <Text style={styles.errorText}>{errors.school}</Text>}
+                  </View>
+                )}
+                
+                {/* After school selection, show grade selection for teachers */}
+                {formData.gender && formData.school && (
+                  <View style={styles.teacherGradesContainer}>
+                    <Text style={styles.label}>Select Grades You Teach</Text>
+                    <Text style={styles.sublabel}>Select all that apply</Text>
+                    
+                    <View style={styles.gradesGrid}>
+                      {availableGrades.map((grade) => (
+                        <TouchableOpacity
+                          key={grade}
+                          style={[
+                            styles.gradeCheckbox,
+                            formData.teachingGrades.includes(grade) && styles.selectedGradeCheckbox
+                          ]}
+                          onPress={() => {
+                            const updatedGrades = formData.teachingGrades.includes(grade)
+                              ? formData.teachingGrades.filter(g => g !== grade)
+                              : [...formData.teachingGrades, grade];
+                            updateFormData('teachingGrades', updatedGrades);
+                          }}
+                        >
+                          <View style={[
+                            styles.checkbox,
+                            formData.teachingGrades.includes(grade) && styles.checkedCheckbox
+                          ]}>
+                            {formData.teachingGrades.includes(grade) && (
+                              <Check size={16} color="white" />
+                            )}
+                          </View>
+                          <Text style={styles.gradeCheckboxText}>{grade}</Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                    
+                    {errors.teachingGrades && <Text style={styles.errorText}>{errors.teachingGrades}</Text>}
+                  </View>
+                )}
+                
+                {/* After grade selection, show subject selection for teachers */}
+                {formData.gender && formData.school && formData.teachingGrades.length > 0 && (
+                  <View style={styles.teacherSubjectsContainer}>
+                    <Text style={styles.label}>Select Subjects You Teach</Text>
+                    <Text style={styles.sublabel}>Select all that apply</Text>
+                    
+                    <View style={styles.subjectsContainer}>
+                      {availableSubjects.map((subject) => (
+                        <TouchableOpacity
+                          key={subject}
+                          style={[
+                            styles.subjectCheckbox,
+                            formData.teachingSubjects.includes(subject) && styles.selectedSubjectCheckbox
+                          ]}
+                          onPress={() => {
+                            const updatedSubjects = formData.teachingSubjects.includes(subject)
+                              ? formData.teachingSubjects.filter(s => s !== subject)
+                              : [...formData.teachingSubjects, subject];
+                            updateFormData('teachingSubjects', updatedSubjects);
+                          }}
+                        >
+                          <View style={[
+                            styles.checkbox,
+                            formData.teachingSubjects.includes(subject) && styles.checkedCheckbox
+                          ]}>
+                            {formData.teachingSubjects.includes(subject) && (
+                              <Check size={16} color="white" />
+                            )}
+                          </View>
+                          <Text style={styles.subjectCheckboxText}>{subject}</Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                    
+                    {errors.teachingSubjects && <Text style={styles.errorText}>{errors.teachingSubjects}</Text>}
+                  </View>
+                )}
+              </View>
+            ) : (
+              <View>
+                <Text style={[styles.label, styles.centeredLabel]}>I am...</Text>
+                <View style={styles.genderContainer}>
+                  {['Male', 'Female', 'Prefer not to say'].map((option) => (
+                    <TouchableOpacity
+                      key={option}
+                      style={[
+                        styles.optionButton,
+                        formData.gender === option && styles.optionButtonSelected
+                      ]}
+                      onPress={() => updateFormData('gender', option)}
+                    >
+                      <Text style={[
+                        styles.optionText,
+                        formData.gender === option && styles.optionTextSelected
+                      ]}>
+                        {option}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+                {errors.gender && <Text style={styles.errorText}>{errors.gender}</Text>}
+                
+                <View style={styles.inputContainer}>
+                  <Text style={styles.label}>Grade Level</Text>
+                  <View style={styles.gradeContainer}>
+                    {['GRADE 6', 'GRADE 7', 'GRADE 8', 'GRADE 9'].map((grade) => (
+                      <TouchableOpacity
+                        key={grade}
+                        style={[
+                          styles.gradeButton,
+                          formData.grade === grade && styles.gradeButtonSelected
+                        ]}
+                        onPress={() => updateFormData('grade', grade)}
+                      >
+                        <Text style={[
+                          styles.gradeText,
+                          formData.grade === grade && styles.gradeTextSelected
+                        ]}>
+                          {grade}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
+              </View>
+            )}
           </View>
         );
 
@@ -408,16 +894,60 @@ export default function ProgressiveSignUp() {
         return (
           <View style={styles.stepContainer}>
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>What's the name of your school?</Text>
-              <TextInput
-                style={[styles.input, errors.school && styles.inputError]}
-                placeholder="e.g., Nairobi Academy"
-                placeholderTextColor="#A0AEC0"
-                value={formData.school}
-                onChangeText={(value) => updateFormData('school', value)}
-                autoFocus
-              />
+              <Text style={styles.label}>Where do you study?</Text>
+              <Text style={styles.helpText}>
+                Help us connect you with your school community
+              </Text>
+              
+              <Text style={styles.schoolLabel}>What's the name of your school?</Text>
+              <View style={styles.schoolInputContainer}>
+                <TextInput
+                  style={[styles.input, errors.school && styles.inputError]}
+                  placeholder="e.g., Nairobi Academy"
+                  placeholderTextColor="#A0AEC0"
+                  value={formData.school}
+                  onChangeText={searchSchools}
+                  autoFocus
+                />
+                {isSearching && (
+                  <ActivityIndicator size="small" color="#4299E1" style={styles.searchingIndicator} />
+                )}
+              </View>
+              
               {errors.school && <Text style={styles.errorText}>{errors.school}</Text>}
+              
+              {showSchoolResults && (
+                <View style={styles.schoolResultsContainer}>
+                  {schoolSearchResults.length > 0 ? (
+                    <FlatList
+                      data={schoolSearchResults}
+                      keyExtractor={(item) => item.id}
+                      renderItem={({ item }) => (
+                        <TouchableOpacity
+                          style={styles.schoolResultItem}
+                          onPress={() => handleSelectSchool(item)}
+                        >
+                          <Text style={styles.schoolResultName}>{item.name}</Text>
+                          <Text style={styles.schoolResultCounty}>{item.county} County</Text>
+                        </TouchableOpacity>
+                      )}
+                      style={styles.schoolResultsList}
+                      nestedScrollEnabled
+                      maxHeight={200}
+                    />
+                  ) : (
+                    <View style={styles.noResultsContainer}>
+                      <Text style={styles.noResultsText}>No schools found</Text>
+                      <TouchableOpacity onPress={contactAdmin}>
+                        <Text style={styles.contactAdminText}>
+                          Contact <Text style={styles.adminLink}>admin</Text> to add your school
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </View>
+              )}
+              
               <Text style={styles.helpText}>
                 This helps us connect you with other students from your school!
               </Text>
@@ -572,33 +1102,68 @@ export default function ProgressiveSignUp() {
       case 'complete':
         return (
           <View style={styles.completeContainer}>
-            <Animated.View style={[
-              styles.celebrationIcon,
-              { transform: [{ scale: celebrationAnim }] }
-            ]}>
-              <Check size={80} color="#48BB78" />
-            </Animated.View>
-            <Text style={styles.completeSubtitle}>
-              We've created a personalized learning experience just for you{formData.firstName ? `, ${formData.firstName}` : ''}!
-            </Text>
-            <View style={styles.summaryContainer}>
-              <Text style={styles.summaryTitle}>Your Learning Profile:</Text>
-              {formData.favoriteSubject && <Text style={styles.summaryItem}>📚 Favorite Subject: {formData.favoriteSubject}</Text>}
-              {formData.dreamCareer && <Text style={styles.summaryItem}>🎯 Dream Career: {formData.dreamCareer}</Text>}
-              {formData.learningStyle && <Text style={styles.summaryItem}>💡 Learning Style: {formData.learningStyle}</Text>}
-              {formData.school && <Text style={styles.summaryItem}>🏫 School: {formData.school}</Text>}
-              {formData.bestFriend && <Text style={styles.summaryItem}>👥 Best Friend: {formData.bestFriend}</Text>}
-              {formData.favoriteTeacher && <Text style={styles.summaryItem}>👨‍🏫 Favorite Teacher: {formData.favoriteTeacher}</Text>}
-            </View>
-            <TouchableOpacity
-              style={[styles.completeButton, isLoading && styles.buttonDisabled]}
-              onPress={handleComplete}
-              disabled={isLoading}
-            >
-              <Text style={styles.completeButtonText}>
-                {isLoading ? 'Setting up your account...' : 'Start Learning! 🚀'}
-              </Text>
-            </TouchableOpacity>
+            {formData.role === 'teacher' ? (
+              <View>
+                <Animated.View style={[
+                  styles.celebrationIcon,
+                  { transform: [{ scale: celebrationAnim }] }
+                ]}>
+                  <GraduationCap size={80} color="#48BB78" />
+                </Animated.View>
+                <Text style={styles.completeSubtitle}>
+                  Welcome to the Teacher's Portal, {formData.firstName}! Your account is ready.
+                </Text>
+                <View style={styles.summaryContainer}>
+                  <Text style={styles.summaryTitle}>Your Teaching Profile:</Text>
+                  <Text style={styles.summaryItem}>👨‍🏫 Name: {formData.firstName} {formData.lastName}</Text>
+                  <Text style={styles.summaryItem}>🏫 School: {formData.school}</Text>
+                  <Text style={styles.summaryItem}>🎓 Teaching Grades: {formData.teachingGrades.join(', ')}</Text>
+                  <Text style={styles.summaryItem}>📚 Teaching Subjects: {formData.teachingSubjects.join(', ')}</Text>
+                  <Text style={styles.summaryItem}>📧 Email: {formData.email}</Text>
+                  <Text style={styles.summaryItem}>📱 Phone: {formData.phone}</Text>
+                </View>
+                <TouchableOpacity
+                  style={[styles.completeButton, isLoading && styles.buttonDisabled]}
+                  onPress={handleComplete}
+                  disabled={isLoading}
+                >
+                  <Text style={styles.completeButtonText}>
+                    {isLoading ? 'Setting up your account...' : 'Go to Admin Dashboard'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View>
+                <Animated.View style={[
+                  styles.celebrationIcon,
+                  { transform: [{ scale: celebrationAnim }] }
+                ]}>
+                  <Check size={80} color="#48BB78" />
+                </Animated.View>
+                <Text style={styles.completeSubtitle}>
+                  We've created a personalized learning experience just for you{formData.firstName ? `, ${formData.firstName}` : ''}!
+                </Text>
+                <View style={styles.summaryContainer}>
+                  <Text style={styles.summaryTitle}>Your Learning Profile:</Text>
+                  {formData.favoriteSubject && <Text style={styles.summaryItem}>📚 Favorite Subject: {formData.favoriteSubject}</Text>}
+                  {formData.role === 'student' && formData.examNumber && <Text style={styles.summaryItem}>🔢 Exam Number: {formData.examNumber}</Text>}
+                  {formData.dreamCareer && <Text style={styles.summaryItem}>🎯 Dream Career: {formData.dreamCareer}</Text>}
+                  {formData.learningStyle && <Text style={styles.summaryItem}>💡 Learning Style: {formData.learningStyle}</Text>}
+                  {formData.school && <Text style={styles.summaryItem}>🏫 School: {formData.school}</Text>}
+                  {formData.bestFriend && <Text style={styles.summaryItem}>👥 Best Friend: {formData.bestFriend}</Text>}
+                  {formData.favoriteTeacher && <Text style={styles.summaryItem}>👨‍🏫 Favorite Teacher: {formData.favoriteTeacher}</Text>}
+                </View>
+                <TouchableOpacity
+                  style={[styles.completeButton, isLoading && styles.buttonDisabled]}
+                  onPress={handleComplete}
+                  disabled={isLoading}
+                >
+                  <Text style={styles.completeButtonText}>
+                    {isLoading ? 'Setting up your account...' : 'Start Learning! 🚀'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
         );
 
@@ -753,13 +1318,84 @@ const styles = StyleSheet.create({
   stepSubtitle: {
     fontSize: 16,
     fontFamily: 'Inter-Regular',
-    color: '#718096',
+    color: '#718096', 
     textAlign: 'center',
     marginBottom: 30,
     lineHeight: 24,
   },
   welcomeContainer: {
     alignItems: 'center',
+  },
+  schoolLabel: {
+    fontSize: 14,
+    fontFamily: 'Inter-SemiBold',
+    color: '#4A5568',
+    marginTop: 8,
+    marginBottom: 8,
+  },
+  schoolInputContainer: {
+    position: 'relative',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  searchingIndicator: {
+    position: 'absolute',
+    right: 16,
+  },
+  schoolResultsContainer: {
+    marginTop: 4,
+    backgroundColor: 'white',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+    zIndex: 10,
+  },
+  schoolResultsList: {
+    maxHeight: 200,
+  },
+  schoolResultItem: {
+    padding: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F7FAFC',
+  },
+  schoolResultName: {
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
+    color: '#2D3748',
+  },
+  schoolResultCounty: {
+    fontSize: 12,
+    fontFamily: 'Inter-Regular',
+    color: '#718096',
+    marginTop: 2,
+  },
+  noResultsContainer: {
+    padding: 16,
+    alignItems: 'center',
+  },
+  noResultsText: {
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
+    color: '#718096',
+    marginBottom: 8,
+  },
+  contactAdminText: {
+    fontSize: 14,
+    fontFamily: 'Inter-Regular',
+    color: '#718096',
+  },
+  adminLink: {
+    color: '#4299E1',
+    fontFamily: 'Inter-SemiBold',
+    textDecorationLine: 'underline',
   },
   iconContainer: {
     alignItems: 'center',
@@ -809,6 +1445,12 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-SemiBold',
     color: '#2D3748',
     marginBottom: 8,
+  },
+  sublabel: {
+    fontSize: 14,
+    fontFamily: 'Inter-Regular',
+    color: '#718096',
+    marginBottom: 12,
   },
   centeredLabel: {
     textAlign: 'center',
@@ -898,6 +1540,139 @@ const styles = StyleSheet.create({
   },
   gradeTextSelected: {
     color: 'white',
+  },
+  roleSelectionTitle: {
+    fontSize: 20,
+    fontFamily: 'Poppins-Bold',
+    color: '#2D3748',
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  roleButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 24,
+  },
+  roleButton: {
+    width: 140,
+    height: 140,
+    borderRadius: 12,
+    backgroundColor: '#F7FAFC',
+    borderWidth: 2,
+    borderColor: '#E2E8F0',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
+  selectedRoleButton: {
+    backgroundColor: '#4299E1',
+    borderColor: '#4299E1',
+  },
+  roleButtonText: {
+    fontSize: 18,
+    fontFamily: 'Poppins-SemiBold',
+    color: '#2D3748',
+    marginTop: 12,
+  },
+  selectedRoleButtonText: {
+    color: 'white',
+  },
+  schoolSelector: {
+    backgroundColor: '#F7FAFC',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    borderRadius: 12,
+    maxHeight: 200,
+    marginBottom: 8,
+  },
+  schoolList: {
+    padding: 8,
+  },
+  schoolOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E2E8F0',
+  },
+  selectedSchoolOption: {
+    backgroundColor: '#EBF8FF',
+  },
+  schoolOptionText: {
+    fontSize: 16,
+    fontFamily: 'Inter-Regular',
+    color: '#2D3748',
+    flex: 1,
+    marginLeft: 12,
+  },
+  selectedSchoolOptionText: {
+    fontFamily: 'Inter-Medium',
+    color: '#4299E1',
+  },
+  gradesGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginHorizontal: -8,
+  },
+  gradeCheckbox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '50%',
+    paddingHorizontal: 8,
+    paddingVertical: 12,
+  },
+  selectedGradeCheckbox: {
+    backgroundColor: '#EBF8FF',
+    borderRadius: 8,
+  },
+  checkbox: {
+    width: 24,
+    height: 24,
+    borderRadius: 6,
+    borderWidth: 2,
+    borderColor: '#E2E8F0',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  checkedCheckbox: {
+    backgroundColor: '#4299E1',
+    borderColor: '#4299E1',
+  },
+  gradeCheckboxText: {
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
+    color: '#2D3748',
+  },
+  subjectsContainer: {
+    marginTop: 8,
+  },
+  subjectCheckbox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E2E8F0',
+  },
+  selectedSubjectCheckbox: {
+    backgroundColor: '#EBF8FF',
+    borderRadius: 8,
+  },
+  subjectCheckboxText: {
+    fontSize: 16,
+    fontFamily: 'Inter-Medium',
+    color: '#2D3748',
+  },
+  teacherSchoolContainer: {
+    marginTop: 24,
+  },
+  teacherGradesContainer: {
+    marginTop: 24,
+  },
+  teacherSubjectsContainer: {
+    marginTop: 24,
   },
   subjectGrid: {
     flexDirection: 'row',

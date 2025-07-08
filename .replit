@@ -5,7 +5,7 @@ run = "npm run dev"
 channel = "stable-24_05"
 
 [deployment]
-run = ["sh", "-c", "npx expo export --platform web && npx serve dist"]
+run = ["sh", "-c", "npm run build:web && npx serve dist"]
 
 [[ports]]
 localPort = 8081
@@ -25,4 +25,4 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "npx expo start --clear"
+args = "npm run dev -- --clear"

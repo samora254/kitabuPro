@@ -164,7 +164,7 @@ export default function Dashboard() {
   const handleSendHelp = () => {
     if (helpText.trim()) {
       // Handle help request
-      console.log('Help request:', helpText);
+      router.push('/homework');
       setHelpText('');
     }
   };
@@ -275,7 +275,7 @@ export default function Dashboard() {
             },
           ]}
         >
-          <TouchableOpacity style={styles.homeworkCard}>
+          <TouchableOpacity style={styles.homeworkCard} onPress={() => router.push('/homework')}>
             <BookOpen size={24} color="#6B7280" />
             <Text style={styles.homeworkText}>Homework</Text>
           </TouchableOpacity>

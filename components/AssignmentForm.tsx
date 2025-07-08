@@ -29,7 +29,7 @@ export interface AssignmentData {
   attachments?: any[];
 }
 
-export default function AssignmentForm({ onSubmit, onCancel, initialData }: AssignmentFormProps) {
+export function AssignmentForm({ onSubmit, onCancel, initialData }: AssignmentFormProps) {
   const [formData, setFormData] = useState<AssignmentData>({
     grade: initialData?.grade || '',
     subject: initialData?.subject || '',
@@ -181,7 +181,7 @@ export default function AssignmentForm({ onSubmit, onCancel, initialData }: Assi
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
-        {/* Grade Selection */}
+        {/* 1. Grade Selection */}
         <View style={styles.formGroup}>
           <Text style={styles.label}>Grade</Text>
           <TouchableOpacity
@@ -196,7 +196,7 @@ export default function AssignmentForm({ onSubmit, onCancel, initialData }: Assi
           {errors.grade && <Text style={styles.errorText}>{errors.grade}</Text>}
         </View>
 
-        {/* Subject Selection */}
+        {/* 2. Subject Selection */}
         <View style={styles.formGroup}>
           <Text style={styles.label}>Subject</Text>
           <TouchableOpacity
@@ -220,16 +220,7 @@ export default function AssignmentForm({ onSubmit, onCancel, initialData }: Assi
           {errors.subject && <Text style={styles.errorText}>{errors.subject}</Text>}
         </View>
 
-        {/* Document Upload */}
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>Upload Document (Optional)</Text>
-          <DocumentUploader 
-            onFileProcessed={handleFileProcessed}
-            onError={(error) => console.log('Upload error:', error)}
-          />
-        </View>
-
-        {/* Assignment Title */}
+        {/* 3. Assignment Title */}
         <View style={styles.formGroup}>
           <Text style={styles.label}>Assignment Title</Text>
           <TextInput
@@ -242,23 +233,7 @@ export default function AssignmentForm({ onSubmit, onCancel, initialData }: Assi
           {errors.title && <Text style={styles.errorText}>{errors.title}</Text>}
         </View>
 
-        {/* Assignment Description */}
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>Assignment Description</Text>
-          <TextInput
-            style={[styles.textArea, errors.description && styles.inputError]}
-            placeholder="Enter assignment details and instructions"
-            placeholderTextColor="#A0AEC0"
-            value={formData.description}
-            onChangeText={(value) => handleInputChange('description', value)}
-            multiline
-            numberOfLines={6}
-            textAlignVertical="top"
-          />
-          {errors.description && <Text style={styles.errorText}>{errors.description}</Text>}
-        </View>
-
-        {/* Due Date */}
+        {/* 4. Due Date */}
         <View style={styles.formGroup}>
           <Text style={styles.label}>Due Date</Text>
           <View style={styles.dateTimeContainer}>
@@ -291,7 +266,32 @@ export default function AssignmentForm({ onSubmit, onCancel, initialData }: Assi
           )}
         </View>
 
-        {/* Generate with AI Button */}
+        {/* 5. Document Upload */}
+        <View style={styles.formGroup}>
+          <Text style={styles.label}>Upload Document (Optional)</Text>
+          <DocumentUploader 
+            onFileProcessed={handleFileProcessed}
+            onError={(error) => console.log('Upload error:', error)}
+          />
+        </View>
+
+        {/* 6. Assignment Description */}
+        <View style={styles.formGroup}>
+          <Text style={styles.label}>Assignment Description</Text>
+          <TextInput
+            style={[styles.textArea, errors.description && styles.inputError]}
+            placeholder="Enter assignment details and instructions"
+            placeholderTextColor="#A0AEC0"
+            value={formData.description}
+            onChangeText={(value) => handleInputChange('description', value)}
+            multiline
+            numberOfLines={6}
+            textAlignVertical="top"
+          />
+          {errors.description && <Text style={styles.errorText}>{errors.description}</Text>}
+        </View>
+
+        {/* 7. Generate with AI Button */}
         <TouchableOpacity
           style={[
             styles.generateButton,
@@ -531,6 +531,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    width: '100%',
   },
   disabledDropdown: {
     backgroundColor: '#F7FAFC',
