@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -15,14 +15,12 @@ import { router } from 'expo-router';
 import { ChevronLeft } from 'lucide-react-native';
 import { DevModeIndicator } from '@/components/DevModeIndicator';
 import { isDevelopmentBypass, shouldBypassAuth } from '@/constants/config';
-import { useAuth } from '@/contexts/AuthContext';
 
 export default function SignInPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
-  const { signIn } = useAuth();
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(30)).current;
@@ -66,23 +64,17 @@ export default function SignInPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSignIn = useCallback(async () => {
-    if (!validateForm()) return;
+  const handleSignIn = async () => {
+    if (!validateForm() && !shouldBypassAuth()) return;
 
     setIsLoading(true);
     
-    try {
-      await signIn(email, password);
-      router.replace('/dashboard');
-    } catch (error: any) {
-      console.error('Error signing in:', error);
-      setErrors({
-        password: error.message || 'Invalid email or password',
-      });
-    } finally {
+    // Simulate API call
+    setTimeout(() => {
       setIsLoading(false);
-    }
-  }, [email, password, signIn, router]);
+      router.replace('/dashboard');
+    }, shouldBypassAuth() ? 500 : 1500);
+  };
 
   const handleSocialLogin = (provider: string) => {
     Alert.alert('Social Login', `${provider} login will be implemented`);

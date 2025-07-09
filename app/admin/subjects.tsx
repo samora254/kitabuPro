@@ -11,8 +11,6 @@ import {
 import { router } from 'expo-router';
 import { Users, BookOpen, ChartBar as BarChart3, Settings, Shield, Database, MessageSquare, UserCheck, FileText, GraduationCap, School, Bot, CircleHelp as HelpCircle, Zap, Award, Target, ChevronDown, Menu, X, Calculator, Globe, Beaker, Heart, Palette, Music, Monitor } from 'lucide-react-native';
 import { DevModeIndicator } from '@/components/DevModeIndicator';
-import { useAuth } from '@/contexts/AuthContext';
-import ProtectedRoute from '@/components/ProtectedRoute';
 
 const { width } = Dimensions.get('window');
 
@@ -27,7 +25,6 @@ interface SubjectData {
 }
 
 export default function SubjectsManagement() {
-  const { user, userRole } = useAuth();
   const [selectedGrade, setSelectedGrade] = useState('Grade 4');
   const [selectedSubject, setSelectedSubject] = useState('Math');
   const [selectedTimeFrame, setSelectedTimeFrame] = useState('This Month');
@@ -219,52 +216,145 @@ export default function SubjectsManagement() {
   };
 
   return (
-    <ProtectedRoute allowedRoles={['admin']}>
-      <View style={styles.container}>
-        <DevModeIndicator />
-        
-        {renderSidebar()}
-        
-        <View style={[styles.mainContent, sidebarCollapsed && styles.mainContentExpanded]}>
-          {/* Header */}
-          <Animated.View
-            style={[
-              styles.header,
-              {
-                opacity: fadeAnim,
-                transform: [{ translateY: slideAnim }],
-              },
-            ]}
-          >
-            <View style={styles.headerLeft}>
-              <Text style={styles.pageTitle}>Subjects</Text>
-            </View>
+    <View style={styles.container}>
+      <DevModeIndicator />
+      
+      {renderSidebar()}
+      
+      <View style={[styles.mainContent, sidebarCollapsed && styles.mainContentExpanded]}>
+        {/* Header */}
+        <Animated.View
+          style={[
+            styles.header,
+            {
+              opacity: fadeAnim,
+              transform: [{ translateY: slideAnim }],
+            },
+          ]}
+        >
+          <View style={styles.headerLeft}>
+            <Text style={styles.pageTitle}>Subjects</Text>
+          </View>
           
-            <View style={styles.headerRight}>
+          <View style={styles.headerRight}>
+            <View style={styles.dropdownContainer}>
+              <TouchableOpacity 
+                style={styles.dropdown}
+                onPress={() => setShowTimeFrameDropdown(!showTimeFrameDropdown)}
+              >
+                <Text style={styles.dropdownLabel}>{selectedTimeFrame}</Text>
+                <ChevronDown size={16} color="#6B7280" />
+              </TouchableOpacity>
+              {showTimeFrameDropdown && (
+                <View style={styles.dropdownMenu}>
+                  {timeFrames.map((timeFrame) => (
+                    <TouchableOpacity
+                      key={timeFrame}
+                      style={styles.dropdownOption}
+                      onPress={() => {
+                        setSelectedTimeFrame(timeFrame);
+                        setShowTimeFrameDropdown(false);
+                      }}
+                    >
+                      <Text style={[
+                        styles.dropdownOptionText,
+                        selectedTimeFrame === timeFrame && styles.selectedOptionText
+                      ]}>
+                        {timeFrame}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
+            </View>
+          </View>
+        </Animated.View>
+
+        {/* Overview Cards */}
+        <Animated.View
+          style={[
+            styles.overviewSection,
+            {
+              opacity: fadeAnim,
+              transform: [{ translateY: slideAnim }],
+            },
+          ]}
+        >
+          <View style={[styles.overviewCard, { backgroundColor: '#4F46E5' }]}>
+            <Text style={styles.cardTitle}>Most Active Subject</Text>
+            <Text style={styles.cardSubjectName}>{mostActiveSubject.name}: {mostActiveSubject.engagement}%</Text>
+          </View>
+          
+          <View style={[styles.overviewCard, { backgroundColor: '#10B981' }]}>
+            <Text style={styles.cardTitle}>Least Active Subject</Text>
+            <Text style={styles.cardSubjectName}>{leastActiveSubject.name}: {leastActiveSubject.engagement}%</Text>
+          </View>
+          
+          <View style={[styles.overviewCard, { backgroundColor: '#EF4444' }]}>
+            <Text style={styles.cardTitle}>Most Improved Subject</Text>
+            <Text style={styles.cardSubjectName}>{mostImprovedSubject.name}: {mostImprovedSubject.improvement}%</Text>
+          </View>
+        </Animated.View>
+
+        {/* Charts Section */}
+        <Animated.View
+          style={[
+            styles.chartsSection,
+            {
+              opacity: fadeAnim,
+              transform: [{ translateY: slideAnim }],
+            },
+          ]}
+        >
+          <View style={styles.chartsRow}>
+            <View style={styles.chartContainer}>
+              <Text style={styles.chartTitle}>Subject Engagement</Text>
+              {renderPieChart()}
+            </View>
+            
+            <View style={styles.chartContainer}>
+              <Text style={styles.chartTitle}>Hours Spent</Text>
+              {renderBarChart()}
+            </View>
+          </View>
+        </Animated.View>
+
+        {/* Filter Controls */}
+        <Animated.View
+          style={[
+            styles.filtersSection,
+            {
+              opacity: fadeAnim,
+              transform: [{ translateY: slideAnim }],
+            },
+          ]}
+        >
+          <View style={styles.filterRow}>
+            <View style={styles.filterGroup}>
               <View style={styles.dropdownContainer}>
                 <TouchableOpacity 
-                  style={styles.dropdown}
-                  onPress={() => setShowTimeFrameDropdown(!showTimeFrameDropdown)}
+                  style={styles.filterDropdown}
+                  onPress={() => setShowGradeDropdown(!showGradeDropdown)}
                 >
-                  <Text style={styles.dropdownLabel}>{selectedTimeFrame}</Text>
+                  <Text style={styles.filterLabel}>{selectedGrade}</Text>
                   <ChevronDown size={16} color="#6B7280" />
                 </TouchableOpacity>
-                {showTimeFrameDropdown && (
+                {showGradeDropdown && (
                   <View style={styles.dropdownMenu}>
-                    {timeFrames.map((timeFrame) => (
+                    {grades.map((grade) => (
                       <TouchableOpacity
-                        key={timeFrame}
+                        key={grade}
                         style={styles.dropdownOption}
                         onPress={() => {
-                          setSelectedTimeFrame(timeFrame);
-                          setShowTimeFrameDropdown(false);
+                          setSelectedGrade(grade);
+                          setShowGradeDropdown(false);
                         }}
                       >
                         <Text style={[
                           styles.dropdownOptionText,
-                          selectedTimeFrame === timeFrame && styles.selectedOptionText
+                          selectedGrade === grade && styles.selectedOptionText
                         ]}>
-                          {timeFrame}
+                          {grade}
                         </Text>
                       </TouchableOpacity>
                     ))}
@@ -272,138 +362,43 @@ export default function SubjectsManagement() {
                 )}
               </View>
             </View>
-          </Animated.View>
-
-          {/* Overview Cards */}
-          <Animated.View
-            style={[
-              styles.overviewSection,
-              {
-                opacity: fadeAnim,
-                transform: [{ translateY: slideAnim }],
-              },
-            ]}
-          >
-            <View style={[styles.overviewCard, { backgroundColor: '#4F46E5' }]}>
-              <Text style={styles.cardTitle}>Most Active Subject</Text>
-              <Text style={styles.cardSubjectName}>{mostActiveSubject.name}: {mostActiveSubject.engagement}%</Text>
-            </View>
-          
-            <View style={[styles.overviewCard, { backgroundColor: '#10B981' }]}>
-              <Text style={styles.cardTitle}>Least Active Subject</Text>
-              <Text style={styles.cardSubjectName}>{leastActiveSubject.name}: {leastActiveSubject.engagement}%</Text>
-            </View>
-          
-            <View style={[styles.overviewCard, { backgroundColor: '#EF4444' }]}>
-              <Text style={styles.cardTitle}>Most Improved Subject</Text>
-              <Text style={styles.cardSubjectName}>{mostImprovedSubject.name}: {mostImprovedSubject.improvement}%</Text>
-            </View>
-          </Animated.View>
-
-          {/* Charts Section */}
-          <Animated.View
-            style={[
-              styles.chartsSection,
-              {
-                opacity: fadeAnim,
-                transform: [{ translateY: slideAnim }],
-              },
-            ]}
-          >
-            <View style={styles.chartsRow}>
-              <View style={styles.chartContainer}>
-                <Text style={styles.chartTitle}>Subject Engagement</Text>
-                {renderPieChart()}
-              </View>
             
-              <View style={styles.chartContainer}>
-                <Text style={styles.chartTitle}>Hours Spent</Text>
-                {renderBarChart()}
+            <View style={styles.filterGroup}>
+              <View style={styles.dropdownContainer}>
+                <TouchableOpacity 
+                  style={styles.filterDropdown}
+                  onPress={() => setShowSubjectDropdown(!showSubjectDropdown)}
+                >
+                  <Text style={styles.filterLabel}>{selectedSubject}</Text>
+                  <ChevronDown size={16} color="#6B7280" />
+                </TouchableOpacity>
+                {showSubjectDropdown && (
+                  <View style={styles.dropdownMenu}>
+                    {subjects.map((subject) => (
+                      <TouchableOpacity
+                        key={subject}
+                        style={styles.dropdownOption}
+                        onPress={() => {
+                          setSelectedSubject(subject);
+                          setShowSubjectDropdown(false);
+                        }}
+                      >
+                        <Text style={[
+                          styles.dropdownOptionText,
+                          selectedSubject === subject && styles.selectedOptionText
+                        ]}>
+                          {subject}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
               </View>
             </View>
-          </Animated.View>
-
-          {/* Filter Controls */}
-          <Animated.View
-            style={[
-              styles.filtersSection,
-              {
-                opacity: fadeAnim,
-                transform: [{ translateY: slideAnim }],
-              },
-            ]}
-          >
-            <View style={styles.filterRow}>
-              <View style={styles.filterGroup}>
-                <View style={styles.dropdownContainer}>
-                  <TouchableOpacity 
-                    style={styles.filterDropdown}
-                    onPress={() => setShowGradeDropdown(!showGradeDropdown)}
-                  >
-                    <Text style={styles.filterLabel}>{selectedGrade}</Text>
-                    <ChevronDown size={16} color="#6B7280" />
-                  </TouchableOpacity>
-                  {showGradeDropdown && (
-                    <View style={styles.dropdownMenu}>
-                      {grades.map((grade) => (
-                        <TouchableOpacity
-                          key={grade}
-                          style={styles.dropdownOption}
-                          onPress={() => {
-                            setSelectedGrade(grade);
-                            setShowGradeDropdown(false);
-                          }}
-                        >
-                          <Text style={[
-                            styles.dropdownOptionText,
-                            selectedGrade === grade && styles.selectedOptionText
-                          ]}>
-                            {grade}
-                          </Text>
-                        </TouchableOpacity>
-                      ))}
-                    </View>
-                  )}
-                </View>
-              </View>
-            
-              <View style={styles.filterGroup}>
-                <View style={styles.dropdownContainer}>
-                  <TouchableOpacity 
-                    style={styles.filterDropdown}
-                    onPress={() => setShowSubjectDropdown(!showSubjectDropdown)}
-                  >
-                    <Text style={styles.filterLabel}>{selectedSubject}</Text>
-                    <ChevronDown size={16} color="#6B7280" />
-                  </TouchableOpacity>
-                  {showSubjectDropdown && (
-                    <View style={styles.dropdownMenu}>
-                      {subjects.map((subject) => (
-                        <TouchableOpacity
-                          key={subject}
-                          style={styles.dropdownOption}
-                          onPress={() => {
-                            setSelectedSubject(subject);
-                            setShowSubjectDropdown(false);
-                          }}
-                        >
-                          <Text style={[
-                            styles.dropdownOptionText,
-                            selectedSubject === subject && styles.selectedOptionText
-                          ]}>
-                            {subject}
-                          </Text>
-                        </TouchableOpacity>
-                      ))}
-                    </View>
-                  )}
-                </View>
-              </View>
-            </View>
-          </Animated.View>
-        </View>
+          </View>
+        </Animated.View>
       </View>
-    </ProtectedRoute>
+    </View>
   );
 }
 

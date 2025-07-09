@@ -13,8 +13,6 @@ import {
 import { Send, Bot, User, Lightbulb, BookOpen, Calculator, Beaker, Globe, Mic, Paperclip, MoveHorizontal as MoreHorizontal, X } from 'lucide-react-native';
 import TypewriterText from '@/components/TypewriterText';
 import { DevModeIndicator } from '@/components/DevModeIndicator';
-import { useAuth } from '@/contexts/AuthContext';
-import SubscriptionCheck from '@/components/SubscriptionCheck';
 
 interface QuickAction {
   id: string;
@@ -46,7 +44,6 @@ interface ChatScreenProps {
 }
 
 export default function ChatScreen({ initialMessage = '', onClose }: ChatScreenProps) {
-  const { user } = useAuth();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -295,7 +292,6 @@ export default function ChatScreen({ initialMessage = '', onClose }: ChatScreenP
   );
 
   return (
-    <SubscriptionCheck featureType="chat">
     <KeyboardAvoidingView 
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -442,7 +438,6 @@ export default function ChatScreen({ initialMessage = '', onClose }: ChatScreenP
         </Animated.View>
       </Animated.View>
     </KeyboardAvoidingView>
-    </SubscriptionCheck>
   );
 }
 

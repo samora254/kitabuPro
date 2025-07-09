@@ -13,10 +13,6 @@ import {
 import { router } from 'expo-router';
 import { ArrowLeft, Search, Filter, Plus, Clock, FileText, CircleCheck as CheckCircle, Circle as XCircle, CircleAlert as AlertCircle, BookOpen, Calendar } from 'lucide-react-native';
 import { DevModeIndicator } from '@/components/DevModeIndicator';
-import { useAuth } from '@/contexts/AuthContext';
-import ProtectedRoute from '@/components/ProtectedRoute';
-import SubscriptionCheck from '@/components/SubscriptionCheck';
-import { useHomeworkAssignments } from '@/hooks/useSupabaseData';
 
 // Mock data for assignments
 const mockAssignments = [
@@ -138,32 +134,10 @@ const getDaysRemaining = (dueDate: Date) => {
 };
 
 export default function HomeworkScreen() {
-  const { user, userRole } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('all');
-  const [assignments, setAssignments] = useState<any[]>([]);
+  const [assignments, setAssignments] = useState(mockAssignments);
   const [loading, setLoading] = useState(true);
-  
-  const { data: homeworkAssignments, loading: loadingHomework, error } = useHomeworkAssignments();
-  
-  useEffect(() => {
-    if (homeworkAssignments) {
-      // Transform the data to match the expected format
-      const transformedAssignments = homeworkAssignments.map((assignment: any) => ({
-        id: assignment.id,
-        title: assignment.title,
-        subject: assignment.subject,
-        grade: assignment.grade,
-        dueDate: new Date(assignment.due_date || Date.now() + 7 * 24 * 60 * 60 * 1000),
-        status: assignment.status || 'pending',
-        questions: assignment.questions_count || 15,
-        estimatedTime: assignment.estimated_time || 45,
-        thumbnail: assignment.thumbnail_url || 'https://images.pexels.com/photos/5212345/pexels-photo-5212345.jpeg?auto=compress&cs=tinysrgb&w=400'
-      }));
-      
-      setAssignments(transformedAssignments);
-    }
-  }, [homeworkAssignments]);
 
   // Simulate loading data
   useEffect(() => {
@@ -214,27 +188,25 @@ export default function HomeworkScreen() {
   };
 
   return (
-    <ProtectedRoute allowedRoles={['student', 'teacher']}>
-      <SubscriptionCheck featureType="homework">
-      <View style={styles.container}>
-        <DevModeIndicator />
-        
-        {/* Header */}
-        <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => router.back()}
-          >
-            <ArrowLeft size={24} color="#2D3748" />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Homework</Text>
-          <TouchableOpacity
-            style={styles.createButton}
-            onPress={handleCreateAssignment}
-          >
-            <Plus size={24} color="#4299E1" />
-          </TouchableOpacity>
-        </View>
+    <View style={styles.container}>
+      <DevModeIndicator />
+      
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => router.back()}
+        >
+          <ArrowLeft size={24} color="#2D3748" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Homework</Text>
+        <TouchableOpacity
+          style={styles.createButton}
+          onPress={handleCreateAssignment}
+        >
+          <Plus size={24} color="#4299E1" />
+        </TouchableOpacity>
+      </View>
       
       {/* Search and Filter */}
       <View style={styles.searchContainer}>
@@ -399,9 +371,7 @@ export default function HomeworkScreen() {
           </TouchableOpacity>
         </View>
       )}
-      </View>
-      </SubscriptionCheck>
-    </ProtectedRoute>
+    </View>
   );
 }
 
